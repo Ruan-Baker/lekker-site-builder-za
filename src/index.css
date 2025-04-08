@@ -65,6 +65,10 @@
   .browser-dot {
     @apply w-3 h-3 rounded-full;
   }
+  
+  .website-block {
+    @apply relative shadow-sm;
+  }
 }
 
 @layer components {

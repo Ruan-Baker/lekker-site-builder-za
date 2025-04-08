@@ -9,6 +9,7 @@ import Testimonials from '@/components/Testimonials';
 import SignUpForm from '@/components/SignUpForm';
 import CallToAction from '@/components/CallToAction';
 import Footer from '@/components/Footer';
+import MobileFirst from '@/components/MobileFirst';
 
 const Index = () => {
   // Intersection Observer for animation triggers
@@ -44,6 +45,7 @@ const Index = () => {
         <Features />
         <BuilderPreview />
         <Templates />
+        <MobileFirst />
         <Testimonials />
         <SignUpForm />
         <CallToAction />

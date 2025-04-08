@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 
 const SignUpForm = () => {
   return (
@@ -65,69 +66,73 @@ const SignUpForm = () => {
         </div>
         
         <div className="w-full lg:w-1/2">
-          <div className="relative">
-            <div className="bg-white rounded-lg p-6 shadow-soft max-w-md mx-auto">
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-lekker-purple/20 rounded-full flex items-center justify-center">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="#6B46C1"/>
-                  </svg>
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-xl font-semibold">Quick Setup</h3>
-                  <p className="text-lekker-gray">Create your account in seconds</p>
-                </div>
+          <Card className="shadow-soft border-lekker-border-gray overflow-hidden">
+            <CardHeader className="bg-lekker-purple text-white pb-6">
+              <CardTitle className="text-2xl">Free Starter Plan</CardTitle>
+              <CardDescription className="text-white/80 text-lg">Perfect for small businesses and entrepreneurs</CardDescription>
+              <div className="mt-4">
+                <span className="text-4xl font-bold">R0</span>
+                <span className="text-white/80 ml-2">/ month</span>
               </div>
-              
-              <div className="my-8 border-t border-lekker-border-gray"></div>
-              
-              <div className="space-y-6">
+            </CardHeader>
+            <CardContent className="pt-6">
+              <h4 className="font-medium mb-4">What's included:</h4>
+              <ul className="space-y-3">
+                <li className="flex items-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-lekker-purple">
+                    <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/>
+                  </svg>
+                  Mobile-responsive website
+                </li>
+                <li className="flex items-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-lekker-purple">
+                    <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/>
+                  </svg>
+                  5 pages
+                </li>
+                <li className="flex items-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-lekker-purple">
+                    <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/>
+                  </svg>
+                  Lekker Sites subdomain
+                </li>
+                <li className="flex items-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-lekker-purple">
+                    <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/>
+                  </svg>
+                  Basic SEO tools
+                </li>
+                <li className="flex items-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-lekker-purple">
+                    <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/>
+                  </svg>
+                  Community support
+                </li>
+              </ul>
+            </CardContent>
+            <CardFooter className="border-t border-lekker-border-gray pt-6 flex flex-col items-start">
+              <h4 className="font-medium mb-2">Simple 4-step setup:</h4>
+              <div className="space-y-3 w-full">
                 <div className="flex items-center">
-                  <div className="w-6 h-6 rounded-full bg-lekker-purple/20 flex items-center justify-center text-sm">1</div>
+                  <div className="w-6 h-6 rounded-full bg-lekker-purple/20 flex items-center justify-center text-sm font-medium text-lekker-purple">1</div>
                   <span className="ml-3 text-sm">Create your account</span>
                 </div>
                 <div className="flex items-center">
-                  <div className="w-6 h-6 rounded-full bg-lekker-purple/20 flex items-center justify-center text-sm">2</div>
+                  <div className="w-6 h-6 rounded-full bg-lekker-purple/20 flex items-center justify-center text-sm font-medium text-lekker-purple">2</div>
                   <span className="ml-3 text-sm">Choose your template</span>
                 </div>
                 <div className="flex items-center">
-                  <div className="w-6 h-6 rounded-full bg-lekker-purple/20 flex items-center justify-center text-sm">3</div>
+                  <div className="w-6 h-6 rounded-full bg-lekker-purple/20 flex items-center justify-center text-sm font-medium text-lekker-purple">3</div>
                   <span className="ml-3 text-sm">Customize your site</span>
                 </div>
                 <div className="flex items-center">
-                  <div className="w-6 h-6 rounded-full bg-lekker-purple/20 flex items-center justify-center text-sm">4</div>
+                  <div className="w-6 h-6 rounded-full bg-lekker-purple/20 flex items-center justify-center text-sm font-medium text-lekker-purple">4</div>
                   <span className="ml-3 text-sm">Publish and go live</span>
                 </div>
               </div>
-              
-              <div className="mt-8 bg-lekker-light-gray rounded-lg p-4 text-sm">
-                <p className="font-medium mb-2">Free plan includes:</p>
-                <ul className="space-y-2">
-                  <li className="flex items-center">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
-                      <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="#6B46C1"/>
-                    </svg>
-                    Mobile-responsive website
-                  </li>
-                  <li className="flex items-center">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
-                      <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="#6B46C1"/>
-                    </svg>
-                    5 pages
-                  </li>
-                  <li className="flex items-center">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
-                      <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="#6B46C1"/>
-                    </svg>
-                    Lekker Sites subdomain
-                  </li>
-                </ul>
-              </div>
-            </div>
-            
-            <div className="absolute -top-5 -right-5 w-20 h-20 bg-lekker-purple/10 rounded-full"></div>
-            <div className="absolute -bottom-3 -left-3 w-12 h-12 bg-lekker-purple/10 rounded-full"></div>
-          </div>
+              <Button variant="outline" className="mt-6 w-full">View All Plans</Button>
+            </CardFooter>
+          </Card>
         </div>
       </div>
     </section>
