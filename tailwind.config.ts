@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -202,9 +203,6 @@ export default {
 				'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite',
 				'gentle-tilt': 'gentle-tilt 4s ease-in-out infinite',
 				'gentle-float': 'gentle-float 3s ease-in-out infinite'
-			},
-			transitionTimingFunction: {
-				'bounce': 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
 			},
 			fontFamily: {
 				sans: ['Inter', 'system-ui', 'sans-serif'],
