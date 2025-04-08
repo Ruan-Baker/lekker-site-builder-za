@@ -107,14 +107,6 @@ export default {
 					'80%': { transform: 'translate(150px, 50px) scale(0.98)' },
 					'100%': { transform: 'translate(140px, 60px) scale(1)' }
 				},
-				'builder-drag-slow': {
-					'0%': { transform: 'translate(0, 0) scale(1)' },
-					'20%': { transform: 'translate(20px, -5px) scale(1.01)' },
-					'40%': { transform: 'translate(60px, 5px) scale(1.02)' },
-					'70%': { transform: 'translate(100px, 20px) scale(1.01)' },
-					'90%': { transform: 'translate(130px, 40px) scale(0.99)' },
-					'100%': { transform: 'translate(120px, 50px) scale(1)' }
-				},
 				'cursor-move-realistic': {
 					'0%': { transform: 'translate(0, 0)' },
 					'15%': { transform: 'translate(30px, 10px)' },
@@ -124,14 +116,6 @@ export default {
 					'75%': { transform: 'translate(140px, 50px)' },
 					'90%': { transform: 'translate(130px, 60px)' },
 					'100%': { transform: 'translate(140px, 60px)' }
-				},
-				'cursor-move-slow': {
-					'0%': { transform: 'translate(0, 0)' },
-					'20%': { transform: 'translate(40px, 15px)' },
-					'40%': { transform: 'translate(70px, 10px)' },
-					'60%': { transform: 'translate(100px, 25px)' },
-					'80%': { transform: 'translate(120px, 40px)' },
-					'100%': { transform: 'translate(120px, 50px)' }
 				},
 				'section-build': {
 					'0%': { transform: 'translateY(24px)', opacity: '0' },
@@ -164,21 +148,6 @@ export default {
 				'pulse-medium': {
 					'0%, 100%': { opacity: '0.8' },
 					'50%': { opacity: '0.5' }
-				},
-				'bounce-gentle': {
-					'0%, 100%': { transform: 'translateY(0)' },
-					'50%': { transform: 'translateY(-5px)' }
-				},
-				'gentle-tilt': {
-					'0%': { transform: 'rotate(0deg)' },
-					'25%': { transform: 'rotate(1deg)' },
-					'75%': { transform: 'rotate(-1deg)' },
-					'100%': { transform: 'rotate(0deg)' }
-				},
-				'gentle-float': {
-					'0%': { transform: 'translateY(0)' },
-					'50%': { transform: 'translateY(-4px)' },
-					'100%': { transform: 'translateY(0)' }
 				}
 			},
 			animation: {
@@ -188,9 +157,7 @@ export default {
 				'float-medium': 'float-medium 5s ease-in-out infinite',
 				'float-short': 'float-short 4s ease-in-out infinite',
 				'builder-drag': 'builder-drag 6s cubic-bezier(0.25, 0.1, 0.25, 1) infinite',
-				'builder-drag-slow': 'builder-drag-slow 10s ease-in-out infinite',
 				'cursor-move-realistic': 'cursor-move-realistic 6s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite',
-				'cursor-move-slow': 'cursor-move-slow 10s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite',
 				'section-build': 'section-build 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
 				'section-build-delay-1': 'section-build 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s forwards',
 				'section-build-delay-2': 'section-build 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards',
@@ -199,10 +166,7 @@ export default {
 				'device-switch': 'device-switch 3s ease-in-out infinite alternate',
 				'cursor-bounce': 'cursor-bounce 4s ease-in-out infinite',
 				'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
-				'pulse-medium': 'pulse-medium 2s ease-in-out infinite',
-				'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite',
-				'gentle-tilt': 'gentle-tilt 4s ease-in-out infinite',
-				'gentle-float': 'gentle-float 3s ease-in-out infinite'
+				'pulse-medium': 'pulse-medium 2s ease-in-out infinite'
 			},
 			fontFamily: {
 				sans: ['Inter', 'system-ui', 'sans-serif'],
