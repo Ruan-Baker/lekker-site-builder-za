@@ -77,11 +77,11 @@
   }
   
   .btn-primary {
-    @apply bg-lekker-purple hover:bg-lekker-purple-hover text-white rounded-2xl px-6 py-4 font-medium transition-all duration-250;
+    @apply bg-lekker-purple hover:bg-lekker-purple-hover text-white rounded-2xl px-6 py-4 font-medium transition-all duration-300;
   }
   
   .btn-secondary {
-    @apply bg-transparent border border-lekker-border-gray text-lekker-black hover:bg-lekker-light-gray rounded-2xl px-6 py-4 font-medium transition-all duration-250;
+    @apply bg-transparent border border-lekker-border-gray text-lekker-black hover:bg-lekker-light-gray rounded-2xl px-6 py-4 font-medium transition-all duration-300;
   }
   
   .feature-card {
@@ -93,7 +93,7 @@
   }
   
   .template-thumbnail {
-    @apply border border-lekker-border-gray rounded-lg overflow-hidden hover:scale-[1.03] transition-transform duration-250 cursor-pointer shadow-softer hover:shadow-soft;
+    @apply border border-lekker-border-gray rounded-lg overflow-hidden hover:scale-[1.03] transition-transform duration-300 cursor-pointer shadow-softer hover:shadow-soft;
   }
   
   .template-label {
