@@ -56,8 +56,6 @@ const MobileFirst = () => {
                 </div>
               </div>
             </div>
-            <div className="absolute -top-8 -left-8 w-32 h-32 bg-lekker-purple rounded-full opacity-20 blur-2xl animate-pulse"></div>
-            <div className="absolute -bottom-16 -right-8 w-40 h-40 bg-lekker-purple rounded-full opacity-20 blur-3xl animate-pulse"></div>
           </div>
 
           {/* Content */}

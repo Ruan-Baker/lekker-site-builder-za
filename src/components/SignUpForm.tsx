@@ -94,7 +94,7 @@ const SignUpForm = () => {
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-lekker-purple">
                     <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/>
                   </svg>
-                  Lekker Sites subdomain
+                  Connect your own domain
                 </li>
                 <li className="flex items-center">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2 text-lekker-purple">
@@ -111,7 +111,18 @@ const SignUpForm = () => {
               </ul>
             </CardContent>
             <CardFooter className="border-t border-lekker-border-gray pt-6 flex flex-col items-start">
-              <h4 className="font-medium mb-2">Simple 4-step setup:</h4>
+              <div className="flex w-full justify-between mb-4">
+                <div className="pricing-option">
+                  <h5 className="font-medium">Pro Plan</h5>
+                  <p className="text-sm text-lekker-gray">R199/month</p>
+                </div>
+                <div className="pricing-option">
+                  <h5 className="font-medium">Business Plan</h5>
+                  <p className="text-sm text-lekker-gray">R399/month</p>
+                </div>
+              </div>
+              
+              <h4 className="font-medium mt-4 mb-2">Quick setup in 4 steps:</h4>
               <div className="space-y-3 w-full">
                 <div className="flex items-center">
                   <div className="w-6 h-6 rounded-full bg-lekker-purple/20 flex items-center justify-center text-sm font-medium text-lekker-purple">1</div>

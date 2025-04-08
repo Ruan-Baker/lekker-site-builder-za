@@ -84,7 +84,7 @@ const Hero = () => {
               {/* Draggable Element */}
               <div 
                 ref={blockRef}
-                className="website-block h-16 w-36 bg-lekker-purple/20 border border-lekker-purple/30 rounded-md absolute top-32 left-6 animate-builder-drag"
+                className="website-block h-16 w-36 bg-lekker-purple/20 border border-lekker-purple/30 rounded-md absolute top-32 left-6 animate-builder-drag-slow"
               >
                 <div className="h-3 w-24 bg-white/60 rounded-sm m-2"></div>
                 <div className="h-2 w-20 bg-white/40 rounded-sm mx-2"></div>
@@ -114,7 +114,7 @@ const Hero = () => {
               {/* Animated Cursor */}
               <div 
                 ref={cursorRef} 
-                className="cursor-custom animate-cursor-move-realistic"
+                className="cursor-custom animate-cursor-move-slow"
               ></div>
             </div>
           </div>
