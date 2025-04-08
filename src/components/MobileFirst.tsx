@@ -31,7 +31,7 @@ const MobileFirst = () => {
                 </div>
                 <div className="p-4">
                   <div className="w-full h-40 bg-white rounded-lg shadow-sm flex items-center justify-center mb-4">
-                    <div className="w-16 h-16 rounded-lg bg-purple-100 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-lg bg-lekker-light-gray flex items-center justify-center">
                       <Layers size={24} className="text-lekker-purple" />
                     </div>
                   </div>
