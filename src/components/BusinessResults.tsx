@@ -21,7 +21,7 @@ const BusinessResults = () => {
           <div className="rounded-xl overflow-hidden shadow-md border border-gray-200">
             <div className="bg-blue-50 p-4">
               <img 
-                src="/lovable-uploads/243f158e-a205-41ef-b2b7-7ac49abe0716.png" 
+                src="/lovable-uploads/976d4e3c-4063-4a3c-925c-b10a08ae8e05.png" 
                 alt="Get Qualified Leads" 
                 className="w-full h-auto object-contain rounded-lg"
               />
@@ -31,10 +31,12 @@ const BusinessResults = () => {
               <p className="text-gray-700 mb-6">
                 Our webinar, case study, quiz, freebie, and VSL funnel templates get you ready-to-buy leads.
               </p>
-              <Button variant="outline" className="rounded-full text-blue-600 border-blue-600 hover:bg-blue-50 flex items-center gap-2">
-                <span>Learn more</span>
-                <ArrowRight className="h-4 w-4" />
-              </Button>
+              <div className="flex justify-center">
+                <Button variant="outline" className="rounded-full text-blue-600 border-blue-600 hover:bg-blue-50 flex items-center gap-2">
+                  <span>Learn more</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
           
@@ -42,7 +44,7 @@ const BusinessResults = () => {
           <div className="rounded-xl overflow-hidden shadow-md border border-gray-200">
             <div className="bg-red-50 p-4">
               <img 
-                src="/lovable-uploads/243f158e-a205-41ef-b2b7-7ac49abe0716.png" 
+                src="/lovable-uploads/976d4e3c-4063-4a3c-925c-b10a08ae8e05.png" 
                 alt="Sell Smarter Online" 
                 className="w-full h-auto object-contain rounded-lg"
               />
@@ -52,10 +54,12 @@ const BusinessResults = () => {
               <p className="text-gray-700 mb-6">
                 Personalize your offer and sell your product or offer directly in the funnel without further tools.
               </p>
-              <Button variant="outline" className="rounded-full text-red-600 border-red-600 hover:bg-red-50 flex items-center gap-2">
-                <span>Learn more</span>
-                <ArrowRight className="h-4 w-4" />
-              </Button>
+              <div className="flex justify-center">
+                <Button variant="outline" className="rounded-full text-red-600 border-red-600 hover:bg-red-50 flex items-center gap-2">
+                  <span>Learn more</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
           
@@ -63,7 +67,7 @@ const BusinessResults = () => {
           <div className="rounded-xl overflow-hidden shadow-md border border-gray-200">
             <div className="bg-yellow-50 p-4">
               <img 
-                src="/lovable-uploads/243f158e-a205-41ef-b2b7-7ac49abe0716.png" 
+                src="/lovable-uploads/976d4e3c-4063-4a3c-925c-b10a08ae8e05.png" 
                 alt="Hire Top Talent" 
                 className="w-full h-auto object-contain rounded-lg"
               />
@@ -73,10 +77,12 @@ const BusinessResults = () => {
               <p className="text-gray-700 mb-6">
                 Our funnel templates revolutionize recruiting - no resumes, just quick and easy applications.
               </p>
-              <Button variant="outline" className="rounded-full text-yellow-600 border-yellow-600 hover:bg-yellow-50 flex items-center gap-2">
-                <span>Learn more</span>
-                <ArrowRight className="h-4 w-4" />
-              </Button>
+              <div className="flex justify-center">
+                <Button variant="outline" className="rounded-full text-yellow-600 border-yellow-600 hover:bg-yellow-50 flex items-center gap-2">
+                  <span>Learn more</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
         </div>
