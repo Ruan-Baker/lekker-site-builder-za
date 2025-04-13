@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import { ColorPicker } from '@/components/design/ColorPicker';
+import ColorPicker from '@/components/design/ColorPicker';
 import { Sparkles, Copy, Check, Plus, Trash2, RefreshCw, Star } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 

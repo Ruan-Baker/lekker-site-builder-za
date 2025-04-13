@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -82,7 +81,9 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
         if (data) {
           const typedSections = data.map(section => ({
             ...section,
-            complexity: section.complexity as 'simple' | 'medium' | 'complex' | null
+            complexity: section.complexity as 'simple' | 'medium' | 'complex' | null,
+            popularity: section.popularity || 0,
+            author_id: section.author_id || null
           }));
           setSections(typedSections);
         
@@ -187,7 +188,9 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (data) {
         const typedSections = data.map(section => ({
           ...section,
-          complexity: section.complexity as 'simple' | 'medium' | 'complex' | null
+          complexity: section.complexity as 'simple' | 'medium' | 'complex' | null,
+          popularity: section.popularity || 0,
+          author_id: section.author_id || null
         }));
         setSections(typedSections);
       }
@@ -251,7 +254,9 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (data) {
         const typedSections = data.map(section => ({
           ...section,
-          complexity: section.complexity as 'simple' | 'medium' | 'complex' | null
+          complexity: section.complexity as 'simple' | 'medium' | 'complex' | null,
+          popularity: section.popularity || 0,
+          author_id: section.author_id || null
         }));
         setSections(typedSections);
         

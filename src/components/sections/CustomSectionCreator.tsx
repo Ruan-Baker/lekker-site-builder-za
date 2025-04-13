@@ -35,7 +35,6 @@ const CustomSectionCreator: React.FC<CustomSectionCreatorProps> = ({
   const [complexity, setComplexity] = useState<'simple' | 'medium' | 'complex'>('medium');
   const [dialogOpen, setDialogOpen] = useState(false);
   
-  // Get the actual element to save
   const targetElement = elementId 
     ? elements.find(el => el.id === elementId) 
     : selectedElement 
@@ -91,17 +90,15 @@ const CustomSectionCreator: React.FC<CustomSectionCreatorProps> = ({
         complexity: complexity
       };
       
-      // Extract just the necessary data to make the template reusable
       const templateData = {
         type: targetElement.type,
         properties: targetElement.properties,
-        children: targetElement.children,
-        // Other fields needed for reconstruction
+        ...(targetElement.children && { children: targetElement.children }),
+        complexity: complexity
       };
       
       await saveSectionAsTemplate(templateData, metadata);
       
-      // Reset form
       setSectionName('');
       setSectionDescription('');
       setSectionCategory('custom');
@@ -109,7 +106,6 @@ const CustomSectionCreator: React.FC<CustomSectionCreatorProps> = ({
       setSectionTags([]);
       setComplexity('medium');
       
-      // Close dialog if in dialog mode
       if (isDialog) {
         setDialogOpen(false);
       }
@@ -250,7 +246,6 @@ const CustomSectionCreator: React.FC<CustomSectionCreatorProps> = ({
     </div>
   );
   
-  // If rendered as a dialog
   if (isDialog) {
     return (
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -284,7 +279,6 @@ const CustomSectionCreator: React.FC<CustomSectionCreatorProps> = ({
     );
   }
   
-  // If rendered as a card
   return (
     <Card>
       <CardHeader>

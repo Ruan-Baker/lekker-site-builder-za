@@ -12,6 +12,7 @@ export interface ColorPickerProps {
   label?: string;
   allowAlpha?: boolean;
   showInput?: boolean;
+  className?: string;
 }
 
 const PRESET_COLORS = [
@@ -26,7 +27,8 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   onChange,
   label,
   allowAlpha = false,
-  showInput = true
+  showInput = true,
+  className
 }) => {
   const [currentColor, setCurrentColor] = useState(color);
   
@@ -39,7 +41,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   };
 
   return (
-    <div className="flex flex-col space-y-1.5">
+    <div className={cn("flex flex-col space-y-1.5", className)}>
       {label && <Label>{label}</Label>}
       <Popover>
         <PopoverTrigger asChild>
@@ -118,4 +120,6 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   );
 };
 
+// Export both as default and named export
+export { ColorPicker };
 export default ColorPicker;

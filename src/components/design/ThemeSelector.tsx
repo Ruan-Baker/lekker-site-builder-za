@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useDesign } from '@/contexts/DesignContext';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Check, Sparkles, Palette, Type, Grid, Save } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { ColorPicker } from '@/components/design/ColorPicker';
+import ColorPicker from '@/components/design/ColorPicker';
 
 interface ThemeSelectorProps {
   onSelect: (theme: string) => void;
@@ -32,7 +31,6 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ onSelect, selectedTheme }
   const [generatingTheme, setGeneratingTheme] = useState<boolean>(false);
   const { toast } = useToast();
 
-  // Expanded theme options with industry-specific themes
   const themes: ThemeOption[] = [
     {
       id: 'default',
@@ -91,7 +89,6 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ onSelect, selectedTheme }
       fonts: ['Nunito', 'Open Sans'],
       description: 'Clean light theme with subtle accents'
     },
-    // Industry-specific themes
     {
       id: 'health',
       name: 'Healthcare',
@@ -125,18 +122,15 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ onSelect, selectedTheme }
       industry: 'education'
     }
   ];
-  
-  // Filter themes by industry
+
   const [industryFilter, setIndustryFilter] = useState<string>('all');
   const filteredThemes = industryFilter === 'all' 
     ? themes 
     : themes.filter(theme => theme.industry === industryFilter || !theme.industry);
 
-  // Generate random theme based on color science
   const generateRandomTheme = () => {
     setGeneratingTheme(true);
     
-    // Simulate AI theme generation
     setTimeout(() => {
       const hue = Math.floor(Math.random() * 360);
       const primaryColor = `hsl(${hue}, 80%, 50%)`;
@@ -160,8 +154,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ onSelect, selectedTheme }
       setGeneratingTheme(false);
     }, 1500);
   };
-  
-  // Save current settings as a custom theme
+
   const saveCustomTheme = () => {
     if (!designSettings) return;
     
@@ -172,8 +165,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ onSelect, selectedTheme }
     
     // In a real implementation, this would save to the database
   };
-  
-  // Typography scale factor
+
   const [typographyScale, setTypographyScale] = useState<number>(1);
   const updateTypographyScale = (value: number[]) => {
     setTypographyScale(value[0]);
