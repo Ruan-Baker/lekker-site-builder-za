@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, CreditCard, Tag, Package, Truck, BarChart3 } from 'lucide-react';
@@ -123,7 +122,7 @@ const Ecommerce = () => {
           
           <div className="text-center mt-12">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg rounded-full shadow-md">
-              Start Selling For Free
+              Start Selling Free
             </Button>
             <p className="text-gray-600 mt-3 text-sm">No credit card required. No transaction fees.</p>
           </div>

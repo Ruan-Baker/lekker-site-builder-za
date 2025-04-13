@@ -13,7 +13,7 @@ const Hero = () => {
             Create Your FREE Website with <span className="text-blue-600">Lekker Funnels</span>™
           </h1>
           <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
-            Build professional websites and sales funnels in minutes - 100% FREE forever! 
+            Build professional websites and sales funnels in minutes - 100% FREE! 
             No credit card required, no hidden fees, designed specifically for South African businesses.
           </p>
         </div>
@@ -21,7 +21,7 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
           <Link to="/builder">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-6 text-lg font-medium shadow-md">
-              Start Building FREE
+              Start Building Free
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
