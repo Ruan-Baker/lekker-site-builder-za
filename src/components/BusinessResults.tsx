@@ -34,7 +34,7 @@ const BusinessResults = () => {
                 Our webinar, case study, quiz, freebie, and VSL funnel templates get you ready-to-buy leads.
               </p>
               <div className="flex justify-center">
-                <Button variant="outline" className="rounded-full text-blue-600 border-blue-600 hover:bg-blue-50 flex items-center gap-2 px-6">
+                <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50 flex items-center gap-2">
                   <span>Learn more</span>
                   <ArrowRight className="h-4 w-4" />
                 </Button>
@@ -57,7 +57,7 @@ const BusinessResults = () => {
                 Personalize your offer and sell your product or offer directly in the funnel without further tools.
               </p>
               <div className="flex justify-center">
-                <Button variant="outline" className="rounded-full text-red-600 border-red-600 hover:bg-red-50 flex items-center gap-2 px-6">
+                <Button variant="outline" className="text-red-600 border-red-600 hover:bg-red-50 flex items-center gap-2">
                   <span>Learn more</span>
                   <ArrowRight className="h-4 w-4" />
                 </Button>
@@ -80,7 +80,7 @@ const BusinessResults = () => {
                 Our website templates help maintain customer relationships and deliver ongoing value long after the first sale.
               </p>
               <div className="flex justify-center">
-                <Button variant="outline" className="rounded-full text-yellow-600 border-yellow-600 hover:bg-yellow-50 flex items-center gap-2 px-6">
+                <Button variant="outline" className="text-yellow-600 border-yellow-600 hover:bg-yellow-50 flex items-center gap-2">
                   <span>Learn more</span>
                   <ArrowRight className="h-4 w-4" />
                 </Button>

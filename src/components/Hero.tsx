@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -23,12 +22,12 @@ const Hero = () => {
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-16">
           <Link to="/builder" className="w-full sm:w-auto">
-            <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg font-medium shadow-md">
+            <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center gap-2">
               Start Building Free
-              <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
+              <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
-          <Button variant="outline" className="w-full sm:w-auto mt-3 sm:mt-0 border-gray-300 text-gray-700 hover:bg-gray-50 rounded-full px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg font-medium">
+          <Button variant="outline" className="w-full sm:w-auto mt-3 sm:mt-0 border-gray-300 text-gray-700 hover:bg-gray-50 text-base">
             Watch Demo
           </Button>
         </div>
@@ -53,9 +52,7 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Decorative elements - hidden on small screens */}
       <div className="hidden sm:block absolute -bottom-24 -left-24 w-48 h-48 bg-blue-50 rounded-full opacity-70"></div>
-      
     </section>
   );
 };

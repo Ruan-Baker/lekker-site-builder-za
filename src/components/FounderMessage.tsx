@@ -32,7 +32,7 @@ const FounderMessage = () => {
                 <p className="text-blue-600 mb-4">Founder, Lekker Sites</p>
                 
                 <div className="flex justify-center">
-                  <Button variant="outline" size="sm" className="flex items-center gap-2 border-gray-300">
+                  <Button variant="outline" size="sm" className="flex items-center gap-2 border-gray-300 text-base">
                     <MessageSquare className="h-4 w-4" />
                     Contact Me
                   </Button>
@@ -51,26 +51,26 @@ const FounderMessage = () => {
                   Dear fellow South African entrepreneurs,
                 </p>
                 <p>
-                  I created Lekker Sites because I believe that South African businesses deserve access to world-class tools without paying exorbitant fees. Too many small businesses are priced out of having a professional online presence, especially when converting prices from dollars to rands.
+                  I created Lekker Sites with a simple mission: to provide South African businesses with world-class web tools that don't cost a fortune. As a business owner myself, I understand the challenges we face with unreliable internet, expensive software, and the lack of locally-focused solutions.
                 </p>
                 <p>
-                  Having run multiple businesses in South Africa myself, I understand the challenges we face - from unreliable internet to expensive software and the lack of locally-focused solutions. That's why I've made Lekker Sites completely free, forever.
+                  That's why I've made Lekker Sites completely free, forever. No hidden costs, no "freemium" tricks, and no surprise charges when converting from dollars to rands. Everything you see on our platform is genuinely free, and it always will be.
                 </p>
                 <p>
-                  Our mission is simple: to help every South African business succeed online without worrying about costs. In these challenging economic times, I believe we need to support each other and build tools specifically designed for our unique market.
-                </p>
-                <p>
-                  This isn't just a temporary offer or a freemium model with hidden costs. Everything you see on our platform is genuinely free, and it always will be. We want to be part of South Africa's digital transformation and economic growth.
-                </p>
-                <p className="mb-8">
-                  I invite you to join us on this journey. Build your website, create your funnels, and grow your business online - without spending a cent.
+                  In these challenging economic times, I believe we need to support each other. Build your website, create your funnels, and grow your business online - without spending a cent.
                 </p>
                 
-                <div className="pt-4">
-                  <p className="font-semibold">Warm regards,</p>
-                  <div className="mt-2">
-                    <span className="font-family-signature text-3xl text-blue-700" style={{ fontFamily: 'cursive' }}>Ruan Baker</span>
+                <div className="pt-6">
+                  <p className="font-medium">Warm regards,</p>
+                  <div className="mt-3">
+                    <img 
+                      src="/lovable-uploads/c579b62f-abb9-466a-b813-1daa0c762771.png" 
+                      alt="Ruan Baker Signature" 
+                      className="h-16 w-auto"
+                    />
                   </div>
+                  <p className="font-semibold text-blue-700">Ruan Baker</p>
+                  <p className="text-sm text-gray-500">Founder & CEO, Lekker Sites</p>
                 </div>
               </div>
             </div>

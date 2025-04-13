@@ -127,7 +127,7 @@ const Ecommerce = () => {
           </div>
           
           <div className="text-center mt-8 sm:mt-12">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg rounded-full shadow-md">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white text-base">
               Start Selling Free
             </Button>
             <p className="text-gray-600 mt-2 sm:mt-3 text-xs sm:text-sm">No credit card required. No transaction fees.</p>

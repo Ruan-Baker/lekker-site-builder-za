@@ -29,8 +29,8 @@ const FunnelBuilder = () => {
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 flex items-center justify-center bg-black/10">
-              <Button variant="outline" size="icon" className="rounded-full w-16 h-16 bg-white/80 border-none hover:bg-white hover:scale-110 transition-all duration-300">
-                <Play className="h-8 w-8 text-blue-600" fill="currentColor" />
+              <Button variant="outline" size="lg" className="rounded-full bg-white/80 border-none hover:bg-white hover:scale-110 transition-all duration-300">
+                <Play className="h-6 w-6 text-blue-600" fill="currentColor" />
               </Button>
             </div>
           </div>

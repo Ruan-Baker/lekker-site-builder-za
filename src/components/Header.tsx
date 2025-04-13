@@ -71,10 +71,10 @@ const Header = () => {
         </nav>
         
         <div className="hidden md:flex items-center space-x-3">
-          <Button variant="ghost" size="sm" className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 font-medium">
+          <Button variant="ghost" size="sm" className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 text-base">
             Login
           </Button>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 py-2 text-sm font-medium shadow-sm">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white text-base">
             Get Started Free
           </Button>
         </div>
@@ -112,8 +112,8 @@ const Header = () => {
           </nav>
           
           <div className="mt-8 flex flex-col space-y-4">
-            <Button variant="outline" className="w-full text-gray-700">Login</Button>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700 shadow-sm">Get Started Free</Button>
+            <Button variant="outline" className="w-full text-gray-700 text-base">Login</Button>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base">Get Started Free</Button>
           </div>
         </div>
       </div>

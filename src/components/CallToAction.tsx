@@ -63,9 +63,9 @@ const CallToAction = () => {
                 <p className="mt-2 text-blue-600 font-medium">No hidden charges ever!</p>
               </div>
               <Link to="/builder" className="w-full">
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-6 text-lg font-medium shadow-md">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center gap-2 justify-center">
                   Start Building Free
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="h-5 w-5" />
                 </Button>
               </Link>
               <p className="text-center text-sm text-gray-500 mt-4">No credit card required. No commitments.</p>
