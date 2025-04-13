@@ -8,7 +8,9 @@ import Templates from '@/components/Templates';
 import Testimonials from '@/components/Testimonials';
 import CallToAction from '@/components/CallToAction';
 import Footer from '@/components/Footer';
-import MobileFirst from '@/components/MobileFirst';
+import BusinessResults from '@/components/BusinessResults';
+import GrowthPlatform from '@/components/GrowthPlatform';
+import FunnelExpert from '@/components/FunnelExpert';
 
 const Index = () => {
   return (
@@ -18,9 +20,11 @@ const Index = () => {
         <Hero />
         <Features />
         <FunnelBuilder />
+        <BusinessResults />
+        <GrowthPlatform />
         <Templates />
-        <MobileFirst />
         <Testimonials />
+        <FunnelExpert />
         <CallToAction />
       </main>
       <Footer />
