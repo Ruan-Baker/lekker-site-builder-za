@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useDrop } from 'react-dnd';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -19,7 +20,7 @@ const ALIGNMENT_THRESHOLD = 10;
 const SPACING_GUIDES = [8, 16, 24, 32];
 
 const BuilderCanvas = () => {
-  const { elements, addElement, selectElement, selectedElement, updateElement } = useBuilder();
+  const { elements, addElement, selectElement, selectedElement, updateElement, executeElementAction } = useBuilder();
   const { viewportSize, getResponsiveValue } = useDesign();
   const [showGrid, setShowGrid] = useState(true);
   const [showGuides, setShowGuides] = useState(true);
@@ -243,21 +244,57 @@ const BuilderCanvas = () => {
           backgroundColor: element.properties.interactions.hover.backgroundColor,
           color: element.properties.interactions.hover.textColor,
           scale: element.properties.interactions.hover.scale || 1,
+          translateY: element.properties.interactions.hover.translateY ? `${element.properties.interactions.hover.translateY}px` : undefined,
+          rotate: element.properties.interactions.hover.rotate ? element.properties.interactions.hover.rotate : undefined,
+          boxShadow: element.properties.interactions.hover.shadow,
           transition: { duration: (element.properties.interactions.hover.transitionDuration || 200) / 1000 }
         }
       : {};
     
+    // Basic styles
+    const elementWidth = currentViewport.width || `${element.position.width}px`;
+    const elementHeight = currentViewport.height || `${element.position.height}px`;
+    
+    // Grid styles
+    const gridStyles = {};
+    if (currentViewport.grid?.enabled) {
+      const grid = currentViewport.grid;
+      gridStyles.display = 'grid';
+      gridStyles.gridTemplateColumns = `repeat(${grid.columns || 12}, 1fr)`;
+      gridStyles.gridTemplateRows = grid.rows > 1 ? `repeat(${grid.rows || 1}, 1fr)` : undefined;
+      gridStyles.gap = grid.gap ? `${grid.gap}px` : undefined;
+      gridStyles.gridAutoFlow = grid.autoFlow || 'row';
+      gridStyles.justifyItems = grid.justifyItems || 'stretch';
+      gridStyles.alignItems = grid.alignItems || 'stretch';
+      gridStyles.placeContent = grid.placeContent || undefined;
+    }
+    
+    // Combine all styles
     const styles = {
       position: 'absolute' as const,
       left: `${element.position.x}px`,
       top: `${element.position.y}px`,
-      width: currentViewport.width || `${element.position.width}px`,
-      height: currentViewport.height || `${element.position.height}px`,
+      width: elementWidth,
+      height: elementHeight,
       margin: currentViewport.margin || '',
       padding: currentViewport.padding || '',
       fontSize: currentViewport.fontSize || '',
       textAlign: currentViewport.textAlign || 'left',
-      display: currentViewport.isVisible === false ? 'none' : 'block',
+      display: currentViewport.isVisible === false ? 'none' : (currentViewport.display || 'block'),
+      flexDirection: currentViewport.flexDirection || undefined,
+      justifyContent: currentViewport.justifyContent || undefined,
+      alignItems: currentViewport.alignItems || undefined,
+      order: currentViewport.order || undefined,
+      zIndex: currentViewport.zIndex || undefined,
+      minWidth: currentViewport.minWidth || undefined,
+      maxWidth: currentViewport.maxWidth || undefined,
+      minHeight: currentViewport.minHeight || undefined,
+      maxHeight: currentViewport.maxHeight || undefined,
+      gridColumnStart: currentViewport.grid?.columnStart || undefined,
+      gridColumnEnd: currentViewport.grid?.columnEnd || undefined,
+      gridRowStart: currentViewport.grid?.rowStart || undefined,
+      gridRowEnd: currentViewport.grid?.rowEnd || undefined,
+      ...gridStyles
     };
     
     return { styles, hoverStyles };
@@ -270,6 +307,20 @@ const BuilderCanvas = () => {
       return {};
     }
     
+    const getAnimationDirection = () => {
+      if (!animations.direction) return { x: -20 };
+      
+      switch(animations.direction) {
+        case 'left': return { x: -20 };
+        case 'right': return { x: 20 };
+        case 'top': return { y: -20 };
+        case 'bottom': return { y: 20 };
+        default: return { x: -20 };
+      }
+    };
+    
+    const direction = getAnimationDirection();
+    
     switch (animations.type) {
       case 'fade':
         return {
@@ -277,16 +328,18 @@ const BuilderCanvas = () => {
           animate: { opacity: 1 },
           transition: { 
             duration: (animations.duration || 500) / 1000,
-            delay: (animations.delay || 0) / 1000
+            delay: (animations.delay || 0) / 1000,
+            repeat: animations.iterationCount === 'infinite' ? Infinity : (parseInt(animations.iterationCount) - 1) || 0
           }
         };
       case 'slide':
         return {
-          initial: { x: -20, opacity: 0 },
-          animate: { x: 0, opacity: 1 },
+          initial: { ...direction, opacity: 0 },
+          animate: { x: 0, y: 0, opacity: 1 },
           transition: { 
             duration: (animations.duration || 500) / 1000,
-            delay: (animations.delay || 0) / 1000
+            delay: (animations.delay || 0) / 1000,
+            repeat: animations.iterationCount === 'infinite' ? Infinity : (parseInt(animations.iterationCount) - 1) || 0
           }
         };
       case 'scale':
@@ -295,7 +348,8 @@ const BuilderCanvas = () => {
           animate: { scale: 1, opacity: 1 },
           transition: { 
             duration: (animations.duration || 500) / 1000,
-            delay: (animations.delay || 0) / 1000
+            delay: (animations.delay || 0) / 1000,
+            repeat: animations.iterationCount === 'infinite' ? Infinity : (parseInt(animations.iterationCount) - 1) || 0
           }
         };
       case 'bounce':
@@ -306,11 +360,51 @@ const BuilderCanvas = () => {
             type: 'spring',
             stiffness: 300,
             damping: 10,
-            delay: (animations.delay || 0) / 1000
+            delay: (animations.delay || 0) / 1000,
+            repeat: animations.iterationCount === 'infinite' ? Infinity : (parseInt(animations.iterationCount) - 1) || 0
+          }
+        };
+      case 'flip':
+        return {
+          initial: { rotateX: 90, opacity: 0 },
+          animate: { rotateX: 0, opacity: 1 },
+          transition: { 
+            duration: (animations.duration || 500) / 1000,
+            delay: (animations.delay || 0) / 1000,
+            repeat: animations.iterationCount === 'infinite' ? Infinity : (parseInt(animations.iterationCount) - 1) || 0
+          }
+        };
+      case 'rotate':
+        return {
+          initial: { rotate: -90, opacity: 0 },
+          animate: { rotate: 0, opacity: 1 },
+          transition: { 
+            duration: (animations.duration || 500) / 1000,
+            delay: (animations.delay || 0) / 1000,
+            repeat: animations.iterationCount === 'infinite' ? Infinity : (parseInt(animations.iterationCount) - 1) || 0
+          }
+        };
+      case 'zoom':
+        return {
+          initial: { scale: 1.5, opacity: 0 },
+          animate: { scale: 1, opacity: 1 },
+          transition: { 
+            duration: (animations.duration || 500) / 1000,
+            delay: (animations.delay || 0) / 1000,
+            repeat: animations.iterationCount === 'infinite' ? Infinity : (parseInt(animations.iterationCount) - 1) || 0
           }
         };
       default:
         return {};
+    }
+  };
+  
+  const handleElementClick = (elementId: string) => {
+    selectElement(elementId);
+    
+    const element = elements.find(el => el.id === elementId);
+    if (element?.properties.interactions?.onClick?.action) {
+      executeElementAction(elementId, element.properties.interactions.onClick.action);
     }
   };
   
@@ -441,7 +535,7 @@ const BuilderCanvas = () => {
                           : 'border border-gray-200 hover:border-gray-300'
                       } rounded-md bg-white`}
                       style={styles}
-                      onClick={() => selectElement(element.id)}
+                      onClick={() => handleElementClick(element.id)}
                       whileHover={hoverStyles}
                       drag
                       dragMomentum={false}

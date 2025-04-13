@@ -3,41 +3,43 @@ import React from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import { useDesign } from '@/contexts/DesignContext';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { useBuilder } from '@/contexts/BuilderContext';
-import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { EyeIcon, EyeOffIcon, Laptop, Smartphone, Tablet } from 'lucide-react';
+import { useDesign } from '@/contexts/DesignContext';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Card } from '@/components/ui/card';
+import ResponsiveGridControls from '@/components/builder/ResponsiveGridControls';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Laptop, Smartphone, Tablet, Eye, EyeOff, ArrowsPointingOutIcon, LayoutGrid } from 'lucide-react';
 
 interface ResponsiveControlsProps {
   elementId: string;
 }
 
 const ResponsiveControls: React.FC<ResponsiveControlsProps> = ({ elementId }) => {
-  const { elements, updateElement } = useBuilder();
+  const { elements, updateElement, toggleElementVisibility } = useBuilder();
   const { viewportSize } = useDesign();
   const element = elements.find(el => el.id === elementId);
   
   if (!element) return null;
-  
-  // Get responsive settings for the current viewport
+
+  // Get responsive settings for current viewport
   const responsive = element.properties.responsive || {
-    desktop: {},
-    tablet: {},
-    mobile: {}
+    desktop: {}, tablet: {}, mobile: {}
   };
   
   const currentViewport = responsive[viewportSize] || {};
+  const isVisible = currentViewport.isVisible !== false;
   
-  const updateResponsiveProperty = (property: string, value: any) => {
+  const updateResponsiveSetting = (property: string, value: any) => {
+    const updatedViewport = {
+      ...currentViewport,
+      [property]: value
+    };
+    
     const updatedResponsive = {
       ...responsive,
-      [viewportSize]: {
-        ...currentViewport,
-        [property]: value
-      }
+      [viewportSize]: updatedViewport
     };
     
     updateElement(elementId, {
@@ -48,395 +50,66 @@ const ResponsiveControls: React.FC<ResponsiveControlsProps> = ({ elementId }) =>
     });
   };
 
-  const copyFromViewport = (sourceViewport: string) => {
-    if (sourceViewport === viewportSize) return;
-
-    const sourceSettings = responsive[sourceViewport] || {};
-    
-    updateElement(elementId, {
-      properties: {
-        ...element.properties,
-        responsive: {
-          ...responsive,
-          [viewportSize]: {
-            ...sourceSettings
-          }
-        }
-      }
-    });
+  const getDeviceIcon = (device: string) => {
+    switch (device) {
+      case 'desktop':
+        return <Laptop className="h-4 w-4" />;
+      case 'tablet':
+        return <Tablet className="h-4 w-4" />;
+      case 'mobile':
+        return <Smartphone className="h-4 w-4" />;
+      default:
+        return null;
+    }
   };
-  
+
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium">
-          Responsive Settings for {viewportSize.charAt(0).toUpperCase() + viewportSize.slice(1)}
-        </h3>
-        
-        <Select 
-          value={viewportSize === 'desktop' ? 'none' : 'none'}
-          onValueChange={(value) => {
-            if (value !== 'none') {
-              copyFromViewport(value);
-            }
-          }}
-        >
-          <SelectTrigger className="w-[130px] h-8 text-xs">
-            <SelectValue placeholder="Copy from..." />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="none" disabled>Copy settings from...</SelectItem>
-            {viewportSize !== 'desktop' && <SelectItem value="desktop">Desktop</SelectItem>}
-            {viewportSize !== 'tablet' && <SelectItem value="tablet">Tablet</SelectItem>}
-            {viewportSize !== 'mobile' && <SelectItem value="mobile">Mobile</SelectItem>}
-          </SelectContent>
-        </Select>
-      </div>
-      
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <div className="p-1 rounded-md bg-gray-100">
-            {viewportSize === 'desktop' ? (
-              <Laptop className="h-4 w-4" />
-            ) : viewportSize === 'tablet' ? (
-              <Tablet className="h-4 w-4" />
-            ) : (
-              <Smartphone className="h-4 w-4" />
-            )}
-          </div>
-          <Label htmlFor="is-visible">Visible on {viewportSize}</Label>
-        </div>
-        <Switch 
-          id="is-visible" 
-          checked={currentViewport.isVisible !== false}
-          onCheckedChange={(checked) => updateResponsiveProperty('isVisible', checked)}
-        />
-      </div>
-      
-      <Separator />
-      
-      <Accordion type="multiple" className="w-full">
-        <AccordionItem value="dimensions">
-          <AccordionTrigger className="text-sm py-2">Dimensions & Position</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-4 pt-2">
-              <div className="grid grid-cols-2 gap-2">
-                <div className="space-y-2">
-                  <Label className="text-xs">Width</Label>
-                  <div className="flex items-center space-x-2">
-                    <Input 
-                      value={currentViewport.width || ''} 
-                      onChange={(e) => updateResponsiveProperty('width', e.target.value)}
-                      placeholder="Auto"
-                      className="text-xs"
-                    />
-                    <Select 
-                      value={currentViewport.widthUnit || 'px'} 
-                      onValueChange={(value) => updateResponsiveProperty('widthUnit', value)}
-                    >
-                      <SelectTrigger className="w-20 h-8 text-xs">
-                        <SelectValue placeholder="px" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="px">px</SelectItem>
-                        <SelectItem value="%">%</SelectItem>
-                        <SelectItem value="rem">rem</SelectItem>
-                        <SelectItem value="vw">vw</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label className="text-xs">Height</Label>
-                  <div className="flex items-center space-x-2">
-                    <Input 
-                      value={currentViewport.height || ''} 
-                      onChange={(e) => updateResponsiveProperty('height', e.target.value)}
-                      placeholder="Auto"
-                      className="text-xs"
-                    />
-                    <Select 
-                      value={currentViewport.heightUnit || 'px'} 
-                      onValueChange={(value) => updateResponsiveProperty('heightUnit', value)}
-                    >
-                      <SelectTrigger className="w-20 h-8 text-xs">
-                        <SelectValue placeholder="px" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="px">px</SelectItem>
-                        <SelectItem value="%">%</SelectItem>
-                        <SelectItem value="rem">rem</SelectItem>
-                        <SelectItem value="vh">vh</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
+    <ScrollArea className="h-[500px] pr-4">
+      <div className="space-y-6">
+        <Tabs defaultValue="layout" className="w-full">
+          <TabsList className="grid grid-cols-3">
+            <TabsTrigger value="layout">Layout</TabsTrigger>
+            <TabsTrigger value="sizing">Sizing</TabsTrigger>
+            <TabsTrigger value="grid">Grid</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="layout" className="space-y-4 pt-4">
+            <div className="p-4 border rounded-md bg-gray-50 mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                {getDeviceIcon(viewportSize)}
+                <h3 className="text-sm font-medium capitalize">{viewportSize} View</h3>
               </div>
               
-              <div className="grid grid-cols-2 gap-2">
-                <div className="space-y-2">
-                  <Label className="text-xs">Min Width</Label>
-                  <div className="flex items-center space-x-2">
-                    <Input 
-                      value={currentViewport.minWidth || ''} 
-                      onChange={(e) => updateResponsiveProperty('minWidth', e.target.value)}
-                      placeholder="None"
-                      className="text-xs"
-                    />
-                    <Select 
-                      value={currentViewport.minWidthUnit || 'px'} 
-                      onValueChange={(value) => updateResponsiveProperty('minWidthUnit', value)}
-                    >
-                      <SelectTrigger className="w-20 h-8 text-xs">
-                        <SelectValue placeholder="px" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="px">px</SelectItem>
-                        <SelectItem value="%">%</SelectItem>
-                        <SelectItem value="rem">rem</SelectItem>
-                        <SelectItem value="vw">vw</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label className="text-xs">Max Width</Label>
-                  <div className="flex items-center space-x-2">
-                    <Input 
-                      value={currentViewport.maxWidth || ''} 
-                      onChange={(e) => updateResponsiveProperty('maxWidth', e.target.value)}
-                      placeholder="None"
-                      className="text-xs"
-                    />
-                    <Select 
-                      value={currentViewport.maxWidthUnit || 'px'} 
-                      onValueChange={(value) => updateResponsiveProperty('maxWidthUnit', value)}
-                    >
-                      <SelectTrigger className="w-20 h-8 text-xs">
-                        <SelectValue placeholder="px" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="px">px</SelectItem>
-                        <SelectItem value="%">%</SelectItem>
-                        <SelectItem value="rem">rem</SelectItem>
-                        <SelectItem value="vw">vw</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-        
-        <AccordionItem value="spacing">
-          <AccordionTrigger className="text-sm py-2">Margin & Padding</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-4 pt-2">
-              <div className="space-y-2">
-                <Label className="text-xs">Margin</Label>
-                <div className="grid grid-cols-4 gap-1">
-                  <div>
-                    <Label className="text-xs text-gray-500">Top</Label>
-                    <Input 
-                      value={currentViewport.marginTop || ''} 
-                      onChange={(e) => updateResponsiveProperty('marginTop', e.target.value)}
-                      className="text-xs"
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs text-gray-500">Right</Label>
-                    <Input 
-                      value={currentViewport.marginRight || ''} 
-                      onChange={(e) => updateResponsiveProperty('marginRight', e.target.value)}
-                      className="text-xs"
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs text-gray-500">Bottom</Label>
-                    <Input 
-                      value={currentViewport.marginBottom || ''} 
-                      onChange={(e) => updateResponsiveProperty('marginBottom', e.target.value)}
-                      className="text-xs"
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs text-gray-500">Left</Label>
-                    <Input 
-                      value={currentViewport.marginLeft || ''} 
-                      onChange={(e) => updateResponsiveProperty('marginLeft', e.target.value)}
-                      className="text-xs"
-                      placeholder="0"
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-end">
-                  <Button variant="ghost" size="sm" className="text-xs h-7 mt-1" onClick={() => {
-                    updateResponsiveProperty('marginTop', '');
-                    updateResponsiveProperty('marginRight', '');
-                    updateResponsiveProperty('marginBottom', '');
-                    updateResponsiveProperty('marginLeft', '');
-                  }}>
-                    Reset all
-                  </Button>
-                </div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="isVisible">Visible on {viewportSize}</Label>
+                <Switch 
+                  id="isVisible" 
+                  checked={isVisible}
+                  onCheckedChange={(checked) => toggleElementVisibility(elementId, viewportSize, checked)}
+                />
               </div>
               
-              <div className="space-y-2">
-                <Label className="text-xs">Padding</Label>
-                <div className="grid grid-cols-4 gap-1">
-                  <div>
-                    <Label className="text-xs text-gray-500">Top</Label>
-                    <Input 
-                      value={currentViewport.paddingTop || ''} 
-                      onChange={(e) => updateResponsiveProperty('paddingTop', e.target.value)}
-                      className="text-xs"
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs text-gray-500">Right</Label>
-                    <Input 
-                      value={currentViewport.paddingRight || ''} 
-                      onChange={(e) => updateResponsiveProperty('paddingRight', e.target.value)}
-                      className="text-xs"
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs text-gray-500">Bottom</Label>
-                    <Input 
-                      value={currentViewport.paddingBottom || ''} 
-                      onChange={(e) => updateResponsiveProperty('paddingBottom', e.target.value)}
-                      className="text-xs"
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-xs text-gray-500">Left</Label>
-                    <Input 
-                      value={currentViewport.paddingLeft || ''} 
-                      onChange={(e) => updateResponsiveProperty('paddingLeft', e.target.value)}
-                      className="text-xs"
-                      placeholder="0"
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-end">
-                  <Button variant="ghost" size="sm" className="text-xs h-7 mt-1" onClick={() => {
-                    updateResponsiveProperty('paddingTop', '');
-                    updateResponsiveProperty('paddingRight', '');
-                    updateResponsiveProperty('paddingBottom', '');
-                    updateResponsiveProperty('paddingLeft', '');
-                  }}>
-                    Reset all
-                  </Button>
-                </div>
-              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                {isVisible 
+                  ? <span className="flex items-center gap-1"><Eye className="h-3 w-3" /> Element will be visible on {viewportSize} devices</span>
+                  : <span className="flex items-center gap-1"><EyeOff className="h-3 w-3" /> Element will be hidden on {viewportSize} devices</span>
+                }
+              </p>
             </div>
-          </AccordionContent>
-        </AccordionItem>
-        
-        <AccordionItem value="typography">
-          <AccordionTrigger className="text-sm py-2">Typography</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-4 pt-2">
-              <div className="grid grid-cols-2 gap-2">
-                <div className="space-y-2">
-                  <Label className="text-xs">Font Size</Label>
-                  <div className="flex items-center space-x-2">
-                    <Input 
-                      value={currentViewport.fontSize || ''} 
-                      onChange={(e) => updateResponsiveProperty('fontSize', e.target.value)}
-                      placeholder="16"
-                      className="text-xs"
-                    />
-                    <Select 
-                      value={currentViewport.fontSizeUnit || 'px'} 
-                      onValueChange={(value) => updateResponsiveProperty('fontSizeUnit', value)}
-                    >
-                      <SelectTrigger className="w-20 h-8 text-xs">
-                        <SelectValue placeholder="px" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="px">px</SelectItem>
-                        <SelectItem value="rem">rem</SelectItem>
-                        <SelectItem value="em">em</SelectItem>
-                        <SelectItem value="%">%</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label className="text-xs">Line Height</Label>
-                  <Input 
-                    value={currentViewport.lineHeight || ''} 
-                    onChange={(e) => updateResponsiveProperty('lineHeight', e.target.value)}
-                    placeholder="1.5"
-                    className="text-xs"
-                  />
-                </div>
-              </div>
-              
+            
+            <div className="space-y-3">
               <div className="space-y-2">
-                <Label className="text-xs">Text Alignment</Label>
-                <div className="grid grid-cols-4 gap-1">
-                  <Button
-                    variant={currentViewport.textAlign === 'left' ? 'default' : 'outline'}
-                    className="text-xs h-8"
-                    onClick={() => updateResponsiveProperty('textAlign', 'left')}
-                  >
-                    Left
-                  </Button>
-                  <Button
-                    variant={currentViewport.textAlign === 'center' ? 'default' : 'outline'}
-                    className="text-xs h-8"
-                    onClick={() => updateResponsiveProperty('textAlign', 'center')}
-                  >
-                    Center
-                  </Button>
-                  <Button
-                    variant={currentViewport.textAlign === 'right' ? 'default' : 'outline'}
-                    className="text-xs h-8"
-                    onClick={() => updateResponsiveProperty('textAlign', 'right')}
-                  >
-                    Right
-                  </Button>
-                  <Button
-                    variant={currentViewport.textAlign === 'justify' ? 'default' : 'outline'}
-                    className="text-xs h-8"
-                    onClick={() => updateResponsiveProperty('textAlign', 'justify')}
-                  >
-                    Justify
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-        
-        <AccordionItem value="display">
-          <AccordionTrigger className="text-sm py-2">Display & Visibility</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-4 pt-2">
-              <div className="space-y-2">
-                <Label className="text-xs">Display Type</Label>
+                <Label htmlFor="display">Display</Label>
                 <Select 
+                  id="display"
                   value={currentViewport.display || 'block'} 
-                  onValueChange={(value) => updateResponsiveProperty('display', value)}
+                  onValueChange={(value) => updateResponsiveSetting('display', value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select display type" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="block">Block</SelectItem>
-                    <SelectItem value="inline">Inline</SelectItem>
                     <SelectItem value="inline-block">Inline Block</SelectItem>
                     <SelectItem value="flex">Flex</SelectItem>
                     <SelectItem value="grid">Grid</SelectItem>
@@ -445,28 +118,226 @@ const ResponsiveControls: React.FC<ResponsiveControlsProps> = ({ elementId }) =>
                 </Select>
               </div>
               
-              <div className="flex items-center justify-between">
-                <Label className="text-xs" htmlFor="overflow-hidden">Hide Overflow</Label>
-                <Switch 
-                  id="overflow-hidden" 
-                  checked={currentViewport.overflowHidden === true}
-                  onCheckedChange={(checked) => updateResponsiveProperty('overflowHidden', checked)}
+              {currentViewport.display === 'flex' && (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="flexDirection">Flex Direction</Label>
+                    <Select 
+                      id="flexDirection"
+                      value={currentViewport.flexDirection || 'row'} 
+                      onValueChange={(value) => updateResponsiveSetting('flexDirection', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select direction" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="row">Row</SelectItem>
+                        <SelectItem value="row-reverse">Row Reverse</SelectItem>
+                        <SelectItem value="column">Column</SelectItem>
+                        <SelectItem value="column-reverse">Column Reverse</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="justifyContent">Justify Content</Label>
+                    <Select 
+                      id="justifyContent"
+                      value={currentViewport.justifyContent || 'flex-start'} 
+                      onValueChange={(value) => updateResponsiveSetting('justifyContent', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select alignment" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="flex-start">Start</SelectItem>
+                        <SelectItem value="center">Center</SelectItem>
+                        <SelectItem value="flex-end">End</SelectItem>
+                        <SelectItem value="space-between">Space Between</SelectItem>
+                        <SelectItem value="space-around">Space Around</SelectItem>
+                        <SelectItem value="space-evenly">Space Evenly</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="alignItems">Align Items</Label>
+                    <Select 
+                      id="alignItems"
+                      value={currentViewport.alignItems || 'stretch'} 
+                      onValueChange={(value) => updateResponsiveSetting('alignItems', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select alignment" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="flex-start">Start</SelectItem>
+                        <SelectItem value="center">Center</SelectItem>
+                        <SelectItem value="flex-end">End</SelectItem>
+                        <SelectItem value="stretch">Stretch</SelectItem>
+                        <SelectItem value="baseline">Baseline</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </>
+              )}
+              
+              <div className="space-y-2">
+                <Label htmlFor="textAlign">Text Alignment</Label>
+                <Select 
+                  id="textAlign"
+                  value={currentViewport.textAlign || 'left'} 
+                  onValueChange={(value) => updateResponsiveSetting('textAlign', value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select text alignment" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="left">Left</SelectItem>
+                    <SelectItem value="center">Center</SelectItem>
+                    <SelectItem value="right">Right</SelectItem>
+                    <SelectItem value="justify">Justify</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="sizing" className="space-y-4 pt-4">
+            <div className="space-y-3">
+              <div className="space-y-2">
+                <Label htmlFor="width">Width</Label>
+                <Input 
+                  id="width"
+                  placeholder={`${element.position.width}px`}
+                  value={currentViewport.width || ''} 
+                  onChange={(e) => updateResponsiveSetting('width', e.target.value)}
+                />
+                <p className="text-xs text-gray-500">
+                  Use px, %, vh, or rem units (e.g., 100%, 300px, 50vh)
+                </p>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="height">Height</Label>
+                <Input 
+                  id="height"
+                  placeholder={`${element.position.height}px`}
+                  value={currentViewport.height || ''} 
+                  onChange={(e) => updateResponsiveSetting('height', e.target.value)}
                 />
               </div>
               
-              <div className="flex items-center justify-between">
-                <Label className="text-xs" htmlFor="position-relative">Position Relative</Label>
-                <Switch 
-                  id="position-relative" 
-                  checked={currentViewport.positionRelative === true}
-                  onCheckedChange={(checked) => updateResponsiveProperty('positionRelative', checked)}
+              <div className="space-y-2">
+                <Label htmlFor="minWidth">Min Width</Label>
+                <Input 
+                  id="minWidth"
+                  placeholder="auto"
+                  value={currentViewport.minWidth || ''} 
+                  onChange={(e) => updateResponsiveSetting('minWidth', e.target.value)}
                 />
               </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="maxWidth">Max Width</Label>
+                <Input 
+                  id="maxWidth"
+                  placeholder="none"
+                  value={currentViewport.maxWidth || ''} 
+                  onChange={(e) => updateResponsiveSetting('maxWidth', e.target.value)}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="minHeight">Min Height</Label>
+                <Input 
+                  id="minHeight"
+                  placeholder="auto"
+                  value={currentViewport.minHeight || ''} 
+                  onChange={(e) => updateResponsiveSetting('minHeight', e.target.value)}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="maxHeight">Max Height</Label>
+                <Input 
+                  id="maxHeight"
+                  placeholder="none"
+                  value={currentViewport.maxHeight || ''} 
+                  onChange={(e) => updateResponsiveSetting('maxHeight', e.target.value)}
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label htmlFor="margin">Margin</Label>
+                  <Input 
+                    id="margin"
+                    placeholder="0px"
+                    value={currentViewport.margin || ''} 
+                    onChange={(e) => updateResponsiveSetting('margin', e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="padding">Padding</Label>
+                  <Input 
+                    id="padding"
+                    placeholder="0px"
+                    value={currentViewport.padding || ''} 
+                    onChange={(e) => updateResponsiveSetting('padding', e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </div>
+          </TabsContent>
+          
+          <TabsContent value="grid" className="pt-4">
+            <Card>
+              <ResponsiveGridControls elementId={elementId} />
+            </Card>
+          </TabsContent>
+        </Tabs>
+        
+        <div className="space-y-3 border-t pt-4">
+          <h4 className="text-sm font-medium">Additional Settings</h4>
+          
+          <div className="space-y-2">
+            <Label htmlFor="order">Order</Label>
+            <Input 
+              id="order"
+              type="number"
+              placeholder="0"
+              value={currentViewport.order || ''} 
+              onChange={(e) => updateResponsiveSetting('order', e.target.value ? parseInt(e.target.value) : '')}
+            />
+            <p className="text-xs text-gray-500">
+              Controls the order of flexible items (requires flex container)
+            </p>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="zIndex">Z-Index</Label>
+            <Input 
+              id="zIndex"
+              type="number"
+              placeholder="auto"
+              value={currentViewport.zIndex || ''} 
+              onChange={(e) => updateResponsiveSetting('zIndex', e.target.value ? parseInt(e.target.value) : '')}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="fontSize">Font Size</Label>
+            <Input 
+              id="fontSize"
+              placeholder="inherit"
+              value={currentViewport.fontSize || ''} 
+              onChange={(e) => updateResponsiveSetting('fontSize', e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+    </ScrollArea>
   );
 };
 

@@ -20,6 +20,10 @@ export interface ElementData {
   position: ElementPosition;
 }
 
+export type AnimationType = 'fade' | 'slide' | 'scale' | 'bounce' | 'flip' | 'rotate' | 'zoom';
+export type InteractionAction = 'link' | 'scroll' | 'toggle' | 'chain' | 'none';
+export type HoverEffect = 'color' | 'scale' | 'rotate' | 'shadow' | 'translateY';
+
 // Context type definition
 interface BuilderContextType {
   elements: ElementData[];
@@ -33,6 +37,9 @@ interface BuilderContextType {
   isLoading: boolean;
   setElements: (elements: ElementData[]) => void;
   duplicateElement: (id: string) => void;
+  toggleElementVisibility: (id: string, viewport: string, visible: boolean) => void;
+  getInteractiveStyles: (element: ElementData) => Record<string, any>;
+  executeElementAction: (elementId: string, action: string) => void;
 }
 
 const BuilderContext = createContext<BuilderContextType | undefined>(undefined);
@@ -43,17 +50,20 @@ export const BuilderProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user } = useAuth();
 
+  // Add a new element to the canvas
   const addElement = (element: Omit<ElementData, 'id'>) => {
     const id = `${element.type}-${Date.now()}`;
     setElements((prev) => [...prev, { ...element, id }]);
   };
 
+  // Update an existing element
   const updateElement = (id: string, data: Partial<ElementData>) => {
     setElements((prev) =>
       prev.map((el) => (el.id === id ? { ...el, ...data } : el))
     );
   };
 
+  // Delete an element
   const deleteElement = (id: string) => {
     setElements((prev) => prev.filter((el) => el.id !== id));
     if (selectedElement === id) {
@@ -61,6 +71,7 @@ export const BuilderProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
   
+  // Duplicate an element
   const duplicateElement = (id: string) => {
     const elementToDuplicate = elements.find(el => el.id === id);
     if (!elementToDuplicate) return;
@@ -84,10 +95,121 @@ export const BuilderProvider: React.FC<{ children: React.ReactNode }> = ({ child
     });
   };
 
+  // Select an element
   const selectElement = (id: string | null) => {
     setSelectedElement(id);
   };
   
+  // Toggle element visibility for specific viewport
+  const toggleElementVisibility = (id: string, viewport: string, visible: boolean) => {
+    const element = elements.find(el => el.id === id);
+    if (!element) return;
+    
+    updateElement(id, {
+      properties: {
+        ...element.properties,
+        responsive: {
+          ...(element.properties.responsive || {}),
+          [viewport]: {
+            ...(element.properties.responsive?.[viewport] || {}),
+            isVisible: visible
+          }
+        }
+      }
+    });
+  };
+  
+  // Get computed interactive styles for an element
+  const getInteractiveStyles = (element: ElementData) => {
+    const interactions = element.properties.interactions || {};
+    const styles: Record<string, any> = {};
+    
+    // Process hover effects
+    if (interactions.hover?.enabled) {
+      styles.hover = {
+        backgroundColor: interactions.hover.backgroundColor || undefined,
+        color: interactions.hover.textColor || undefined,
+        transform: interactions.hover.scale ? `scale(${interactions.hover.scale})` : undefined,
+        boxShadow: interactions.hover.shadow || undefined,
+        transition: `all ${(interactions.hover.transitionDuration || 200) / 1000}s`
+      };
+    }
+    
+    // Process animation effects
+    if (interactions.animations?.enabled) {
+      styles.animation = {
+        type: interactions.animations.type || 'fade',
+        duration: interactions.animations.duration || 500,
+        delay: interactions.animations.delay || 0,
+        iterationCount: interactions.animations.iterationCount || 1,
+        direction: interactions.animations.direction || 'normal'
+      };
+    }
+    
+    return styles;
+  };
+  
+  // Execute an action for an element
+  const executeElementAction = (elementId: string, action: string) => {
+    const element = elements.find(el => el.id === elementId);
+    if (!element) return;
+    
+    const interactions = element.properties.interactions || {};
+    
+    if (!interactions.onClick || interactions.onClick.action !== action) return;
+    
+    switch (action) {
+      case 'link':
+        if (interactions.onClick.url) {
+          const openInNewTab = interactions.onClick.newTab;
+          if (openInNewTab) {
+            window.open(interactions.onClick.url, '_blank');
+          } else {
+            window.location.href = interactions.onClick.url;
+          }
+        }
+        break;
+        
+      case 'scroll':
+        if (interactions.onClick.targetId) {
+          const targetElement = document.getElementById(interactions.onClick.targetId);
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+        break;
+        
+      case 'toggle':
+        if (interactions.onClick.targetElementId) {
+          const targetElement = elements.find(el => el.id === interactions.onClick.targetElementId);
+          if (targetElement) {
+            const isVisible = 
+              targetElement.properties.responsive?.[interactions.onClick.targetViewport || 'desktop']?.isVisible !== false;
+            
+            toggleElementVisibility(
+              interactions.onClick.targetElementId, 
+              interactions.onClick.targetViewport || 'desktop', 
+              !isVisible
+            );
+          }
+        }
+        break;
+        
+      case 'chain':
+        if (interactions.onClick.chainedActions && Array.isArray(interactions.onClick.chainedActions)) {
+          interactions.onClick.chainedActions.forEach(chainedAction => {
+            if (chainedAction.action && chainedAction.targetElementId) {
+              setTimeout(() => {
+                executeElementAction(chainedAction.targetElementId, chainedAction.action);
+              }, chainedAction.delay || 0);
+            }
+          });
+        }
+        break;
+    }
+  };
+  
+  // Save elements to the database
   const saveElements = async (pageId: string) => {
     if (!user || !pageId) return;
     
@@ -139,6 +261,7 @@ export const BuilderProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
   
+  // Load elements from the database
   const loadElements = async (pageId: string) => {
     if (!user || !pageId) return;
     
@@ -190,7 +313,10 @@ export const BuilderProvider: React.FC<{ children: React.ReactNode }> = ({ child
         loadElements,
         isLoading,
         setElements,
-        duplicateElement
+        duplicateElement,
+        toggleElementVisibility,
+        getInteractiveStyles,
+        executeElementAction
       }}
     >
       {children}
