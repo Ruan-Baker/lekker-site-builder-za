@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const SeoStructuredData = () => {
   const websiteSchema = {
@@ -79,6 +79,9 @@ const SeoStructuredData = () => {
 
   return (
     <Helmet>
+      <meta name="description" content="Create professional websites in minutes with South Africa's best free website builder and funnel creator. No credit card, no hidden fees - designed for SA businesses." />
+      <meta name="keywords" content="website builder South Africa, free website builder, South African website creator, ecommerce website builder SA, sales funnel builder South Africa" />
+      
       <script type="application/ld+json">
         {JSON.stringify(websiteSchema)}
       </script>
