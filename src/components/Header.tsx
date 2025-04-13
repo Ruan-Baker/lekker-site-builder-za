@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,12 +73,16 @@ const Header = () => {
         </nav>
         
         <div className="hidden md:flex items-center space-x-3">
-          <Button variant="ghost" size="sm" className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 text-base">
-            Login
-          </Button>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white text-base">
-            Get Started Free
-          </Button>
+          <Link to="/auth">
+            <Button variant="ghost" size="sm" className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 text-base">
+              Login
+            </Button>
+          </Link>
+          <Link to="/auth">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white text-base">
+              Get Started Free
+            </Button>
+          </Link>
         </div>
         
         {/* Mobile Menu Button */}
@@ -112,8 +118,12 @@ const Header = () => {
           </nav>
           
           <div className="mt-8 flex flex-col space-y-4">
-            <Button variant="outline" className="w-full text-gray-700 text-base">Login</Button>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base">Get Started Free</Button>
+            <Link to="/auth" onClick={closeMenu}>
+              <Button variant="outline" className="w-full text-gray-700 text-base">Login</Button>
+            </Link>
+            <Link to="/auth" onClick={closeMenu}>
+              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base">Get Started Free</Button>
+            </Link>
           </div>
         </div>
       </div>

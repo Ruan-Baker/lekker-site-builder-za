@@ -6,7 +6,6 @@ import Features from '../components/Features';
 import GrowthPlatform from '../components/GrowthPlatform';
 import Ecommerce from '../components/Ecommerce';
 import Templates from '../components/Templates';
-import SignUpForm from '../components/SignUpForm';
 import FunnelBuilder from '../components/FunnelBuilder';
 import FunnelExpert from '../components/FunnelExpert';
 import Testimonials from '../components/Testimonials';
@@ -33,20 +32,12 @@ const Index = () => {
             <Button size="sm" variant="default">Go to Builder</Button>
           </Link>
         </div>
-      ) : (
-        <div className="bg-blue-50 py-2 text-center">
-          <span className="mr-2">Already have an account?</span>
-          <Link to="/auth">
-            <Button size="sm" variant="outline">Sign In</Button>
-          </Link>
-        </div>
-      )}
+      ) : null}
       <Hero />
       <Features />
       <GrowthPlatform />
       <Ecommerce />
       <Templates />
-      <SignUpForm />
       <FunnelBuilder />
       <FunnelExpert />
       <Testimonials />
