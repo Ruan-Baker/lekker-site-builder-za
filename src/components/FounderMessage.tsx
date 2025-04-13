@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { HandHeart } from 'lucide-react';
 
@@ -45,7 +46,7 @@ const FounderMessage = () => {
                   I created Lekker Sites with a simple mission: to provide South African businesses with world-class web tools that don't cost a fortune. As a business owner myself, I understand the challenges we face with unreliable internet, expensive software, and the lack of locally-focused solutions.
                 </p>
                 <p>
-                  That's why I've made Lekker Sites completely free. No hidden costs, no "freemium" tricks, and no surprise charges when converting from dollars to rands. Everything you see on our platform is genuinely free.
+                  That's why I've made Lekker Sites completely free to help as many South African businesses as possible. Everything you see on our platform is genuinely free.
                 </p>
                 
                 <div className="pt-6">

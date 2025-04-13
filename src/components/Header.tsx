@@ -51,12 +51,12 @@ const Header = () => {
     setMobileMenuOpen(false);
   };
 
-  const handleAuthAction = () => {
-    if (user) {
-      navigate('/builder');
-    } else {
-      navigate('/auth');
-    }
+  const handleGetStarted = () => {
+    navigate('/auth', { state: { defaultTab: 'register' } });
+  };
+
+  const handleLogin = () => {
+    navigate('/auth', { state: { defaultTab: 'login' } });
   };
 
   return (
@@ -95,13 +95,13 @@ const Header = () => {
                 variant="ghost" 
                 size="sm" 
                 className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 text-base"
-                onClick={() => navigate('/auth')}
+                onClick={handleLogin}
               >
                 Login
               </Button>
               <Button 
                 className="bg-blue-600 hover:bg-blue-700 text-white text-base"
-                onClick={() => navigate('/auth')}
+                onClick={handleGetStarted}
               >
                 Get Started Free
               </Button>
@@ -158,7 +158,7 @@ const Header = () => {
                   variant="outline" 
                   className="w-full text-gray-700 text-base"
                   onClick={() => {
-                    navigate('/auth');
+                    navigate('/auth', { state: { defaultTab: 'login' } });
                     closeMenu();
                   }}
                 >
@@ -167,7 +167,7 @@ const Header = () => {
                 <Button 
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base"
                   onClick={() => {
-                    navigate('/auth');
+                    navigate('/auth', { state: { defaultTab: 'register' } });
                     closeMenu();
                   }}
                 >
