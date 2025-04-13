@@ -5,6 +5,7 @@ import Hero from '@/components/Hero';
 import Features from '@/components/Features';
 import BuilderPreview from '@/components/BuilderPreview';
 import Templates from '@/components/Templates';
+import FunnelBuilder from '@/components/FunnelBuilder';
 import Testimonials from '@/components/Testimonials';
 import SignUpForm from '@/components/SignUpForm';
 import CallToAction from '@/components/CallToAction';
@@ -38,12 +39,13 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-perspective-white">
       <Header />
-      <main>
+      <main className="pt-24">
         <Hero />
         <Features />
         <BuilderPreview />
+        <FunnelBuilder />
         <Templates />
         <MobileFirst />
         <Testimonials />
