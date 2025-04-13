@@ -111,7 +111,7 @@ const SignupStepOne: React.FC<SignupStepOneProps> = ({ formData, updateFormData,
       </div>
       
       <div>
-        <Button type="submit" className="btn-gradient w-full h-12">
+        <Button type="submit" variant="rainbow" className="w-full h-12">
           Continue
         </Button>
       </div>

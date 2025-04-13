@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -164,6 +165,11 @@ export default {
 					'50%': { backgroundPosition: '100% 50%' },
 					'100%': { backgroundPosition: '0% 50%' }
 				},
+				'rainbow': {
+					'0%': { backgroundPosition: '0% 50%' },
+					'50%': { backgroundPosition: '100% 50%' },
+					'100%': { backgroundPosition: '0% 50%' }
+				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -184,6 +190,7 @@ export default {
 				'pulse-medium': 'pulse-medium 2s ease-in-out infinite',
 				'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
 				'gradient-flow': 'gradient-flow 6s ease infinite',
+				'rainbow': 'rainbow 6s linear infinite',
 			},
 			fontFamily: {
 				sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -202,7 +209,7 @@ export default {
 				'gradient-blue-green': 'linear-gradient(90deg, #4895EF, #72EFDD)',
 				'gradient-purple-pink': 'linear-gradient(90deg, #6C5CE7, #FF48C4)',
 				'gradient-rainbow': 'linear-gradient(90deg, #6C5CE7, #4895EF, #72EFDD, #FF48C4)',
-        'perspective-gradient': 'linear-gradient(90deg, #9b87f5, #7E69AB)',
+				'perspective-gradient': 'linear-gradient(90deg, #9b87f5, #7E69AB)',
 			}
 		}
 	},

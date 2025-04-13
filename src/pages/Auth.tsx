@@ -115,8 +115,8 @@ const Auth = () => {
           </Link>
         </div>
         
-        <Card className="w-full shadow-soft border-gray-200 overflow-hidden bg-white">
-          <CardHeader className="bg-gradient-purple-blue text-white">
+        <Card className="w-full shadow-soft border border-gray-200 rounded-xl overflow-hidden bg-white">
+          <CardHeader className="bg-gradient-purple-blue text-white rounded-t-xl">
             <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
             <CardDescription className="text-white/90">
               Sign in to your account to continue
@@ -124,7 +124,7 @@ const Auth = () => {
           </CardHeader>
           <CardContent className="pt-6">
             {errorMessage && (
-              <Alert variant="destructive" className="mb-6">
+              <Alert variant="destructive" className="mb-6 rounded-lg">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>{errorMessage}</AlertDescription>
                 <Button 
@@ -184,7 +184,7 @@ const Auth = () => {
                   </Button>
                 </div>
               </div>
-              <Button type="submit" className="w-full btn-gradient h-12" disabled={loading}>
+              <Button type="submit" variant="rainbow" className="w-full h-12" disabled={loading}>
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
