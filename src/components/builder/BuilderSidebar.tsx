@@ -1,9 +1,7 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, LayoutGrid, Type, Image, Box } from 'lucide-react';
-import { Button as ButtonIcon } from 'lucide-react';
+import { ChevronDown, LayoutGrid, Type, Image, Box, CircleButtonIcon } from 'lucide-react';
 import ElementItem from './ElementItem';
 
 const BuilderSidebar = () => {
@@ -21,7 +19,7 @@ const BuilderSidebar = () => {
     { id: 'heading', name: 'Heading', icon: Type },
     { id: 'paragraph', name: 'Paragraph', icon: Type },
     { id: 'image', name: 'Image', icon: Image },
-    { id: 'button', name: 'Button', icon: ButtonIcon },
+    { id: 'button', name: 'Button', icon: CircleButtonIcon },
     { id: 'container', name: 'Container', icon: LayoutGrid },
   ];
 
