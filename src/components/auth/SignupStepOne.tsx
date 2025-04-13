@@ -54,14 +54,14 @@ const SignupStepOne: React.FC<SignupStepOneProps> = ({ formData, updateFormData,
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="name" className="text-sm font-medium">
+        <Label htmlFor="name" className="text-sm font-medium text-gray-700">
           Full Name <span className="text-red-500">*</span>
         </Label>
         <Input 
           id="name" 
           type="text" 
           placeholder="Your name" 
-          className="h-12 rounded-lg border-perspective-light-gray focus:border-perspective-purple focus:ring-perspective-purple"
+          className="h-12 rounded-lg bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
           value={formData.name}
           onChange={(e) => updateFormData({ name: e.target.value })}
           required
@@ -69,14 +69,14 @@ const SignupStepOne: React.FC<SignupStepOneProps> = ({ formData, updateFormData,
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="email" className="text-sm font-medium">
+        <Label htmlFor="email" className="text-sm font-medium text-gray-700">
           Email Address <span className="text-red-500">*</span>
         </Label>
         <Input 
           id="email" 
           type="email" 
           placeholder="you@example.com" 
-          className="h-12 rounded-lg border-perspective-light-gray focus:border-perspective-purple focus:ring-perspective-purple"
+          className="h-12 rounded-lg bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
           value={formData.email}
           onChange={(e) => updateFormData({ email: e.target.value })}
           required
@@ -84,7 +84,7 @@ const SignupStepOne: React.FC<SignupStepOneProps> = ({ formData, updateFormData,
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="password" className="text-sm font-medium">
+        <Label htmlFor="password" className="text-sm font-medium text-gray-700">
           Password <span className="text-red-500">*</span>
         </Label>
         <div className="relative">
@@ -92,7 +92,7 @@ const SignupStepOne: React.FC<SignupStepOneProps> = ({ formData, updateFormData,
             id="password" 
             type={showPassword ? "text" : "password"}
             placeholder="Create a password" 
-            className="h-12 pr-10 rounded-lg border-perspective-light-gray focus:border-perspective-purple focus:ring-perspective-purple"
+            className="h-12 pr-10 rounded-lg bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
             value={formData.password}
             onChange={(e) => updateFormData({ password: e.target.value })}
             required
@@ -107,7 +107,7 @@ const SignupStepOne: React.FC<SignupStepOneProps> = ({ formData, updateFormData,
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </Button>
         </div>
-        <p className="text-xs text-muted-foreground">Password must be at least 6 characters long</p>
+        <p className="text-xs text-gray-500">Password must be at least 6 characters long</p>
       </div>
       
       <div>

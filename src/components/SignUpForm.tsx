@@ -30,7 +30,7 @@ const SignUpForm = () => {
         </div>
         
         <div className="w-full lg:w-1/2">
-          <Card className="shadow-soft border-perspective-light-gray/30 overflow-hidden bg-white">
+          <Card className="shadow-soft border-gray-200 overflow-hidden bg-white">
             <CardHeader className="bg-gradient-purple-blue text-white pb-6">
               <CardTitle className="text-2xl">Free Starter Plan</CardTitle>
               <CardDescription className="text-white/90 text-lg">Perfect for small businesses and entrepreneurs</CardDescription>
@@ -74,7 +74,7 @@ const SignUpForm = () => {
                 </li>
               </ul>
             </CardContent>
-            <CardFooter className="border-t border-perspective-light-gray/30 pt-6 flex flex-col items-start">
+            <CardFooter className="border-t border-gray-200 pt-6 flex flex-col items-start">
               <h4 className="font-medium mb-2">Simple 4-step setup:</h4>
               <div className="space-y-3 w-full">
                 <div className="flex items-center">

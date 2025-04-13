@@ -9,6 +9,7 @@ import SignupStepOne from '@/components/auth/SignupStepOne';
 import SignupStepTwo from '@/components/auth/SignupStepTwo';
 import SignupStepThree from '@/components/auth/SignupStepThree';
 import SignupSuccess from '@/components/auth/SignupSuccess';
+import { ArrowLeft } from 'lucide-react';
 
 export type SignupFormData = {
   name: string;
@@ -102,6 +103,13 @@ const Signup = () => {
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-perspective-light-gray to-white">
       <div className="w-full max-w-4xl">
+        <div className="flex justify-between items-center mb-4">
+          <Link to="/" className="flex items-center text-perspective-gray hover:text-perspective-purple transition">
+            <ArrowLeft size={18} className="mr-2" />
+            Back to Home
+          </Link>
+        </div>
+
         <div className="mb-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-2">
             <span className="gradient-text">Create Your Account</span>
@@ -127,7 +135,7 @@ const Signup = () => {
           </div>
         </div>
         
-        <Card className="shadow-soft border-perspective-light-gray/30 overflow-hidden bg-white">
+        <Card className="shadow-soft border-gray-200 overflow-hidden bg-white">
           <CardHeader className="bg-gradient-purple-blue text-white">
             <CardTitle className="text-2xl">
               {currentStep === 1 && "Create Your Account"}

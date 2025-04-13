@@ -52,11 +52,7 @@ const Header = () => {
   };
 
   const handleGetStarted = () => {
-    navigate('/auth', { state: { defaultTab: 'register' } });
-  };
-
-  const handleLogin = () => {
-    navigate('/auth', { state: { defaultTab: 'login' } });
+    navigate('/signup');
   };
 
   return (
@@ -91,20 +87,22 @@ const Header = () => {
             </Button>
           ) : (
             <>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 text-base"
-                onClick={handleLogin}
-              >
-                Login
-              </Button>
-              <Button 
-                className="bg-blue-600 hover:bg-blue-700 text-white text-base"
-                onClick={handleGetStarted}
-              >
-                Get Started Free
-              </Button>
+              <Link to="/auth">
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 text-base"
+                >
+                  Login
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button 
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-base"
+                >
+                  Get Started Free
+                </Button>
+              </Link>
             </>
           )}
         </div>
@@ -154,25 +152,21 @@ const Header = () => {
               </Button>
             ) : (
               <>
-                <Button 
-                  variant="outline" 
-                  className="w-full text-gray-700 text-base"
-                  onClick={() => {
-                    navigate('/auth', { state: { defaultTab: 'login' } });
-                    closeMenu();
-                  }}
-                >
-                  Login
-                </Button>
-                <Button 
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base"
-                  onClick={() => {
-                    navigate('/auth', { state: { defaultTab: 'register' } });
-                    closeMenu();
-                  }}
-                >
-                  Get Started Free
-                </Button>
+                <Link to="/auth" onClick={closeMenu}>
+                  <Button 
+                    variant="outline" 
+                    className="w-full text-gray-700 text-base"
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup" onClick={closeMenu}>
+                  <Button 
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base"
+                  >
+                    Get Started Free
+                  </Button>
+                </Link>
               </>
             )}
           </div>
