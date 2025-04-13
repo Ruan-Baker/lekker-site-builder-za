@@ -5,40 +5,48 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { Eye, EyeOff, Github, Twitter, Mail } from 'lucide-react';
+import { Eye, EyeOff, Github, Twitter, Mail, AlertTriangle, Loader2, Facebook, Linkedin, Google } from 'lucide-react';
 import PasswordReset from '@/components/auth/PasswordReset';
+import UserProfile from '@/components/auth/UserProfile';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPasswordReset, setShowPasswordReset] = useState(false);
-  const { user } = useAuth();
+  const { user, signIn, signUp, signInWithProvider, errorMessage, clearErrorMessage } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   
   useEffect(() => {
-    if (user) {
+    // If user is logged in and not on the profile page, redirect to home
+    if (user && location.pathname !== '/profile') {
       navigate('/');
     }
-  }, [user, navigate]);
+  }, [user, navigate, location.pathname]);
   
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    clearErrorMessage();
     
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { error } = await signIn(email, password);
       
       if (error) {
-        throw error;
+        toast({
+          title: 'Login Failed',
+          description: error.message || 'There was an error logging in',
+          variant: 'destructive',
+        });
+        return;
       }
       
       toast({
@@ -47,7 +55,7 @@ const Auth = () => {
       });
       
       navigate('/');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error during login:', error);
       toast({
         title: 'Login Failed',
@@ -62,25 +70,35 @@ const Auth = () => {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    clearErrorMessage();
+    
+    if (password.length < 6) {
+      toast({
+        title: 'Password Too Short',
+        description: 'Password must be at least 6 characters long',
+        variant: 'destructive',
+      });
+      setLoading(false);
+      return;
+    }
     
     try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
+      const { error } = await signUp(email, password, name || undefined);
       
       if (error) {
-        throw error;
+        toast({
+          title: 'Sign Up Failed',
+          description: error.message || 'There was an error creating your account',
+          variant: 'destructive',
+        });
+        return;
       }
       
       toast({
         title: 'Sign Up Successful',
         description: 'Please check your email to confirm your account',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error during signup:', error);
       toast({
         title: 'Sign Up Failed',
@@ -92,19 +110,18 @@ const Auth = () => {
     }
   };
   
-  const handleSocialLogin = async (provider: 'github' | 'twitter') => {
+  const handleSocialLogin = async (provider: 'github' | 'twitter' | 'google' | 'facebook' | 'linkedin_oidc') => {
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider,
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
+      const { error } = await signInWithProvider(provider);
       
       if (error) {
-        throw error;
+        toast({
+          title: 'Login Failed',
+          description: error.message || `There was an error logging in with ${provider}`,
+          variant: 'destructive',
+        });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error during ${provider} login:`, error);
       toast({
         title: 'Login Failed',
@@ -118,6 +135,10 @@ const Auth = () => {
     return <PasswordReset onBack={() => setShowPasswordReset(false)} />;
   }
   
+  if (user && location.pathname === '/profile') {
+    return <UserProfile />;
+  }
+  
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-100">
       <Card className="w-full max-w-md">
@@ -128,6 +149,21 @@ const Auth = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {errorMessage && (
+            <Alert variant="destructive" className="mb-6">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{errorMessage}</AlertDescription>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="ml-auto h-6 px-2" 
+                onClick={clearErrorMessage}
+              >
+                Dismiss
+              </Button>
+            </Alert>
+          )}
+          
           <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="login">Login</TabsTrigger>
@@ -180,13 +216,29 @@ const Auth = () => {
                   </div>
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? 'Logging in...' : 'Login'}
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Logging in...
+                    </>
+                  ) : 'Login'}
                 </Button>
               </form>
             </TabsContent>
             
             <TabsContent value="signup">
               <form onSubmit={handleSignup} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name">Full Name</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="John Doe"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                  />
+                  <p className="text-xs text-muted-foreground">Optional</p>
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-email">Email</Label>
                   <Input
@@ -219,9 +271,15 @@ const Auth = () => {
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </Button>
                   </div>
+                  <p className="text-xs text-muted-foreground">Password must be at least 6 characters long</p>
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? 'Signing up...' : 'Sign Up'}
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Signing up...
+                    </>
+                  ) : 'Sign Up'}
                 </Button>
               </form>
             </TabsContent>
@@ -238,25 +296,66 @@ const Auth = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-3 mb-3">
             <Button
               type="button"
               variant="outline"
               onClick={() => handleSocialLogin('github')}
-              className="flex items-center gap-2"
+              className="flex items-center justify-center"
+              size="sm"
             >
               <Github className="h-4 w-4" />
-              GitHub
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => handleSocialLogin('google')}
+              className="flex items-center justify-center"
+              size="sm"
+            >
+              <Google className="h-4 w-4" />
             </Button>
             <Button
               type="button"
               variant="outline"
               onClick={() => handleSocialLogin('twitter')}
-              className="flex items-center gap-2"
+              className="flex items-center justify-center"
+              size="sm"
             >
               <Twitter className="h-4 w-4" />
-              Twitter
             </Button>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => handleSocialLogin('facebook')}
+              className="flex items-center justify-center gap-2"
+              size="sm"
+            >
+              <Facebook className="h-4 w-4" />
+              Facebook
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => handleSocialLogin('linkedin_oidc')}
+              className="flex items-center justify-center gap-2"
+              size="sm"
+            >
+              <Linkedin className="h-4 w-4" />
+              LinkedIn
+            </Button>
+          </div>
+          
+          <div className="mt-6 bg-amber-50 border border-amber-200 rounded-md p-3">
+            <div className="flex gap-2">
+              <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0" />
+              <p className="text-sm text-amber-800">
+                To use social login, you'll need to configure these providers in your Supabase project settings.
+              </p>
+            </div>
           </div>
         </CardContent>
         <CardFooter className="flex justify-center text-sm text-muted-foreground">

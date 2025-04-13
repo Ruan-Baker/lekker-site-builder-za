@@ -15,7 +15,8 @@ import {
   Video,
   LucideIcon,
   Palette,
-  Boxes
+  Boxes,
+  User
 } from 'lucide-react';
 import ElementItem from './ElementItem';
 import { useAuth } from '@/contexts/AuthContext';
@@ -24,6 +25,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useBuilder } from '@/contexts/BuilderContext';
 import SectionTemplates from '../sections/SectionTemplates';
 import DesignPanel from './DesignPanel';
+import { useNavigate } from 'react-router-dom';
 
 // Define the section type
 interface Section {
@@ -40,8 +42,9 @@ interface SidebarElement {
 }
 
 const BuilderSidebar = () => {
-  const { user, signOut } = useAuth();
+  const { user, profile, signOut } = useAuth();
   const { elements } = useBuilder();
+  const navigate = useNavigate();
   
   const sections: Section[] = [
     { id: 'headers', name: 'Headers', count: 5 },
@@ -69,19 +72,28 @@ const BuilderSidebar = () => {
       <div className="p-4 border-b border-gray-200 flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <Avatar>
-            <AvatarImage src={user?.user_metadata?.avatar_url} />
-            <AvatarFallback>{user?.email?.[0]?.toUpperCase()}</AvatarFallback>
+            <AvatarImage src={profile?.avatar_url || user?.user_metadata?.avatar_url} />
+            <AvatarFallback>{profile?.display_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase()}</AvatarFallback>
           </Avatar>
           <div className="space-y-0.5">
             <div className="text-sm font-medium">
-              {user?.user_metadata?.display_name || user?.email?.split('@')[0]}
+              {profile?.display_name || user?.user_metadata?.display_name || user?.email?.split('@')[0]}
             </div>
             <div className="text-xs text-gray-500">{elements.length} elements</div>
           </div>
         </div>
-        <Button variant="ghost" size="sm" onClick={signOut}>
-          Sign out
-        </Button>
+        <div className="flex gap-1">
+          <Button variant="ghost" size="icon" onClick={() => navigate('/profile')} title="Profile settings">
+            <User size={16} />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={signOut} title="Sign out">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </Button>
+        </div>
       </div>
       
       <Tabs defaultValue="sections" className="flex-1 flex flex-col">
