@@ -12,14 +12,14 @@ const Hero = () => {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-gray-900">
             Double Your Business with <span className="text-blue-600">Lekker Funnels</span>™
           </h1>
-          <p className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
             Create professional websites and sales funnels in minutes with our intuitive drag-and-drop builder, designed specifically for South African businesses.
           </p>
         </div>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
           <Link to="/builder">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-6 text-lg font-medium">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-6 text-lg font-medium shadow-md">
               Start Building Free
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
@@ -40,15 +40,15 @@ const Hero = () => {
           
           <div className="bg-white p-0">
             <img 
-              src="/lovable-uploads/c579b62f-abb9-466a-b813-1daa0c762771.png" 
+              src="/lovable-uploads/976d4e3c-4063-4a3c-925c-b10a08ae8e05.png" 
               alt="Lekker Sites Builder Interface" 
               className="w-full object-cover" 
             />
           </div>
         </div>
         
-        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 mt-16 text-center text-sm text-gray-500">
-          <span>TRUSTED BY</span>
+        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 mt-16 text-center">
+          <span className="text-gray-500 font-medium">TRUSTED BY</span>
           <span className="font-semibold text-lg text-gray-700">Woolworths</span>
           <span className="font-semibold text-lg text-gray-700">Checkers</span>
           <span className="font-semibold text-lg text-gray-700">Pick n Pay</span>
