@@ -96,7 +96,7 @@ const SignupStepTwo: React.FC<SignupStepTwoProps> = ({
           id="businessName" 
           type="text" 
           placeholder="Your business name" 
-          className="h-12 rounded-lg border-perspective-light-gray focus:border-perspective-purple focus:ring-perspective-purple"
+          className="h-12 rounded-xl border-perspective-light-gray focus:border-perspective-purple focus:ring-perspective-purple"
           value={formData.businessName}
           onChange={(e) => updateFormData({ businessName: e.target.value })}
           required
@@ -111,7 +111,7 @@ const SignupStepTwo: React.FC<SignupStepTwoProps> = ({
           value={formData.industry} 
           onValueChange={(value) => updateFormData({ industry: value })}
         >
-          <SelectTrigger id="industry" className="h-12">
+          <SelectTrigger id="industry" className="h-12 rounded-xl">
             <SelectValue placeholder="Select your industry" />
           </SelectTrigger>
           <SelectContent>
@@ -132,7 +132,7 @@ const SignupStepTwo: React.FC<SignupStepTwoProps> = ({
           value={formData.businessSize} 
           onValueChange={(value) => updateFormData({ businessSize: value })}
         >
-          <SelectTrigger id="businessSize" className="h-12">
+          <SelectTrigger id="businessSize" className="h-12 rounded-xl">
             <SelectValue placeholder="Select business size" />
           </SelectTrigger>
           <SelectContent>
@@ -170,12 +170,12 @@ const SignupStepTwo: React.FC<SignupStepTwoProps> = ({
         <Button 
           type="button" 
           variant="outline" 
-          className="flex-1 h-12 border-perspective-purple text-perspective-purple hover:bg-perspective-purple/10"
+          className="flex-1 h-12 rounded-xl border-perspective-purple text-perspective-purple hover:bg-perspective-purple/10"
           onClick={onBack}
         >
           Back
         </Button>
-        <Button type="submit" className="flex-1 btn-gradient h-12">
+        <Button type="submit" className="flex-1 btn-gradient h-12 rounded-xl">
           Continue
         </Button>
       </div>
@@ -184,3 +184,4 @@ const SignupStepTwo: React.FC<SignupStepTwoProps> = ({
 };
 
 export default SignupStepTwo;
+

@@ -61,7 +61,7 @@ const SignupStepOne: React.FC<SignupStepOneProps> = ({ formData, updateFormData,
           id="name" 
           type="text" 
           placeholder="Your name" 
-          className="h-12 rounded-lg bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
+          className="h-12 rounded-xl bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
           value={formData.name}
           onChange={(e) => updateFormData({ name: e.target.value })}
           required
@@ -76,7 +76,7 @@ const SignupStepOne: React.FC<SignupStepOneProps> = ({ formData, updateFormData,
           id="email" 
           type="email" 
           placeholder="you@example.com" 
-          className="h-12 rounded-lg bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
+          className="h-12 rounded-xl bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
           value={formData.email}
           onChange={(e) => updateFormData({ email: e.target.value })}
           required
@@ -92,7 +92,7 @@ const SignupStepOne: React.FC<SignupStepOneProps> = ({ formData, updateFormData,
             id="password" 
             type={showPassword ? "text" : "password"}
             placeholder="Create a password" 
-            className="h-12 pr-10 rounded-lg bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
+            className="h-12 pr-10 rounded-xl bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
             value={formData.password}
             onChange={(e) => updateFormData({ password: e.target.value })}
             required
@@ -111,7 +111,7 @@ const SignupStepOne: React.FC<SignupStepOneProps> = ({ formData, updateFormData,
       </div>
       
       <div>
-        <Button type="submit" className="btn-gradient w-full h-12">
+        <Button type="submit" className="btn-gradient w-full h-12 rounded-xl">
           Continue
         </Button>
       </div>
@@ -120,3 +120,4 @@ const SignupStepOne: React.FC<SignupStepOneProps> = ({ formData, updateFormData,
 };
 
 export default SignupStepOne;
+

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -62,40 +63,6 @@ const Auth = () => {
     }
   };
 
-  const handleTestLogin = async () => {
-    setEmail('test@example.com');
-    setPassword('password123');
-    
-    try {
-      setLoading(true);
-      const { error } = await signIn('test@example.com', 'password123');
-      
-      if (error) {
-        toast({
-          title: 'Test Login Failed',
-          description: 'Could not log in with test credentials. Please create this test user first.',
-          variant: 'destructive',
-        });
-        return;
-      }
-      
-      toast({
-        title: 'Test Login Successful',
-        description: 'You have been logged in with test credentials',
-      });
-      
-      navigate('/');
-    } catch (error: any) {
-      toast({
-        title: 'Test Login Failed',
-        description: error.message || 'There was an error logging in with test credentials',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-  
   if (showPasswordReset) {
     return <PasswordReset onBack={() => setShowPasswordReset(false)} />;
   }
@@ -147,7 +114,7 @@ const Auth = () => {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   required
-                  className="h-12 mt-2 rounded-lg bg-white border-gray-300 focus:border-blue-600 focus:ring-blue-600"
+                  className="h-12 mt-2 rounded-xl bg-white border-gray-300 focus:border-blue-600 focus:ring-blue-600"
                 />
               </div>
               <div className="space-y-2">
@@ -170,7 +137,7 @@ const Auth = () => {
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     required
-                    className="h-12 mt-2 pr-10 rounded-lg bg-white border-gray-300 focus:border-blue-600 focus:ring-blue-600"
+                    className="h-12 mt-2 pr-10 rounded-xl bg-white border-gray-300 focus:border-blue-600 focus:ring-blue-600"
                   />
                   <Button
                     type="button"
@@ -193,17 +160,6 @@ const Auth = () => {
               </Button>
             </form>
             
-            <div className="mt-6">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={handleTestLogin} 
-                className="w-full border-blue-600 text-blue-600 hover:bg-blue-600/10 rounded-xl"
-              >
-                Login with Test Account
-              </Button>
-            </div>
-            
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
                 Don't have an account?{' '}
@@ -225,3 +181,4 @@ const Auth = () => {
 };
 
 export default Auth;
+
