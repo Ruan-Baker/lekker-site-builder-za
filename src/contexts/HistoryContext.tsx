@@ -25,7 +25,7 @@ interface HistoryRecord {
   id: string;
   page_id: string;
   user_id: string;
-  elements: ElementData[];
+  elements: any; // Changed from ElementData[] to any to match Supabase JSON type
   created_at: string;
   metadata: any;
 }
@@ -79,12 +79,12 @@ export const HistoryProvider: React.FC<{
     if (!pageId || !user || !elements.length) return;
     
     try {
-      // Create snapshot in database
+      // Create snapshot in database - convert ElementData[] to a JSON-compatible format
       const { data, error } = await supabase
         .from('history')
         .insert({
           page_id: pageId,
-          elements: elements,
+          elements: JSON.parse(JSON.stringify(elements)), // Ensures JSON compatibility
           user_id: user.id,
         })
         .select() as { data: HistoryRecord[] | null, error: any };

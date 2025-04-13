@@ -26,107 +26,152 @@ export const deploymentService = {
    * Get all Vercel projects
    */
   getVercelProjects: async () => {
-    const { data, error } = await supabase.functions.invoke('vercel-integration', {
-      body: { method: 'getProjects' },
-    });
-    
-    if (error) throw new Error(error.message);
-    return data;
+    try {
+      const { data, error } = await supabase.functions.invoke('vercel-integration', {
+        body: { method: 'getProjects' },
+      });
+      
+      if (error) throw new Error(error.message);
+      return data;
+    } catch (err) {
+      console.error('Error getting Vercel projects:', err);
+      throw err;
+    }
   },
   
   /**
    * Create a new Vercel project
    */
   createVercelProject: async (name: string) => {
-    const { data, error } = await supabase.functions.invoke('vercel-integration', {
-      body: { method: 'createProject', data: { name } },
-    });
-    
-    if (error) throw new Error(error.message);
-    return data;
+    try {
+      const { data, error } = await supabase.functions.invoke('vercel-integration', {
+        body: { method: 'createProject', data: { name } },
+      });
+      
+      if (error) throw new Error(error.message);
+      return data;
+    } catch (err) {
+      console.error('Error creating Vercel project:', err);
+      throw err;
+    }
   },
   
   /**
    * Deploy a project to Vercel
    */
   deploy: async (options: DeployOptions) => {
-    const { data, error } = await supabase.functions.invoke('vercel-integration', {
-      body: { method: 'deploy', data: options },
-    });
-    
-    if (error) throw new Error(error.message);
-    return data;
+    try {
+      const { data, error } = await supabase.functions.invoke('vercel-integration', {
+        body: { method: 'deploy', data: options },
+      });
+      
+      if (error) throw new Error(error.message);
+      return data;
+    } catch (err) {
+      console.error('Error deploying project:', err);
+      throw err;
+    }
   },
   
   /**
    * Get all domains for a project
    */
   getDomains: async (projectId: string) => {
-    const { data, error } = await supabase.functions.invoke('vercel-integration', {
-      body: { method: 'getDomains', data: { projectId } },
-    });
-    
-    if (error) throw new Error(error.message);
-    return data;
+    try {
+      const { data, error } = await supabase.functions.invoke('vercel-integration', {
+        body: { method: 'getDomains', data: { projectId } },
+      });
+      
+      if (error) throw new Error(error.message);
+      return data;
+    } catch (err) {
+      console.error('Error getting domains:', err);
+      throw err;
+    }
   },
   
   /**
    * Add a domain to a project
    */
   addDomain: async (options: DomainOptions) => {
-    const { data, error } = await supabase.functions.invoke('vercel-integration', {
-      body: { method: 'addDomain', data: options },
-    });
-    
-    if (error) throw new Error(error.message);
-    return data;
+    try {
+      const { data, error } = await supabase.functions.invoke('vercel-integration', {
+        body: { method: 'addDomain', data: options },
+      });
+      
+      if (error) throw new Error(error.message);
+      return data;
+    } catch (err) {
+      console.error('Error adding domain:', err);
+      throw err;
+    }
   },
   
   /**
    * Remove a domain from a project
    */
   removeDomain: async (options: DomainOptions) => {
-    const { data, error } = await supabase.functions.invoke('vercel-integration', {
-      body: { method: 'removeDomain', data: options },
-    });
-    
-    if (error) throw new Error(error.message);
-    return data;
+    try {
+      const { data, error } = await supabase.functions.invoke('vercel-integration', {
+        body: { method: 'removeDomain', data: options },
+      });
+      
+      if (error) throw new Error(error.message);
+      return data;
+    } catch (err) {
+      console.error('Error removing domain:', err);
+      throw err;
+    }
   },
   
   /**
    * Get all environment variables for a project
    */
   getEnvironmentVariables: async (projectId: string) => {
-    const { data, error } = await supabase.functions.invoke('vercel-integration', {
-      body: { method: 'getEnvironmentVariables', data: { projectId } },
-    });
-    
-    if (error) throw new Error(error.message);
-    return data;
+    try {
+      const { data, error } = await supabase.functions.invoke('vercel-integration', {
+        body: { method: 'getEnvironmentVariables', data: { projectId } },
+      });
+      
+      if (error) throw new Error(error.message);
+      return data;
+    } catch (err) {
+      console.error('Error getting environment variables:', err);
+      throw err;
+    }
   },
   
   /**
    * Set an environment variable for a project
    */
   setEnvironmentVariable: async (options: EnvOptions) => {
-    const { data, error } = await supabase.functions.invoke('vercel-integration', {
-      body: { method: 'setEnvironmentVariable', data: options },
-    });
-    
-    if (error) throw new Error(error.message);
-    return data;
+    try {
+      const { data, error } = await supabase.functions.invoke('vercel-integration', {
+        body: { method: 'setEnvironmentVariable', data: options },
+      });
+      
+      if (error) throw new Error(error.message);
+      return data;
+    } catch (err) {
+      console.error('Error setting environment variable:', err);
+      throw err;
+    }
   },
   
   /**
    * Get deployments for a project
    */
   getDeployments: async (projectId: string) => {
-    const { data, error } = await supabase.functions.invoke('vercel-integration', {
-      body: { method: 'getDeployments', data: { projectId } },
-    });
-    
-    if (error) throw new Error(error.message);
-    return data;
+    try {
+      const { data, error } = await supabase.functions.invoke('vercel-integration', {
+        body: { method: 'getDeployments', data: { projectId } },
+      });
+      
+      if (error) throw new Error(error.message);
+      return data;
+    } catch (err) {
+      console.error('Error getting deployments:', err);
+      throw err;
+    }
   }
 };

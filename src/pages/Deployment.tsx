@@ -9,12 +9,25 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import VercelIntegration from '@/components/deployment/VercelIntegration';
 import DeploymentManager from '@/components/deployment/DeploymentManager';
 
+interface ProjectData {
+  id: string;
+  name: string;
+  description: string;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
+  is_published: boolean;
+  published_url: string;
+  thumbnail_url: string;
+  vercel_project_id?: string;
+}
+
 const Deployment = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   
-  const [project, setProject] = useState<any>(null);
+  const [project, setProject] = useState<ProjectData | null>(null);
   const [vercelProjectId, setVercelProjectId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   
@@ -42,11 +55,12 @@ const Deployment = () => {
         
       if (error) throw error;
       
-      setProject(data);
+      const projectData = data as ProjectData;
+      setProject(projectData);
       
       // Check if project has vercel_project_id
-      if (data.vercel_project_id) {
-        setVercelProjectId(data.vercel_project_id);
+      if (projectData.vercel_project_id) {
+        setVercelProjectId(projectData.vercel_project_id);
       }
     } catch (error) {
       console.error('Error fetching project:', error);
@@ -163,7 +177,7 @@ const Deployment = () => {
             </div>
             
             <VercelIntegration 
-              projectId={projectId} 
+              projectId={projectId || ''} 
               onConnect={handleConnectVercel} 
             />
           </div>

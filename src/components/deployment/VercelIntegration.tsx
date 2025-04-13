@@ -15,7 +15,7 @@ interface VercelIntegrationProps {
 }
 
 export default function VercelIntegration({ projectId, onConnect }: VercelIntegrationProps) {
-  const [vercelProjects, setVercelProjects] = useState([]);
+  const [vercelProjects, setVercelProjects] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');

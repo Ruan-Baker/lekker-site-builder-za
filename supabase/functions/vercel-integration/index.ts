@@ -21,14 +21,16 @@ serve(async (req) => {
   if (corsResponse) return corsResponse
 
   try {
-    const { method } = req.url.split('/').pop() || 'getProjects'
-    const { data } = await req.json()
+    const body = await req.json()
+    const { method, data } = body
     
     // Get Vercel API token from env
     const VERCEL_API_TOKEN = Deno.env.get('VERCEL_API_TOKEN')
     if (!VERCEL_API_TOKEN) {
       throw new Error('Missing Vercel API token')
     }
+
+    console.log(`Processing Vercel API request: ${method}`)
 
     // Base headers for all requests
     const headers = {
@@ -40,12 +42,14 @@ serve(async (req) => {
     let result
     switch (method) {
       case 'getProjects':
+        console.log('Fetching Vercel projects')
         result = await fetch('https://api.vercel.com/v9/projects', {
           headers,
         })
         break
         
       case 'createProject':
+        console.log('Creating Vercel project:', data.name)
         result = await fetch('https://api.vercel.com/v9/projects', {
           method: 'POST',
           headers,
@@ -57,7 +61,7 @@ serve(async (req) => {
         break
         
       case 'deploy':
-        // Get deployment URL and settings
+        console.log('Deploying project:', data.name)
         const deployUrl = `https://api.vercel.com/v13/deployments`
         result = await fetch(deployUrl, {
           method: 'POST',
@@ -66,22 +70,24 @@ serve(async (req) => {
             name: data.name,
             projectId: data.projectId,
             target: data.target || 'production',
-            gitSource: {
+            gitSource: data.repo ? {
               type: 'github',
               repo: data.repo,
               ref: data.branch || 'main',
-            }
+            } : undefined
           }),
         })
         break
         
       case 'getDomains':
+        console.log('Getting domains for project:', data.projectId)
         result = await fetch(`https://api.vercel.com/v9/projects/${data.projectId}/domains`, {
           headers,
         })
         break
         
       case 'addDomain':
+        console.log('Adding domain:', data.domain)
         result = await fetch(`https://api.vercel.com/v9/projects/${data.projectId}/domains`, {
           method: 'POST',
           headers,
@@ -92,6 +98,7 @@ serve(async (req) => {
         break
         
       case 'removeDomain':
+        console.log('Removing domain:', data.domain)
         result = await fetch(`https://api.vercel.com/v9/projects/${data.projectId}/domains/${data.domain}`, {
           method: 'DELETE',
           headers,
@@ -99,12 +106,14 @@ serve(async (req) => {
         break
         
       case 'getEnvironmentVariables':
+        console.log('Getting environment variables for project:', data.projectId)
         result = await fetch(`https://api.vercel.com/v9/projects/${data.projectId}/env`, {
           headers,
         })
         break
         
       case 'setEnvironmentVariable':
+        console.log('Setting environment variable:', data.key)
         result = await fetch(`https://api.vercel.com/v9/projects/${data.projectId}/env`, {
           method: 'POST',
           headers,
@@ -118,6 +127,7 @@ serve(async (req) => {
         break
         
       case 'getDeployments':
+        console.log('Getting deployments for project:', data.projectId)
         result = await fetch(`https://api.vercel.com/v6/deployments?projectId=${data.projectId}&limit=20`, {
           headers,
         })
@@ -127,10 +137,24 @@ serve(async (req) => {
         throw new Error(`Unknown method: ${method}`)
     }
 
-    // Return the response from Vercel API
-    const response = await result.json()
+    // Check if the result is valid
+    if (!result) {
+      throw new Error(`Failed to get response from Vercel API for method: ${method}`)
+    }
+
+    // Parse the response
+    const responseText = await result.text()
+    let responseData
     
-    return new Response(JSON.stringify(response), {
+    try {
+      responseData = JSON.parse(responseText)
+    } catch (e) {
+      console.error('Error parsing Vercel API response:', e)
+      responseData = { error: 'Failed to parse Vercel API response', raw: responseText }
+    }
+    
+    // Return the response from Vercel API
+    return new Response(JSON.stringify(responseData), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: result.status,
     })

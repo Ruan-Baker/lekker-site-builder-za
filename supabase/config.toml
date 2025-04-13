@@ -1,8 +1,4 @@
 
-# This file is used for configuration of Supabase functions.
-# If you want to use passwords, secrets, or environment variables in your functions, 
-# put them in .env.local file and they will be picked up automatically.
-
 project_id = "cpzirktswigjvwvseaky"
 
 [functions.vercel-integration]
