@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -130,6 +129,29 @@
   
   .glow {
     @apply relative after:absolute after:inset-0 after:rounded-[inherit] after:opacity-0 hover:after:opacity-100 after:transition-opacity after:shadow-glow;
+  }
+
+  .animate-typing {
+    @apply relative;
+    animation: typing 15s steps(60, end) infinite;
+    white-space: pre-wrap;
+    overflow: hidden;
+  }
+
+  @keyframes typing {
+    0% { opacity: 0.7; }
+    5% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0.7; }
+  }
+
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.3; }
   }
 }
 

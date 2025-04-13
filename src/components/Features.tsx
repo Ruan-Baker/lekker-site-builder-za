@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Check, Globe, Code, ArrowRight, CreditCard, Play } from 'lucide-react';
+import { Check, Globe, Code, ArrowRight, CreditCard } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 const Features = () => {
@@ -61,20 +61,87 @@ const Features = () => {
             </div>
           </div>
           
-          <div className="relative">
-            <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-200">
-              <div className="aspect-video bg-gray-100 w-full">
-                <img 
-                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" 
-                  alt="Funnel builder demonstration" 
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                  <Button variant="outline" size="icon" className="rounded-full w-16 h-16 bg-white/80 border-none hover:bg-white hover:scale-110 transition-all duration-300">
-                    <Play className="h-8 w-8 text-blue-600" fill="currentColor" />
-                  </Button>
-                </div>
+          <div className="relative rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+            <div className="bg-gray-900 p-6 h-full w-full font-mono text-sm">
+              <div className="mb-3 flex items-center justify-start gap-2">
+                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span className="text-gray-400 ml-2 text-xs">south-african-optimization.js</span>
               </div>
+              
+              <div className="overflow-hidden h-full">
+                <pre className="text-blue-400 animate-typing overflow-hidden">
+{`// South African Market Optimization
+
+const locale = "za-ZA";
+const currency = "ZAR";
+
+const localizeWebsite = () => {
+  return {
+    language: "en-ZA",
+    timezone: "Africa/Johannesburg",
+    currencySymbol: "R",
+    phoneFormat: "+27 XX XXX XXXX",
+    defaultPaymentOptions: [
+      "Payfast",
+      "SnapScan",
+      "Peach Payments",
+      "Ozow"
+    ],
+    shippingProviders: [
+      "CourierGuy",
+      "FastWay",
+      "Pargo",
+      "The Courier Guy"
+    ],
+    marketingChannels: [
+      "Facebook",
+      "Instagram",
+      "Google Ads",
+      "Local SEO"
+    ]
+  };
+};
+
+// Mobile-First Design for South African Internet
+const optimizeForSA = () => {
+  const metrics = {
+    mobileUsage: "74%",
+    averageLoadSpeed: "3G/4G networks",
+    dataConsideration: true,
+    offlineCapabilities: true
+  };
+  
+  // Implement data saving techniques
+  const optimizedImages = compressImages(images, "webp");
+  const lazyLoading = implementLazyLoading();
+  const caching = setupOfflineCache();
+  
+  return {
+    optimizedImages,
+    lazyLoading,
+    caching,
+    metrics
+  };
+};
+
+// Local payment integrations
+setupPaymentGateways({
+  payfast: {
+    merchantId: "MERCHANT_ID",
+    merchantKey: "MERCHANT_KEY",
+    passphrase: "PASSPHRASE",
+    testMode: false
+  },
+  snapScan: {
+    merchantId: "MERCHANT_ID",
+    apiKey: "API_KEY"
+  }
+});`}
+                </pre>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-gray-900 to-transparent"></div>
             </div>
           </div>
         </div>

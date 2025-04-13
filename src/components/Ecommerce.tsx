@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, CreditCard, Tag, Package, Truck, BarChart3 } from 'lucide-react';
@@ -17,12 +18,51 @@ const Ecommerce = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
-          <div>
-            <img 
-              src="https://images.unsplash.com/photo-1607083206968-13611e3d76db?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
-              alt="E-commerce store mockup" 
-              className="rounded-xl shadow-lg w-full"
-            />
+          <div className="relative overflow-hidden rounded-xl shadow-lg">
+            <div className="bg-gray-900 p-4 h-full w-full font-mono text-sm text-green-400 overflow-hidden">
+              <pre className="animate-typing overflow-hidden whitespace-pre-wrap">
+{`// South African E-commerce Platform
+import { createStore } from 'lekker-sites';
+
+const store = createStore({
+  name: "My Online Store",
+  currency: "ZAR",
+  shipping: {
+    providers: ["CourierGuy", "FastWay", "Pargo"],
+    defaultRegion: "Gauteng"
+  },
+  payments: {
+    gateways: [
+      "Payfast",
+      "Peach",
+      "SnapScan"
+    ],
+    noTransactionFees: true
+  },
+  products: [
+    {
+      id: "prod-001",
+      name: "Premium Product",
+      price: 499.99,
+      description: "Amazing product for your needs",
+      inStock: true,
+      variants: [
+        { color: "blue", size: "M", sku: "BLU-M-001" },
+        { color: "red", size: "L", sku: "RED-L-001" }
+      ]
+    },
+    // More products...
+  ]
+});
+
+// No fees taken from your sales
+store.setFeePercentage(0);
+
+// Deploy your store for FREE!
+store.deploy();`}
+              </pre>
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-10 animate-pulse"></div>
+            </div>
           </div>
           
           <div>
