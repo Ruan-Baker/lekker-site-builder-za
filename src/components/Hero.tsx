@@ -1,12 +1,9 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-
 const Hero = () => {
-  return (
-    <section className="pt-32 md:pt-36 pb-16 px-6 bg-gradient-to-b from-white to-blue-50 relative overflow-hidden">
+  return <section className="pt-32 md:pt-36 pb-16 px-6 bg-gradient-to-b from-white to-blue-50 relative overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-10 md:mb-12">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-gray-900">
@@ -40,20 +37,14 @@ const Hero = () => {
           </div>
           
           <div className="bg-white p-0">
-            <img 
-              src="/lovable-uploads/3502f0e2-87c7-447f-ba87-86aa904adb3a.png" 
-              alt="Lekker Sites Builder Interface" 
-              className="w-full object-cover" 
-            />
+            <img src="/lovable-uploads/3502f0e2-87c7-447f-ba87-86aa904adb3a.png" alt="Lekker Sites Builder Interface" className="w-full object-cover" />
           </div>
         </div>
       </div>
       
       {/* Decorative elements */}
       <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-50 rounded-full opacity-70"></div>
-      <div className="absolute top-32 -right-32 w-64 h-64 bg-blue-50 rounded-full opacity-70"></div>
-    </section>
-  );
+      
+    </section>;
 };
-
 export default Hero;
