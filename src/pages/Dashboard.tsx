@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -6,8 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { PlusCircle, FileEdit, Trash2, ExternalLink, Power, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import NewProjectDialog from '@/components/dashboard/NewProjectDialog';
-import { ProjectProvider } from '@/contexts/ProjectContext';
 
 interface Project {
   id: string;
@@ -27,7 +26,6 @@ const Dashboard = () => {
   
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [dialogOpen, setDialogOpen] = useState(false);
   
   useEffect(() => {
     const fetchProjects = async () => {
@@ -116,7 +114,7 @@ const Dashboard = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="text-gray-600 flex items-center gap-1"
+                className="text-gray-600 flex items-center gap-1 rounded-xl"
                 onClick={() => navigate('/profile')}
               >
                 <User size={16} />
@@ -126,7 +124,7 @@ const Dashboard = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="text-gray-600 flex items-center gap-1"
+                className="text-gray-600 flex items-center gap-1 rounded-xl"
                 onClick={signOut}
               >
                 <Power size={16} />
@@ -141,8 +139,8 @@ const Dashboard = () => {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">My Projects</h2>
           <Button 
-            onClick={() => setDialogOpen(true)} 
-            className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 rounded-md"
+            onClick={() => navigate('/create-project')} 
+            className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 rounded-xl"
           >
             <PlusCircle size={16} />
             New Project
@@ -206,7 +204,7 @@ const Dashboard = () => {
                     variant="outline" 
                     size="sm"
                     onClick={() => navigate(`/builder/${project.id}`)}
-                    className="flex items-center gap-1 rounded-md"
+                    className="flex items-center gap-1 rounded-xl"
                   >
                     <FileEdit size={14} />
                     Edit
@@ -216,7 +214,7 @@ const Dashboard = () => {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        className="flex items-center gap-1 rounded-md"
+                        className="flex items-center gap-1 rounded-xl"
                         onClick={() => window.open(project.published_url!, '_blank')}
                       >
                         <ExternalLink size={14} />
@@ -226,7 +224,7 @@ const Dashboard = () => {
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="text-red-600 border-red-200 hover:bg-red-50 flex items-center gap-1 rounded-md"
+                      className="text-red-600 border-red-200 hover:bg-red-50 flex items-center gap-1 rounded-xl"
                       onClick={() => deleteProject(project.id)}
                     >
                       <Trash2 size={14} />
@@ -248,18 +246,14 @@ const Dashboard = () => {
                 Start building your website by creating a new project
               </p>
               <Button 
-                onClick={() => setDialogOpen(true)} 
-                className="bg-blue-600 hover:bg-blue-700 rounded-md"
+                onClick={() => navigate('/create-project')} 
+                className="bg-blue-600 hover:bg-blue-700 rounded-xl"
               >
                 Create Project
               </Button>
             </CardContent>
           </Card>
         )}
-        
-        <ProjectProvider>
-          <NewProjectDialog open={dialogOpen} onOpenChange={setDialogOpen} />
-        </ProjectProvider>
       </div>
       
       <footer className="bg-white border-t border-gray-200 py-4">

@@ -206,6 +206,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         throw new Error(projectError.message);
       }
       
+      // Create a default homepage
       const { data: pageData, error: pageError } = await supabase
         .from('pages')
         .insert({
@@ -218,6 +219,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         .single();
       
       if (pageError) {
+        // If page creation fails, delete the project to avoid orphaned projects
         await supabase.from('projects').delete().eq('id', projectData.id);
         throw new Error(pageError.message);
       }
