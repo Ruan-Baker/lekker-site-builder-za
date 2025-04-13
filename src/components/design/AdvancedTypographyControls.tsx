@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import FontSelector from "./FontSelector";
 import { Button } from "@/components/ui/button";
 import { Italic, Bold, Underline, AlignLeft, AlignCenter, AlignRight, AlignJustify } from "lucide-react";
+import { useDesign } from '@/contexts/DesignContext';
 
 interface TypographySettings {
   fontFamily: string;
@@ -31,6 +32,9 @@ const AdvancedTypographyControls: React.FC<AdvancedTypographyControlsProps> = ({
   value,
   onChange
 }) => {
+  // Get fonts from Design Context
+  const { fonts = [] } = useDesign();
+  
   const handleChange = (key: keyof TypographySettings, newValue: string) => {
     onChange({ ...value, [key]: newValue });
   };
@@ -47,7 +51,8 @@ const AdvancedTypographyControls: React.FC<AdvancedTypographyControlsProps> = ({
         <Label>Font</Label>
         <FontSelector 
           value={value.fontFamily || ''} 
-          onChange={(font) => handleChange('fontFamily', font)} 
+          onChange={(font) => handleChange('fontFamily', font)}
+          fonts={fonts}
         />
       </div>
       
