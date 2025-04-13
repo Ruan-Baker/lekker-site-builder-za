@@ -23,8 +23,7 @@ const SignupSuccess: React.FC = () => {
       
       <div className="space-y-3">
         <Button 
-          variant="rainbow"
-          className="w-full h-12" 
+          className="w-full btn-gradient h-12" 
           onClick={() => navigate('/builder')}
         >
           Go to Website Builder

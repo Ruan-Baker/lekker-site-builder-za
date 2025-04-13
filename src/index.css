@@ -3,16 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --color-1: 255 69 196; /* pink */
-    --color-2: 108 92 231; /* purple */
-    --color-3: 72 149 239; /* blue */
-    --color-4: 114 239 221; /* teal */
-    --color-5: 246 219 245; /* light pink */
-  }
-}
-
 @layer components {
   .btn-gradient {
     @apply relative bg-gradient-purple-blue text-white rounded-xl px-6 py-3 font-medium transition-all duration-300 shadow-soft overflow-hidden hover:shadow-glow;

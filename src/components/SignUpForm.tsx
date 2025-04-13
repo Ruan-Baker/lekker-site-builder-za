@@ -18,7 +18,7 @@ const SignUpForm = () => {
           
           <div className="space-y-8 max-w-md">
             <Link to="/signup">
-              <Button variant="rainbow" className="w-full h-12">
+              <Button className="btn-gradient w-full h-12">
                 Get Started - It's Free
               </Button>
             </Link>
@@ -30,8 +30,8 @@ const SignUpForm = () => {
         </div>
         
         <div className="w-full lg:w-1/2">
-          <Card className="shadow-soft border border-gray-200 rounded-xl overflow-hidden bg-white">
-            <CardHeader className="bg-gradient-purple-blue text-white pb-6 rounded-t-xl">
+          <Card className="shadow-soft border-gray-200 overflow-hidden bg-white">
+            <CardHeader className="bg-gradient-purple-blue text-white pb-6">
               <CardTitle className="text-2xl">Free Starter Plan</CardTitle>
               <CardDescription className="text-white/90 text-lg">Perfect for small businesses and entrepreneurs</CardDescription>
               <div className="mt-4">
@@ -94,9 +94,7 @@ const SignUpForm = () => {
                   <span className="ml-3 text-sm">Publish and go live</span>
                 </div>
               </div>
-              <Link to="/auth" className="mt-6 w-full">
-                <Button variant="outline" className="w-full hover:bg-perspective-purple/10 hover:text-perspective-purple transition-all">View All Plans</Button>
-              </Link>
+              <Button variant="outline" className="mt-6 w-full hover:bg-perspective-purple/10 hover:text-perspective-purple transition-all">View All Plans</Button>
             </CardFooter>
           </Card>
         </div>
