@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -7,7 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { AlertCircle, ArrowRight, Check, Mail, Github, Facebook, Linkedin, Eye, EyeOff, Loader2, Google, Twitter, AlertTriangle } from 'lucide-react';
+import { AlertCircle, ArrowRight, Check, Mail, Github, Facebook, Linkedin, Eye, EyeOff, Loader2, AlertTriangle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
@@ -109,7 +108,7 @@ const Auth = () => {
     }
   };
   
-  const handleSocialLogin = async (provider: 'github' | 'twitter' | 'google' | 'facebook' | 'linkedin_oidc') => {
+  const handleSocialLogin = async (provider: 'github' | 'twitter' | 'facebook' | 'linkedin_oidc') => {
     try {
       const { error } = await signInWithProvider(provider);
       
@@ -295,7 +294,7 @@ const Auth = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-3 gap-3 mb-3">
+          <div className="grid grid-cols-2 gap-3">
             <Button
               type="button"
               variant="outline"
@@ -308,12 +307,16 @@ const Auth = () => {
             <Button
               type="button"
               variant="outline"
-              onClick={() => handleSocialLogin('google')}
-              className="flex items-center justify-center"
+              onClick={() => handleSocialLogin('facebook')}
+              className="flex items-center justify-center gap-2"
               size="sm"
             >
-              <Google className="h-4 w-4" />
+              <Facebook className="h-4 w-4" />
+              Facebook
             </Button>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3 mt-3">
             <Button
               type="button"
               variant="outline"
@@ -321,20 +324,8 @@ const Auth = () => {
               className="flex items-center justify-center"
               size="sm"
             >
-              <Twitter className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => handleSocialLogin('facebook')}
-              className="flex items-center justify-center gap-2"
-              size="sm"
-            >
-              <Facebook className="h-4 w-4" />
-              Facebook
+              <Linkedin className="h-4 w-4" />
+              LinkedIn
             </Button>
             <Button
               type="button"
