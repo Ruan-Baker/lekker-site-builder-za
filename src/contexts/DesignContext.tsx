@@ -10,11 +10,22 @@ export interface TypographySettings {
   headings: {
     fontFamily: string;
     fontWeight: string;
+    letterSpacing?: string;
+    lineHeight?: string;
+    textTransform?: string;
   };
   body: {
     fontFamily: string;
     fontWeight: string;
+    letterSpacing?: string;
+    lineHeight?: string;
+    fontSize?: string;
   };
+  customFonts?: {
+    name: string;
+    url: string;
+    weights: string[];
+  }[];
 }
 
 export interface ColorPalette {
@@ -23,17 +34,37 @@ export interface ColorPalette {
   accent: string;
   background: string;
   text: string;
+  success?: string;
+  warning?: string;
+  error?: string;
+  info?: string;
+  customColors?: Record<string, string>;
 }
 
 export interface SpacingSettings {
   containerPadding: string;
   sectionSpacing: string;
+  elementSpacing?: string;
+  borderRadius?: string;
+  contentWidth?: string;
+}
+
+export interface AnimationSettings {
+  pageTransitions?: string;
+  elementAnimations?: Record<string, any>;
+  scrollEffects?: boolean;
+  duration?: number;
+  easing?: string;
 }
 
 export interface ResponsiveSettings {
   desktop: Record<string, any>;
   tablet: Record<string, any>;
   mobile: Record<string, any>;
+  breakpoints?: {
+    tablet: number;
+    mobile: number;
+  };
 }
 
 export type ViewportSize = 'desktop' | 'tablet' | 'mobile';
@@ -45,7 +76,9 @@ export interface DesignSettings {
   color_palette: ColorPalette;
   spacing_settings: SpacingSettings;
   responsive_settings?: ResponsiveSettings;
-  animations?: Record<string, any>;
+  animations?: AnimationSettings;
+  custom_css?: string;
+  theme?: string;
 }
 
 interface DesignContextType {
@@ -60,13 +93,31 @@ interface DesignContextType {
   viewportSize: ViewportSize;
   setViewportSize: (size: ViewportSize) => void;
   getResponsiveValue: (key: string, defaultValue: any) => any;
+  addCustomFont: (name: string, url: string, weights: string[]) => Promise<void>;
+  addCustomColor: (name: string, color: string) => Promise<void>;
+  setCustomCSS: (css: string) => Promise<void>;
+  getComputedStyle: (element: string) => Record<string, string>;
+  applyTheme: (themeName: string) => Promise<void>;
+  availableThemes: string[];
 }
 
 const defaultDesignSettings: DesignSettings = {
   project_id: '',
   typography_settings: {
-    headings: { fontFamily: 'Inter', fontWeight: '700' },
-    body: { fontFamily: 'Inter', fontWeight: '400' },
+    headings: { 
+      fontFamily: 'Inter', 
+      fontWeight: '700',
+      lineHeight: '1.2',
+      letterSpacing: '-0.025em',
+    },
+    body: { 
+      fontFamily: 'Inter', 
+      fontWeight: '400',
+      lineHeight: '1.5',
+      letterSpacing: '0',
+      fontSize: '16px',
+    },
+    customFonts: [],
   },
   color_palette: {
     primary: '#3b82f6',
@@ -74,19 +125,40 @@ const defaultDesignSettings: DesignSettings = {
     accent: '#f97316',
     background: '#ffffff',
     text: '#1e293b',
+    success: '#22c55e',
+    warning: '#f59e0b',
+    error: '#ef4444',
+    info: '#3b82f6',
+    customColors: {},
   },
   spacing_settings: {
     containerPadding: '1rem',
     sectionSpacing: '4rem',
+    elementSpacing: '1rem',
+    borderRadius: '0.375rem',
+    contentWidth: '1200px',
   },
   responsive_settings: {
     desktop: {},
     tablet: {},
-    mobile: {}
-  }
+    mobile: {},
+    breakpoints: {
+      tablet: 768,
+      mobile: 480,
+    }
+  },
+  animations: {
+    pageTransitions: 'fade',
+    elementAnimations: {},
+    scrollEffects: false,
+    duration: 300,
+    easing: 'ease',
+  },
+  custom_css: '',
+  theme: 'default',
 };
 
-// Available fonts
+// Available fonts - expanded list
 const availableFonts = [
   'Inter',
   'Roboto',
@@ -96,6 +168,26 @@ const availableFonts = [
   'Montserrat',
   'Source Sans Pro',
   'Raleway',
+  'Playfair Display',
+  'Merriweather',
+  'Oswald',
+  'Nunito',
+  'Work Sans',
+  'Fira Sans',
+  'Rubik',
+  'Quicksand',
+];
+
+// Available themes
+const availableThemes = [
+  'default',
+  'minimalist',
+  'bold',
+  'elegant',
+  'playful',
+  'corporate',
+  'dark',
+  'light',
 ];
 
 const DesignContext = createContext<DesignContextType | undefined>(undefined);
@@ -162,7 +254,10 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
               typography_settings: defaultDesignSettings.typography_settings as unknown as Json,
               color_palette: defaultDesignSettings.color_palette as unknown as Json,
               spacing_settings: defaultDesignSettings.spacing_settings as unknown as Json,
-              responsive_settings: defaultDesignSettings.responsive_settings as unknown as Json
+              responsive_settings: defaultDesignSettings.responsive_settings as unknown as Json,
+              animations: defaultDesignSettings.animations as unknown as Json,
+              custom_css: defaultDesignSettings.custom_css,
+              theme: defaultDesignSettings.theme
             };
             
             const { data: insertedData, error: insertError } = await supabase
@@ -186,7 +281,10 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
                 typography_settings: insertedData.typography_settings as unknown as TypographySettings,
                 color_palette: insertedData.color_palette as unknown as ColorPalette,
                 spacing_settings: insertedData.spacing_settings as unknown as SpacingSettings,
-                responsive_settings: insertedData.responsive_settings as unknown as ResponsiveSettings
+                responsive_settings: insertedData.responsive_settings as unknown as ResponsiveSettings,
+                animations: insertedData.animations as unknown as AnimationSettings,
+                custom_css: insertedData.custom_css,
+                theme: insertedData.theme
               };
               
               setDesignSettings(settings);
@@ -208,7 +306,10 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
             typography_settings: data.typography_settings as unknown as TypographySettings,
             color_palette: data.color_palette as unknown as ColorPalette,
             spacing_settings: data.spacing_settings as unknown as SpacingSettings,
-            responsive_settings: data.responsive_settings as unknown as ResponsiveSettings
+            responsive_settings: data.responsive_settings as unknown as ResponsiveSettings,
+            animations: data.animations as unknown as AnimationSettings,
+            custom_css: data.custom_css,
+            theme: data.theme
           };
           
           setDesignSettings(settings);
@@ -245,7 +346,10 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
         typography_settings: updatedSettings.typography_settings as unknown as Json,
         color_palette: updatedSettings.color_palette as unknown as Json,
         spacing_settings: updatedSettings.spacing_settings as unknown as Json,
-        responsive_settings: updatedSettings.responsive_settings as unknown as Json
+        responsive_settings: updatedSettings.responsive_settings as unknown as Json,
+        animations: updatedSettings.animations as unknown as Json,
+        custom_css: updatedSettings.custom_css,
+        theme: updatedSettings.theme
       };
       
       const { error } = await supabase
@@ -278,13 +382,264 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
     }
   };
   
+  // Add a custom font to the design settings
+  const addCustomFont = async (name: string, url: string, weights: string[]) => {
+    if (!designSettings) return;
+    
+    try {
+      const customFonts = designSettings.typography_settings.customFonts || [];
+      const updatedCustomFonts = [...customFonts, { name, url, weights }];
+      
+      await updateDesignSettings({
+        typography_settings: {
+          ...designSettings.typography_settings,
+          customFonts: updatedCustomFonts
+        }
+      });
+      
+      toast({
+        title: 'Success',
+        description: `Custom font "${name}" added.`,
+      });
+    } catch (error) {
+      console.error('Error adding custom font:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to add custom font.',
+        variant: 'destructive',
+      });
+    }
+  };
+  
+  // Add a custom color to the design settings
+  const addCustomColor = async (name: string, color: string) => {
+    if (!designSettings) return;
+    
+    try {
+      const customColors = designSettings.color_palette.customColors || {};
+      const updatedCustomColors = { ...customColors, [name]: color };
+      
+      await updateDesignSettings({
+        color_palette: {
+          ...designSettings.color_palette,
+          customColors: updatedCustomColors
+        }
+      });
+      
+      toast({
+        title: 'Success',
+        description: `Custom color "${name}" added.`,
+      });
+    } catch (error) {
+      console.error('Error adding custom color:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to add custom color.',
+        variant: 'destructive',
+      });
+    }
+  };
+  
+  // Set custom CSS
+  const setCustomCSS = async (css: string) => {
+    if (!designSettings) return;
+    
+    try {
+      await updateDesignSettings({
+        custom_css: css
+      });
+      
+      toast({
+        title: 'Success',
+        description: 'Custom CSS updated.',
+      });
+    } catch (error) {
+      console.error('Error updating custom CSS:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to update custom CSS.',
+        variant: 'destructive',
+      });
+    }
+  };
+  
+  // Get computed style for an element
+  const getComputedStyle = (element: string): Record<string, string> => {
+    if (!designSettings) return {};
+    
+    // This is a simplified version. In a real app, this would use the design settings
+    // to compute the styles for a specific element based on global settings,
+    // component presets, and any overrides.
+    const styles: Record<string, string> = {
+      fontFamily: designSettings.typography_settings.body.fontFamily,
+      color: designSettings.color_palette.text,
+    };
+    
+    // Add specific element styles based on element type
+    switch (element) {
+      case 'heading-1':
+        styles.fontFamily = designSettings.typography_settings.headings.fontFamily;
+        styles.fontWeight = designSettings.typography_settings.headings.fontWeight;
+        styles.fontSize = '2.5rem';
+        break;
+      case 'button-primary':
+        styles.backgroundColor = designSettings.color_palette.primary;
+        styles.color = '#ffffff';
+        styles.borderRadius = designSettings.spacing_settings.borderRadius || '0.375rem';
+        break;
+      // Add other element types as needed
+    }
+    
+    return styles;
+  };
+  
+  // Apply a theme
+  const applyTheme = async (themeName: string) => {
+    if (!designSettings) return;
+    
+    try {
+      let themeSettings: Partial<DesignSettings> = { theme: themeName };
+      
+      // Apply theme-specific settings
+      switch (themeName) {
+        case 'minimalist':
+          themeSettings = {
+            ...themeSettings,
+            color_palette: {
+              ...designSettings.color_palette,
+              primary: '#000000',
+              secondary: '#333333',
+              accent: '#666666',
+              background: '#ffffff',
+              text: '#333333',
+            },
+            typography_settings: {
+              ...designSettings.typography_settings,
+              headings: {
+                ...designSettings.typography_settings.headings,
+                fontFamily: 'Work Sans',
+                fontWeight: '300',
+              },
+              body: {
+                ...designSettings.typography_settings.body,
+                fontFamily: 'Work Sans',
+                fontWeight: '300',
+              },
+            },
+            spacing_settings: {
+              ...designSettings.spacing_settings,
+              containerPadding: '2rem',
+              sectionSpacing: '6rem',
+              borderRadius: '0',
+            },
+          };
+          break;
+        case 'bold':
+          themeSettings = {
+            ...themeSettings,
+            color_palette: {
+              ...designSettings.color_palette,
+              primary: '#ff3e00',
+              secondary: '#ff8700',
+              accent: '#ffbd00',
+              background: '#ffffff',
+              text: '#111111',
+            },
+            typography_settings: {
+              ...designSettings.typography_settings,
+              headings: {
+                ...designSettings.typography_settings.headings,
+                fontFamily: 'Montserrat',
+                fontWeight: '800',
+              },
+              body: {
+                ...designSettings.typography_settings.body,
+                fontFamily: 'Open Sans',
+                fontWeight: '400',
+              },
+            },
+            spacing_settings: {
+              ...designSettings.spacing_settings,
+              containerPadding: '1.5rem',
+              sectionSpacing: '5rem',
+              borderRadius: '0.5rem',
+            },
+          };
+          break;
+        case 'elegant':
+          themeSettings = {
+            ...themeSettings,
+            color_palette: {
+              ...designSettings.color_palette,
+              primary: '#937264',
+              secondary: '#dcd0c0',
+              accent: '#c0b283',
+              background: '#f4f4f4',
+              text: '#373737',
+            },
+            typography_settings: {
+              ...designSettings.typography_settings,
+              headings: {
+                ...designSettings.typography_settings.headings,
+                fontFamily: 'Playfair Display',
+                fontWeight: '700',
+              },
+              body: {
+                ...designSettings.typography_settings.body,
+                fontFamily: 'Lato',
+                fontWeight: '300',
+              },
+            },
+            spacing_settings: {
+              ...designSettings.spacing_settings,
+              containerPadding: '1.75rem',
+              sectionSpacing: '7rem',
+              borderRadius: '0.25rem',
+            },
+          };
+          break;
+        case 'dark':
+          themeSettings = {
+            ...themeSettings,
+            color_palette: {
+              ...designSettings.color_palette,
+              primary: '#bb86fc',
+              secondary: '#03dac6',
+              accent: '#cf6679',
+              background: '#121212',
+              text: '#ffffff',
+            }
+          };
+          break;
+        // Add other themes as needed
+        default:
+          // Default theme - already defined in defaultDesignSettings
+          break;
+      }
+      
+      await updateDesignSettings(themeSettings);
+      
+      toast({
+        title: 'Success',
+        description: `${themeName.charAt(0).toUpperCase() + themeName.slice(1)} theme applied.`,
+      });
+    } catch (error) {
+      console.error('Error applying theme:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to apply theme.',
+        variant: 'destructive',
+      });
+    }
+  };
+  
   return (
     <DesignContext.Provider
       value={{
         designSettings,
         updateDesignSettings,
         isLoading,
-        fonts: availableFonts,
+        fonts: [...availableFonts, ...(designSettings?.typography_settings.customFonts?.map(font => font.name) || [])],
         selectedFont,
         setSelectedFont,
         primaryColor,
@@ -292,6 +647,12 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
         viewportSize,
         setViewportSize,
         getResponsiveValue,
+        addCustomFont,
+        addCustomColor,
+        setCustomCSS,
+        getComputedStyle,
+        applyTheme,
+        availableThemes,
       }}
     >
       {children}

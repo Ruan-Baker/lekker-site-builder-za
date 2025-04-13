@@ -1,5 +1,10 @@
 
+
 project_id = "cpzirktswigjvwvseaky"
 
 [functions.vercel-integration]
 verify_jwt = true
+
+[functions.design-templates]
+verify_jwt = true
+

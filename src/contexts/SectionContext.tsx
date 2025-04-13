@@ -13,6 +13,9 @@ export interface SectionTemplate {
   template_data: any;
   created_at: string;
   updated_at: string;
+  industry?: string | null;
+  complexity?: 'simple' | 'medium' | 'complex' | null;
+  tags?: string[] | null;
 }
 
 interface SectionContextType {
@@ -24,7 +27,13 @@ interface SectionContextType {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   activeCategory: string;
   setActiveCategory: React.Dispatch<React.SetStateAction<string>>;
+  activeIndustry: string;
+  setActiveIndustry: React.Dispatch<React.SetStateAction<string>>;
   categories: string[];
+  industries: string[];
+  complexityFilter: string;
+  setComplexityFilter: React.Dispatch<React.SetStateAction<string>>;
+  addSectionTemplate: (template: Omit<SectionTemplate, 'id' | 'created_at' | 'updated_at'>) => Promise<void>;
 }
 
 const SectionContext = createContext<SectionContextType | undefined>(undefined);
@@ -36,7 +45,10 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [error, setError] = useState<Error | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [categories, setCategories] = useState<string[]>([]);
+  const [activeIndustry, setActiveIndustry] = useState<string>('all');
+  const [complexityFilter, setComplexityFilter] = useState<string>('all');
+  const [categories, setCategories] = useState<string[]>(['all']);
+  const [industries, setIndustries] = useState<string[]>(['all']);
   const { user } = useAuth();
   
   // Load all sections on component mount
@@ -55,9 +67,12 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
         
         setSections(data || []);
         
-        // Extract unique categories
+        // Extract unique categories and industries
         const uniqueCategories = ['all', ...new Set(data?.map(section => section.category) || [])];
         setCategories(uniqueCategories);
+        
+        const uniqueIndustries = ['all', ...new Set(data?.filter(s => s.industry).map(section => section.industry) || [])];
+        setIndustries(uniqueIndustries);
       } catch (err) {
         console.error('Error loading sections:', err);
         setError(err as Error);
@@ -74,7 +89,7 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
     fetchSections();
   }, [user]);
   
-  // Filter sections based on search term and active category
+  // Filter sections based on search term, active category, industry and complexity
   useEffect(() => {
     let filtered = [...sections];
     
@@ -82,16 +97,59 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
       filtered = filtered.filter(section => section.category === activeCategory);
     }
     
+    if (activeIndustry !== 'all') {
+      filtered = filtered.filter(section => section.industry === activeIndustry);
+    }
+    
+    if (complexityFilter !== 'all') {
+      filtered = filtered.filter(section => section.complexity === complexityFilter);
+    }
+    
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(section => 
         section.name.toLowerCase().includes(term) || 
-        (section.description && section.description.toLowerCase().includes(term))
+        (section.description && section.description.toLowerCase().includes(term)) ||
+        (section.tags && section.tags.some(tag => tag.toLowerCase().includes(term)))
       );
     }
     
     setFilteredSections(filtered);
-  }, [sections, searchTerm, activeCategory]);
+  }, [sections, searchTerm, activeCategory, activeIndustry, complexityFilter]);
+  
+  // Function to add a new section template
+  const addSectionTemplate = async (templateData: Omit<SectionTemplate, 'id' | 'created_at' | 'updated_at'>) => {
+    try {
+      const { error } = await supabase
+        .from('sections')
+        .insert(templateData);
+      
+      if (error) throw new Error(error.message);
+      
+      toast({
+        title: 'Success',
+        description: 'Section template added successfully',
+      });
+      
+      // Refetch sections
+      const { data, error: fetchError } = await supabase
+        .from('sections')
+        .select('*')
+        .order('name', { ascending: true });
+      
+      if (fetchError) throw new Error(fetchError.message);
+      
+      setSections(data || []);
+    } catch (err) {
+      console.error('Error adding section template:', err);
+      toast({
+        title: 'Error',
+        description: 'Failed to add section template',
+        variant: 'destructive',
+      });
+      throw err;
+    }
+  };
   
   return (
     <SectionContext.Provider
@@ -104,7 +162,13 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setSearchTerm,
         activeCategory,
         setActiveCategory,
+        activeIndustry,
+        setActiveIndustry,
         categories,
+        industries,
+        complexityFilter,
+        setComplexityFilter,
+        addSectionTemplate,
       }}
     >
       {children}
