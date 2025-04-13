@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/contexts/AuthContext';
@@ -11,6 +11,7 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,6 +51,14 @@ const Header = () => {
     setMobileMenuOpen(false);
   };
 
+  const handleAuthAction = () => {
+    if (user) {
+      navigate('/builder');
+    } else {
+      navigate('/auth');
+    }
+  };
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -73,16 +82,31 @@ const Header = () => {
         </nav>
         
         <div className="hidden md:flex items-center space-x-3">
-          <Link to="/auth">
-            <Button variant="ghost" size="sm" className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 text-base">
-              Login
+          {user ? (
+            <Button 
+              onClick={() => navigate('/builder')}
+              className="bg-blue-600 hover:bg-blue-700 text-white text-base"
+            >
+              My Projects
             </Button>
-          </Link>
-          <Link to="/auth">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white text-base">
-              Get Started Free
-            </Button>
-          </Link>
+          ) : (
+            <>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 text-base"
+                onClick={() => navigate('/auth')}
+              >
+                Login
+              </Button>
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700 text-white text-base"
+                onClick={() => navigate('/auth')}
+              >
+                Get Started Free
+              </Button>
+            </>
+          )}
         </div>
         
         {/* Mobile Menu Button */}
@@ -118,12 +142,39 @@ const Header = () => {
           </nav>
           
           <div className="mt-8 flex flex-col space-y-4">
-            <Link to="/auth" onClick={closeMenu}>
-              <Button variant="outline" className="w-full text-gray-700 text-base">Login</Button>
-            </Link>
-            <Link to="/auth" onClick={closeMenu}>
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base">Get Started Free</Button>
-            </Link>
+            {user ? (
+              <Button 
+                onClick={() => {
+                  navigate('/builder');
+                  closeMenu();
+                }}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base"
+              >
+                My Projects
+              </Button>
+            ) : (
+              <>
+                <Button 
+                  variant="outline" 
+                  className="w-full text-gray-700 text-base"
+                  onClick={() => {
+                    navigate('/auth');
+                    closeMenu();
+                  }}
+                >
+                  Login
+                </Button>
+                <Button 
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base"
+                  onClick={() => {
+                    navigate('/auth');
+                    closeMenu();
+                  }}
+                >
+                  Get Started Free
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
