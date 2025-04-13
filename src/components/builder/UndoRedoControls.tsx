@@ -24,7 +24,10 @@ const UndoRedoControls = () => {
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom">
-          <p>Undo (Ctrl+Z)</p>
+          <div className="flex flex-col">
+            <p>Undo last action</p>
+            <p className="text-xs opacity-80 mt-1">Ctrl+Z</p>
+          </div>
         </TooltipContent>
       </Tooltip>
       
@@ -42,7 +45,10 @@ const UndoRedoControls = () => {
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom">
-          <p>Redo (Ctrl+Y)</p>
+          <div className="flex flex-col">
+            <p>Redo last action</p>
+            <p className="text-xs opacity-80 mt-1">Ctrl+Y / Ctrl+Shift+Z</p>
+          </div>
         </TooltipContent>
       </Tooltip>
     </div>

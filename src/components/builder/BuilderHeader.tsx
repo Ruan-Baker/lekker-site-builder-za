@@ -1,117 +1,116 @@
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft, Eye, Save, Settings } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useBuilder } from '@/contexts/BuilderContext';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { toast } from '@/hooks/use-toast';
-import UndoRedoControls from './UndoRedoControls';
+import { useProject } from '@/contexts/ProjectContext';
+import { useHistory } from '@/contexts/HistoryContext';
+import { Button } from '@/components/ui/button';
 import ResponsiveViewControls from './ResponsiveViewControls';
-import KeyboardShortcutsHelp from './KeyboardShortcutsHelp';
+import UndoRedoControls from './UndoRedoControls';
+import { Eye, Save } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
+import { useBuilder } from '@/contexts/BuilderContext';
+import KeyboardShortcutsHelp from './KeyboardShortcutsHelp';
 
 const BuilderHeader = () => {
-  const navigate = useNavigate();
-  const { saveElements, elements, isLoading } = useBuilder();
   const { projectId } = useParams<{ projectId: string }>();
-  const [previewOpen, setPreviewOpen] = React.useState(false);
-  const [pageId, setPageId] = React.useState<string | null>(null);
+  const { project, isLoading: projectLoading } = useProject();
+  const { saveElements, isLoading: builderLoading } = useBuilder();
+  const [pages, setPages] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState<string | null>(null);
+  const [previewMode, setPreviewMode] = useState(false);
+  const { isSaving } = useHistory();
   
-  // Fetch the current page ID (this is a simplified version, in a real app this would be from context or params)
-  React.useEffect(() => {
-    const fetchHomepage = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('pages')
-          .select('id')
-          .eq('project_id', projectId)
-          .eq('is_homepage', true)
-          .single();
-          
-        if (error) {
-          throw error;
-        }
-        
-        if (data) {
-          setPageId(data.id);
-        }
-      } catch (error) {
-        console.error('Error fetching homepage:', error);
-      }
-    };
-    
+  useEffect(() => {
     if (projectId) {
-      fetchHomepage();
+      fetchPages();
     }
   }, [projectId]);
   
+  const fetchPages = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('pages')
+        .select('*')
+        .eq('project_id', projectId);
+        
+      if (error) throw error;
+      
+      if (data) {
+        setPages(data);
+        
+        // Set homepage as default
+        const homepage = data.find(page => page.is_homepage);
+        if (homepage) {
+          setCurrentPage(homepage.id);
+        } else if (data.length > 0) {
+          setCurrentPage(data[0].id);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching pages:', error);
+    }
+  };
+  
   const handleSave = async () => {
-    if (!pageId) {
+    if (!currentPage) {
       toast({
-        title: "Error",
-        description: "No page selected to save elements to",
-        variant: "destructive"
+        title: 'No page selected',
+        description: 'Please select a page to save your changes',
+        variant: 'destructive'
       });
       return;
     }
     
     try {
-      await saveElements(pageId);
+      await saveElements(currentPage);
+      
       toast({
-        title: "Success",
-        description: "Elements saved successfully"
+        title: 'Changes saved',
+        description: 'Your page has been saved successfully'
       });
     } catch (error) {
-      console.error('Error saving elements:', error);
+      console.error('Error saving:', error);
       toast({
-        title: "Error",
-        description: "Failed to save elements",
-        variant: "destructive"
+        title: 'Error saving',
+        description: 'There was a problem saving your changes',
+        variant: 'destructive'
       });
     }
   };
-
+  
   return (
-    <header className="flex items-center justify-between px-4 h-14 border-b bg-white">
+    <header className="h-14 border-b border-gray-200 bg-white px-4 flex items-center justify-between">
       <div className="flex items-center space-x-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate('/projects')}>
-          <ChevronLeft className="h-5 w-5" />
-        </Button>
-        <h1 className="font-medium">Page Builder</h1>
+        <h1 className="text-lg font-semibold">
+          {projectLoading ? 'Loading...' : project?.name || 'New Project'}
+        </h1>
+        
+        <UndoRedoControls />
       </div>
       
-      <div className="flex items-center space-x-4">
-        <UndoRedoControls />
-        <ResponsiveViewControls />
+      <div className="flex items-center space-x-2">
         <KeyboardShortcutsHelp />
+      
+        <ResponsiveViewControls />
         
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           size="sm"
-          className="flex items-center gap-1"
-          onClick={() => setPreviewOpen(true)}
+          className="ml-2"
+          onClick={() => setPreviewMode(!previewMode)}
         >
-          <Eye className="h-4 w-4" />
+          <Eye className="mr-2 h-4 w-4" />
           Preview
         </Button>
         
         <Button 
-          variant="outline" 
-          size="sm"
-          className="flex items-center gap-1"
-        >
-          <Settings className="h-4 w-4" />
-          Settings
-        </Button>
-        
-        <Button 
           onClick={handleSave}
-          disabled={isLoading}
-          className="flex items-center gap-1"
+          disabled={builderLoading || isSaving}
+          size="sm"
         >
-          <Save className="h-4 w-4" />
-          Save
+          <Save className="mr-2 h-4 w-4" />
+          {isSaving ? 'Saving...' : 'Save'}
         </Button>
       </div>
     </header>

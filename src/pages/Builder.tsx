@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -16,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import PreviewMode from '@/components/builder/PreviewMode';
 import { supabase } from '@/integrations/supabase/client';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
+import KeyboardShortcutsHelp from '@/components/builder/KeyboardShortcutsHelp';
 
 const Builder = () => {
   const { projectId } = useParams<{ projectId: string }>();

@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useBuilder } from '@/contexts/BuilderContext';
-import { Trash, Copy, Paste } from 'lucide-react';
+import { Trash, Copy, ClipboardCopy } from 'lucide-react';
 import { useClipboard } from '@/hooks/useClipboard';
 import ColorPicker from '@/components/design/ColorPicker';
 import ResponsiveControls from '@/components/builder/ResponsiveControls';
@@ -58,7 +57,7 @@ const ElementProperties: React.FC<{ elementId: string }> = ({ elementId }) => {
             disabled={!hasClipboardData}
             title="Paste element (Ctrl+V)"
           >
-            <Paste className="h-4 w-4" />
+            <ClipboardCopy className="h-4 w-4" />
           </Button>
           <Button
             variant="ghost"

@@ -31,7 +31,10 @@ const ElementControls: React.FC<ElementControlsProps> = ({ elementId }) => {
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom">
-          <p>Copy (Ctrl+C)</p>
+          <div className="flex flex-col">
+            <p>Copy element</p>
+            <p className="text-xs opacity-80 mt-1">Ctrl+C</p>
+          </div>
         </TooltipContent>
       </Tooltip>
       
@@ -50,7 +53,10 @@ const ElementControls: React.FC<ElementControlsProps> = ({ elementId }) => {
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom">
-          <p>Duplicate</p>
+          <div className="flex flex-col">
+            <p>Duplicate element</p>
+            <p className="text-xs opacity-80 mt-1">Ctrl+D</p>
+          </div>
         </TooltipContent>
       </Tooltip>
       
@@ -69,7 +75,10 @@ const ElementControls: React.FC<ElementControlsProps> = ({ elementId }) => {
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom">
-          <p>Delete (Del)</p>
+          <div className="flex flex-col">
+            <p>Delete element</p>
+            <p className="text-xs opacity-80 mt-1">Delete / Backspace</p>
+          </div>
         </TooltipContent>
       </Tooltip>
     </div>
