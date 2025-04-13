@@ -19,6 +19,20 @@ interface CustomSectionCreatorProps {
   isDialog?: boolean;
 }
 
+// Extended ElementData interface to include optional children property
+interface ExtendedElementData {
+  id: string;
+  type: string;
+  properties: Record<string, any>;
+  children?: any[];
+  position: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+}
+
 const CustomSectionCreator: React.FC<CustomSectionCreatorProps> = ({ 
   elementId,
   isDialog = false
@@ -37,9 +51,9 @@ const CustomSectionCreator: React.FC<CustomSectionCreatorProps> = ({
   const [dialogOpen, setDialogOpen] = useState(false);
   
   const targetElement = elementId 
-    ? elements.find(el => el.id === elementId) 
+    ? elements.find(el => el.id === elementId) as ExtendedElementData | undefined
     : selectedElement 
-      ? elements.find(el => el.id === selectedElement)
+      ? elements.find(el => el.id === selectedElement) as ExtendedElementData | undefined
       : null;
   
   const addTag = () => {
@@ -94,10 +108,13 @@ const CustomSectionCreator: React.FC<CustomSectionCreatorProps> = ({
       const templateData = {
         type: targetElement.type,
         properties: targetElement.properties,
-        // Only include children if they exist
-        ...(targetElement.children && { children: targetElement.children }),
         complexity: complexity
       };
+      
+      // Only add children if they exist in the targetElement
+      if (targetElement.children) {
+        Object.assign(templateData, { children: targetElement.children });
+      }
       
       await saveSectionAsTemplate(templateData, metadata);
       

@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -82,9 +81,9 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
           const typedSections = data.map(section => ({
             ...section,
             complexity: section.complexity as 'simple' | 'medium' | 'complex' | null,
-            popularity: section.popularity || 0,
-            author_id: section.author_id || null,
-            tags: section.tags || []
+            tags: section.tags || [],
+            popularity: 0, // Default value if not present
+            author_id: null, // Default value if not present
           }));
           setSections(typedSections);
         
@@ -183,9 +182,9 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
         const typedSections = data.map(section => ({
           ...section,
           complexity: section.complexity as 'simple' | 'medium' | 'complex' | null,
-          popularity: section.popularity || 0,
-          author_id: section.author_id || null,
-          tags: section.tags || []
+          tags: section.tags || [],
+          popularity: 0, // Default value if not present
+          author_id: null, // Default value if not present
         }));
         setSections(typedSections);
       }
@@ -215,7 +214,7 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
         name: metadata.name || 'Untitled Section',
         category: metadata.category || 'custom',
         description: metadata.description || null,
-        thumbnail_url: null, // We're removing the thumbnail requirement
+        thumbnail_url: null, // We're removing the thumbnail requirement completely
         template_data: sectionData,
         industry: metadata.industry || null,
         complexity: metadata.complexity || 'medium',
@@ -248,9 +247,9 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
         const typedSections = data.map(section => ({
           ...section,
           complexity: section.complexity as 'simple' | 'medium' | 'complex' | null,
-          popularity: section.popularity || 0,
-          author_id: section.author_id || null,
-          tags: section.tags || []
+          tags: section.tags || [],
+          popularity: 0, // Default value if not present
+          author_id: null, // Default value if not present
         }));
         setSections(typedSections);
         
