@@ -1,39 +1,10 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { toast } from "@/hooks/use-toast";
-import { EyeOff, Eye, CheckCircle, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const SignUpForm = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!name || !email || !password) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all fields",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    // Here you would typically handle form submission, API calls, etc.
-    setSubmitted(true);
-    toast({
-      title: "Account Created",
-      description: "Your account has been successfully created!"
-    });
-  };
-  
   return (
     <section id="signup" className="section-padding bg-gradient-to-b from-perspective-light-gray to-white">
       <div className="flex flex-col lg:flex-row items-center gap-16 max-w-7xl mx-auto">
@@ -45,84 +16,17 @@ const SignUpForm = () => {
             Create a free account and explore our builder. No credit card required.
           </p>
           
-          {submitted ? (
-            <div className="text-center p-8 rounded-xl bg-green-50 border border-green-200">
-              <div className="flex justify-center mb-4">
-                <CheckCircle className="h-16 w-16 text-green-500" />
-              </div>
-              <h3 className="text-xl font-semibold text-green-700 mb-2">
-                Registration Successful!
-              </h3>
-              <p className="text-green-600 mb-6">
-                Thank you for signing up. Check your email for confirmation.
-              </p>
-              <Button className="btn-gradient w-full">
-                Continue to Dashboard
+          <div className="space-y-8 max-w-md">
+            <Link to="/signup">
+              <Button className="btn-gradient w-full h-12">
+                Get Started - It's Free
               </Button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-8 max-w-md">
-              <div>
-                <Label htmlFor="name" className="text-sm font-medium">
-                  Full Name
-                </Label>
-                <Input 
-                  id="name" 
-                  type="text" 
-                  placeholder="Your name" 
-                  className="h-12 mt-2 rounded-lg border-perspective-light-gray focus:border-perspective-purple focus:ring-perspective-purple"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="email" className="text-sm font-medium">
-                  Email Address
-                </Label>
-                <Input 
-                  id="email" 
-                  type="email" 
-                  placeholder="you@example.com" 
-                  className="h-12 mt-2 rounded-lg border-perspective-light-gray focus:border-perspective-purple focus:ring-perspective-purple"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="password" className="text-sm font-medium">
-                  Password
-                </Label>
-                <div className="relative">
-                  <Input 
-                    id="password" 
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Create a password" 
-                    className="h-12 mt-2 pr-10 rounded-lg border-perspective-light-gray focus:border-perspective-purple focus:ring-perspective-purple"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <button 
-                    type="button"
-                    className="absolute right-3 top-[1.15rem] text-perspective-gray hover:text-perspective-purple"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
-              </div>
-              
-              <div>
-                <Button type="submit" className="btn-gradient w-full h-12">
-                  Create Account
-                </Button>
-                <p className="text-xs text-perspective-gray text-center mt-4">
-                  By signing up, you agree to our Terms of Service and Privacy Policy.
-                </p>
-              </div>
-            </form>
-          )}
+            </Link>
+            
+            <p className="text-center text-sm text-perspective-gray">
+              Already have an account? <Link to="/auth" className="text-perspective-purple font-medium hover:underline">Log in</Link>
+            </p>
+          </div>
         </div>
         
         <div className="w-full lg:w-1/2">

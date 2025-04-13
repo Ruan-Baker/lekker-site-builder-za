@@ -13,6 +13,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Builder from "./pages/Builder";
 import Auth from "./pages/Auth";
+import Signup from "./pages/Signup";
 import ResetConfirmation from "./components/auth/ResetConfirmation";
 import SeoStructuredData from "./components/SeoStructuredData";
 
@@ -40,6 +41,7 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/signup" element={<Signup />} />
                   <Route path="/auth/reset-confirmation" element={<ResetConfirmation />} />
                   <Route path="/profile" element={
                     <ProtectedRoute>
