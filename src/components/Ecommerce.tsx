@@ -19,57 +19,98 @@ const Ecommerce = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
           <div className="relative overflow-hidden rounded-xl shadow-lg h-[400px]">
-            <div className="bg-gray-900 p-4 h-full w-full font-mono text-sm overflow-hidden">
-              <div className="code-animation-container">
-                <pre className="animate-typing text-green-400 overflow-hidden whitespace-pre-wrap">
-{`// South African E-commerce Platform
-import { createStore } from 'lekker-sites';
+            {/* Website Builder Interface Animation */}
+            <div className="bg-gray-900 h-full w-full relative">
+              {/* Builder Interface Header */}
+              <div className="bg-gray-800 p-3 border-b border-gray-700 flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-500 ml-1"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500 ml-1"></div>
+                <div className="text-xs text-gray-400 ml-4">My Online Store - Builder</div>
+              </div>
 
-const store = createStore({
-  name: "My Online Store",
-  currency: "ZAR",
-  shipping: {
-    providers: ["CourierGuy", "FastWay", "Pargo"],
-    defaultRegion: "Gauteng"
-  },
-  payments: {
-    gateways: [
-      "Payfast",
-      "Peach",
-      "SnapScan"
-    ],
-    noTransactionFees: true
-  },
-  products: [
-    {
-      id: "prod-001",
-      name: "Premium Product",
-      price: 499.99,
-      description: "Amazing product for your needs",
-      inStock: true,
-      variants: [
-        { color: "blue", size: "M", sku: "BLU-M-001" },
-        { color: "red", size: "L", sku: "RED-L-001" }
-      ]
-    },
-    // More products...
-  ]
-});
+              {/* Builder Content */}
+              <div className="grid grid-cols-12 h-[calc(100%-40px)]">
+                {/* Left Sidebar - Elements Panel */}
+                <div className="col-span-2 bg-gray-800 border-r border-gray-700 p-2 text-xs">
+                  <div className="text-gray-400 mb-2 text-center">Elements</div>
+                  <div className="bg-gray-700 p-2 rounded mb-2 text-blue-300 text-center animate-pulse">Products</div>
+                  <div className="bg-gray-700 p-2 rounded mb-2 text-gray-300 text-center">Header</div>
+                  <div className="bg-gray-700 p-2 rounded mb-2 text-gray-300 text-center">Gallery</div>
+                  <div className="bg-gray-700 p-2 rounded mb-2 text-gray-300 text-center">Checkout</div>
+                </div>
 
-// No fees taken from your sales
-store.setFeePercentage(0);
+                {/* Main Canvas */}
+                <div className="col-span-8 bg-gray-100 p-3 relative overflow-hidden">
+                  {/* Store Preview */}
+                  <div className="bg-white h-full rounded shadow-sm overflow-hidden">
+                    {/* Store Header */}
+                    <div className="bg-blue-600 text-white p-2 text-center text-sm font-bold">
+                      My South African Online Store
+                    </div>
+                    
+                    {/* Product Grid Being Built */}
+                    <div className="grid grid-cols-2 gap-3 p-3">
+                      <div className="animate-float-short bg-gray-100 rounded p-2">
+                        <div className="h-16 bg-gray-200 rounded mb-2"></div>
+                        <div className="h-3 w-3/4 bg-gray-300 rounded mb-1"></div>
+                        <div className="h-3 w-1/2 bg-gray-300 rounded mb-2"></div>
+                        <div className="flex justify-between items-center">
+                          <div className="h-4 w-16 bg-blue-200 rounded"></div>
+                          <div className="h-6 w-16 bg-blue-500 rounded text-xs text-white flex items-center justify-center">R 299</div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-gray-100 rounded p-2">
+                        <div className="h-16 bg-gray-200 rounded mb-2"></div>
+                        <div className="h-3 w-3/4 bg-gray-300 rounded mb-1"></div>
+                        <div className="h-3 w-1/2 bg-gray-300 rounded mb-2"></div>
+                        <div className="flex justify-between items-center">
+                          <div className="h-4 w-16 bg-blue-200 rounded"></div>
+                          <div className="h-6 w-16 bg-blue-500 rounded text-xs text-white flex items-center justify-center">R 499</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Element Being Dragged Animation */}
+                    <div className="absolute top-20 left-20 w-32 h-28 bg-white border-2 border-dashed border-blue-500 rounded p-2 animate-builder-drag shadow-md">
+                      <div className="h-12 bg-gray-100 rounded mb-2"></div>
+                      <div className="h-2 w-3/4 bg-gray-200 rounded mb-1"></div>
+                      <div className="h-2 w-1/2 bg-gray-200 rounded mb-1"></div>
+                      <div className="h-4 w-16 bg-blue-500 rounded text-xs text-white flex items-center justify-center">R 199</div>
+                    </div>
 
-// Deploy your store for FREE!
-store.deploy();`}
-                </pre>
+                    {/* Mouse Pointer */}
+                    <div className="absolute w-4 h-4 border-r-2 border-b-2 border-blue-600 transform rotate-45 animate-cursor-bounce" style={{ left: '60px', top: '50px' }}></div>
+                  </div>
+                </div>
+
+                {/* Right Sidebar - Properties Panel */}
+                <div className="col-span-2 bg-gray-800 border-l border-gray-700 p-2 text-xs">
+                  <div className="text-gray-400 mb-2 text-center">Product Settings</div>
+                  <div className="mb-2">
+                    <div className="text-gray-300 mb-1">Price (ZAR)</div>
+                    <div className="bg-gray-700 p-1 rounded text-white">R 299.99</div>
+                  </div>
+                  <div className="mb-2">
+                    <div className="text-gray-300 mb-1">Stock</div>
+                    <div className="bg-gray-700 p-1 rounded text-white">15</div>
+                  </div>
+                  <div className="mb-2">
+                    <div className="text-gray-300 mb-1">Payment</div>
+                    <div className="bg-gray-700 p-1 rounded text-white">Payfast</div>
+                  </div>
+                  <div className="mb-2">
+                    <div className="text-gray-300 mb-1">Shipping</div>
+                    <div className="bg-gray-700 p-1 rounded text-white">CourierGuy</div>
+                  </div>
+                </div>
               </div>
               
-              {/* Animated cursor */}
-              <div className="typing-cursor"></div>
-              
-              {/* Code animation elements */}
-              <div className="code-line-highlight"></div>
-              <div className="code-glow-effect"></div>
+              {/* Builder Status Bar */}
+              <div className="absolute bottom-0 left-0 right-0 bg-blue-600 h-5 text-xs text-white flex items-center px-2">
+                <span className="animate-pulse">✓ Changes saved - 0% transaction fees</span>
+              </div>
             </div>
           </div>
           
