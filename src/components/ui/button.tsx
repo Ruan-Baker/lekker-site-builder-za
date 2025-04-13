@@ -48,7 +48,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     // If the variant is 'rainbow', render the RainbowButton component
     if (variant === "rainbow") {
-      return <RainbowButton className={className} ref={ref} {...props}>{children}</RainbowButton>
+      return <RainbowButton ref={ref} className={className} {...props}>{children}</RainbowButton>
     }
     
     return (
