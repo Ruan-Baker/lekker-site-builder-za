@@ -25,6 +25,25 @@ const Header = () => {
     };
   }, []);
 
+  // Add effect to prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [mobileMenuOpen]);
+
   const closeMenu = () => {
     setMobileMenuOpen(false);
   };
@@ -71,10 +90,19 @@ const Header = () => {
         
         {/* Mobile Navigation */}
         <div className={`
-          fixed inset-0 bg-white z-40 flex flex-col pt-20 px-6 
+          fixed inset-0 bg-white z-40 flex flex-col pt-20 px-6
           transition-transform duration-300 ease-in-out md:hidden
           ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
         `}>
+          {/* Close button at the top right */}
+          <button 
+            className="absolute top-4 right-4 text-gray-800 p-2"
+            onClick={closeMenu}
+            aria-label="Close menu"
+          >
+            <X size={24} />
+          </button>
+          
           <nav className="flex flex-col space-y-6">
             <a href="#features" className="text-lg font-medium text-gray-800" onClick={closeMenu}>Features</a>
             <a href="#templates" className="text-lg font-medium text-gray-800" onClick={closeMenu}>Templates</a>
