@@ -9,7 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { useBuilder } from '@/contexts/BuilderContext';
 import { useDesign } from '@/contexts/DesignContext';
-import { Grid3X3, Grid2X2, GridIcon, LayoutGrid, Columns, Table2 } from 'lucide-react';
+import { 
+  Grid3X3, Grid2X2, GridIcon, LayoutGrid, Columns, Table2 
+} from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -74,7 +76,7 @@ const ResponsiveGridControls: React.FC<ResponsiveGridControlsProps> = ({ element
     { name: '2×1', columns: 2, rows: 1, icon: Columns },
     { name: '3×1', columns: 3, rows: 1, icon: Columns },
     { name: '2×2', columns: 2, rows: 2, icon: Grid2X2 },
-    { name: '3×2', columns: 3, rows: 2, icon: Grid },
+    { name: '3×2', columns: 3, rows: 2, icon: LayoutGrid }, // Changed from Grid to LayoutGrid which is imported
     { name: '3×3', columns: 3, rows: 3, icon: Grid3X3 },
     { name: '4×1', columns: 4, rows: 1, icon: Table2 },
     { name: '4×2', columns: 4, rows: 2, icon: Table2 },

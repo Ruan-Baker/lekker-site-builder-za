@@ -109,7 +109,7 @@ const AdvancedDesignTools: React.FC<AdvancedDesignToolsProps> = ({ elementId }) 
               <AdvancedTypographyControls
                 value={element.properties.typography || {}}
                 onChange={handleTypographyChange}
-                fonts={designSettings?.typography_settings?.fonts || []}
+                fonts={availableFonts || []}
               />
             </CardContent>
           </Card>
@@ -343,5 +343,25 @@ const AdvancedDesignTools: React.FC<AdvancedDesignToolsProps> = ({ elementId }) 
     </div>
   );
 };
+
+// Add the missing availableFonts array
+const availableFonts = [
+  'Inter',
+  'Roboto',
+  'Open Sans',
+  'Lato',
+  'Poppins',
+  'Montserrat',
+  'Source Sans Pro',
+  'Raleway',
+  'Playfair Display',
+  'Merriweather',
+  'Oswald',
+  'Nunito',
+  'Work Sans',
+  'Fira Sans',
+  'Rubik',
+  'Quicksand',
+];
 
 export default AdvancedDesignTools;
