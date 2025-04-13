@@ -27,37 +27,37 @@ const Header = () => {
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-perspective-white/80 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'
+        isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         <Link to="/" className="flex items-center">
           <h1 className="text-2xl font-bold">
-            Lekker<span className="text-perspective-purple">Sites</span>
+            Lekker<span className="text-purple-600">Sites</span>
           </h1>
         </Link>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <a href="#features" className="nav-link">Features</a>
-          <a href="#templates" className="nav-link">Templates</a>
-          <a href="#funnels" className="nav-link">Funnels</a>
-          <a href="#testimonials" className="nav-link">Testimonials</a>
-          <a href="#pricing" className="nav-link">Pricing</a>
+        <nav className="hidden md:flex items-center space-x-6">
+          <a href="#features" className="text-sm font-medium text-gray-600 hover:text-purple-600 transition-colors">Features</a>
+          <a href="#templates" className="text-sm font-medium text-gray-600 hover:text-purple-600 transition-colors">Templates</a>
+          <a href="#funnels" className="text-sm font-medium text-gray-600 hover:text-purple-600 transition-colors">Funnels</a>
+          <a href="#testimonials" className="text-sm font-medium text-gray-600 hover:text-purple-600 transition-colors">Testimonials</a>
+          <a href="#pricing" className="text-sm font-medium text-gray-600 hover:text-purple-600 transition-colors">Pricing</a>
         </nav>
         
-        <div className="hidden md:flex items-center space-x-4">
-          <Button variant="ghost" size="sm" className="rounded-lg font-medium">
+        <div className="hidden md:flex items-center space-x-3">
+          <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900 font-medium">
             Login
           </Button>
-          <Button className="bg-perspective-purple hover:bg-perspective-purple-dark text-white rounded-lg px-5 py-2 font-medium shadow-soft">
+          <Button className="bg-purple-600 hover:bg-purple-700 text-white rounded-md px-5 py-2 text-sm font-medium">
             Get Started
           </Button>
         </div>
         
         {/* Mobile Menu Button */}
         <button 
-          className="md:hidden text-perspective-gray hover:text-perspective-black"
+          className="md:hidden text-gray-600 hover:text-gray-900"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -65,7 +65,7 @@ const Header = () => {
         
         {/* Mobile Navigation */}
         <div className={`
-          fixed inset-0 bg-perspective-white z-40 flex flex-col pt-24 px-6 
+          fixed inset-0 bg-white z-40 flex flex-col pt-24 px-6 
           transition-transform duration-300 md:hidden
           ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
         `}>
@@ -79,7 +79,7 @@ const Header = () => {
           
           <div className="mt-8 flex flex-col space-y-4">
             <Button variant="outline" className="w-full">Login</Button>
-            <Button className="w-full">Get Started</Button>
+            <Button className="w-full bg-purple-600 hover:bg-purple-700">Get Started</Button>
           </div>
         </div>
       </div>

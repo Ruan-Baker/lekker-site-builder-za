@@ -15,96 +15,70 @@ const CallToAction = () => {
   ];
   
   return (
-    <section className="section-padding relative overflow-hidden bg-gradient-to-br from-perspective-black to-perspective-dark-gray text-white">
-      {/* Background decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-perspective-purple opacity-10 blur-3xl rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-perspective-blue opacity-10 blur-3xl rounded-full transform translate-x-1/2 translate-y-1/2"></div>
-      </div>
-      
-      <div className="max-w-5xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Build Your Professional Website?
+    <section id="pricing" className="py-20 px-6 bg-gray-50">
+      <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Ready to build your professional website?
             </h2>
-            <p className="text-white/70 text-lg">
+            <p className="text-lg text-gray-600 mb-8">
               Join thousands of South African businesses already using Lekker Sites to grow their online presence.
             </p>
             
-            <div className="space-y-3">
+            <div className="space-y-3 mb-8">
               {features.map((feature, index) => (
                 <div key={index} className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full bg-perspective-purple/30 flex items-center justify-center">
-                    <Check size={14} className="text-perspective-purple-light" />
+                  <div className="w-5 h-5 rounded-full bg-purple-100 flex items-center justify-center">
+                    <Check size={14} className="text-purple-600" />
                   </div>
-                  <span className="text-white/90">{feature}</span>
+                  <span className="text-gray-700">{feature}</span>
                 </div>
               ))}
             </div>
             
-            <div className="pt-4 space-y-3">
+            <div className="space-y-4">
               <Link to="/builder">
-                <Button className="btn-gradient w-full sm:w-auto text-lg group px-8 py-3">
+                <Button className="bg-purple-600 hover:bg-purple-700 text-white rounded-md w-full sm:w-auto px-8 py-3 text-lg">
                   Start Building Free
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <p className="text-white/50 text-sm">No credit card required. Free plan includes all the basics.</p>
+              <p className="text-sm text-gray-500">No credit card required. Free plan includes all the basics.</p>
             </div>
           </div>
           
-          <div className="bg-white/5 rounded-2xl p-6 backdrop-blur-sm border border-white/10">
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-semibold mb-1">Pro Plan</h3>
-              <p className="text-white/70">Everything you need to succeed online</p>
-              <div className="flex justify-center items-baseline mt-4">
+          <div className="bg-white rounded-xl p-8 border border-gray-200 shadow-lg">
+            <div className="text-center mb-8">
+              <div className="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium mb-2">Most Popular</div>
+              <h3 className="text-2xl font-bold mb-2">Pro Plan</h3>
+              <p className="text-gray-600 mb-4">Everything you need to succeed online</p>
+              <div className="flex justify-center items-baseline">
                 <span className="text-4xl font-bold">R299</span>
-                <span className="text-white/70 ml-2">/month</span>
+                <span className="text-gray-600 ml-2">/month</span>
               </div>
             </div>
             
-            <div className="space-y-3 mb-6">
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full bg-perspective-blue/30 flex items-center justify-center">
-                  <Check size={14} className="text-perspective-blue-light" />
+            <div className="space-y-3 mb-8">
+              {[
+                "Unlimited websites",
+                "Unlimited funnels",
+                "Custom domain",
+                "Advanced analytics",
+                "Remove branding",
+                "Priority support"
+              ].map((feature, index) => (
+                <div key={index} className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
+                    <Check size={14} className="text-blue-600" />
+                  </div>
+                  <span className="text-gray-700">{feature}</span>
                 </div>
-                <span className="text-white/90">Unlimited websites</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full bg-perspective-blue/30 flex items-center justify-center">
-                  <Check size={14} className="text-perspective-blue-light" />
-                </div>
-                <span className="text-white/90">Unlimited funnels</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full bg-perspective-blue/30 flex items-center justify-center">
-                  <Check size={14} className="text-perspective-blue-light" />
-                </div>
-                <span className="text-white/90">Custom domain</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full bg-perspective-blue/30 flex items-center justify-center">
-                  <Check size={14} className="text-perspective-blue-light" />
-                </div>
-                <span className="text-white/90">Advanced analytics</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full bg-perspective-blue/30 flex items-center justify-center">
-                  <Check size={14} className="text-perspective-blue-light" />
-                </div>
-                <span className="text-white/90">Remove branding</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 rounded-full bg-perspective-blue/30 flex items-center justify-center">
-                  <Check size={14} className="text-perspective-blue-light" />
-                </div>
-                <span className="text-white/90">Priority support</span>
-              </div>
+              ))}
             </div>
             
-            <Button variant="outline" className="w-full border-white/20 hover:bg-white/10">
-              View All Plans
+            <Button className="w-full bg-gray-900 hover:bg-black text-white rounded-md py-3">
+              Upgrade to Pro
             </Button>
           </div>
         </div>
