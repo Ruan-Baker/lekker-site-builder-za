@@ -43,7 +43,6 @@ const Header = () => {
           <a href="#funnels" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">Funnels</a>
           <a href="#ecommerce" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">E-commerce</a>
           <a href="#why" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">Our Mission</a>
-          <a href="#pricing" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">Free Forever</a>
         </nav>
         
         <div className="hidden md:flex items-center space-x-3">
@@ -75,7 +74,6 @@ const Header = () => {
             <a href="#funnels" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>Funnels</a>
             <a href="#ecommerce" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>E-commerce</a>
             <a href="#why" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>Our Mission</a>
-            <a href="#pricing" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>Free Forever</a>
           </nav>
           
           <div className="mt-8 flex flex-col space-y-4">
