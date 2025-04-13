@@ -2,69 +2,37 @@
 import React from 'react';
 import * as LucideIcons from 'lucide-react';
 
-export type IconName = keyof typeof LucideIcons;
+type IconNames = keyof typeof LucideIcons;
 
 interface IconElementProps {
-  icon: IconName;
+  name: IconNames;
   size?: number;
   color?: string;
   strokeWidth?: number;
   className?: string;
-  onClick?: () => void;
-  hoverEffect?: boolean;
-  rotate?: number;
-  animation?: 'none' | 'pulse' | 'spin' | 'bounce';
 }
 
 const IconElement: React.FC<IconElementProps> = ({
-  icon,
+  name,
   size = 24,
-  color = 'currentColor',
+  color,
   strokeWidth = 2,
   className = '',
-  onClick,
-  hoverEffect = false,
-  rotate = 0,
-  animation = 'none'
 }) => {
-  // Get the icon component dynamically
-  const IconComponent = LucideIcons[icon] as React.ElementType;
+  const IconComponent = LucideIcons[name];
   
   if (!IconComponent) {
-    console.error(`Icon "${icon}" not found`);
-    return null;
+    console.warn(`Icon "${name}" not found in Lucide icons`);
+    return <div className="text-red-500">Icon not found</div>;
   }
-  
-  let animationClass = '';
-  switch (animation) {
-    case 'pulse':
-      animationClass = 'animate-pulse';
-      break;
-    case 'spin':
-      animationClass = 'animate-spin';
-      break;
-    case 'bounce':
-      animationClass = 'animate-bounce';
-      break;
-    default:
-      animationClass = '';
-  }
-  
-  const hoverClass = hoverEffect ? 'transition-transform hover:scale-110' : '';
   
   return (
-    <div 
-      className={`inline-flex items-center justify-center ${hoverClass} ${animationClass} ${className}`}
-      onClick={onClick}
-      style={{ 
-        transform: `rotate(${rotate}deg)`,
-        cursor: onClick ? 'pointer' : 'default'
-      }}
-    >
-      <IconComponent
-        size={size}
-        color={color}
-        strokeWidth={strokeWidth}
+    <div className={`icon-element inline-flex ${className}`}>
+      <IconComponent 
+        size={size} 
+        color={color} 
+        strokeWidth={strokeWidth} 
+        aria-hidden="true" 
       />
     </div>
   );

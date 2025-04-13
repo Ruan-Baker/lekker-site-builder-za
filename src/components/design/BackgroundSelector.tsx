@@ -4,261 +4,197 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import ColorPicker from './ColorPicker';
-import { Upload, Trash, Image as ImageIcon } from 'lucide-react';
+import GradientGenerator from './GradientGenerator';
+import { Upload, Image as ImageIcon, Trash } from 'lucide-react';
 
 interface BackgroundSelectorProps {
-  background: {
-    type: 'color' | 'gradient' | 'image' | 'video';
-    value: string;
-    overlay?: string;
-    opacity?: number;
-    position?: string;
-    size?: string;
-    repeat?: string;
-    attachment?: string;
-    parallax?: boolean;
-  };
-  onChange: (background: any) => void;
+  value: any;
+  onChange: (value: any) => void;
+  label?: string;
 }
 
-const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({ background, onChange }) => {
-  const [bgType, setBgType] = useState<string>(background.type || 'color');
+const BackgroundSelector: React.FC<BackgroundSelectorProps> = ({
+  value = { type: 'color', value: '#ffffff' },
+  onChange,
+  label,
+}) => {
+  const [activeTab, setActiveTab] = useState<string>(value?.type || 'color');
+  const [bgColor, setBgColor] = useState<string>(
+    value?.type === 'color' ? value.value : '#ffffff'
+  );
+  const [bgGradient, setBgGradient] = useState<string>(
+    value?.type === 'gradient' ? value.value : 'linear-gradient(180deg, #3b82f6 0%, #10b981 100%)'
+  );
+  const [bgImage, setBgImage] = useState<string>(
+    value?.type === 'image' ? value.value : ''
+  );
+  const [bgImageOptions, setBgImageOptions] = useState<any>(
+    value?.type === 'image' ? (value.options || {}) : {
+      size: 'cover',
+      position: 'center center',
+      repeat: 'no-repeat',
+    }
+  );
   
-  const handleTypeChange = (type: string) => {
-    setBgType(type);
+  const updateBackground = (type: string, newValue: any, options?: any) => {
+    const updatedValue = {
+      type,
+      value: newValue,
+      ...(options ? { options } : {})
+    };
     
-    let newValue = '';
-    switch (type) {
+    onChange(updatedValue);
+  };
+  
+  // Handle tab change
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    
+    // Update background based on active tab
+    switch (tab) {
       case 'color':
-        newValue = background.type === 'color' ? background.value : '#ffffff';
+        updateBackground('color', bgColor);
         break;
       case 'gradient':
-        newValue = background.type === 'gradient' ? background.value : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+        updateBackground('gradient', bgGradient);
         break;
       case 'image':
-        newValue = background.type === 'image' ? background.value : '';
+        updateBackground('image', bgImage, bgImageOptions);
         break;
-      case 'video':
-        newValue = background.type === 'video' ? background.value : '';
+      default:
         break;
     }
-    
-    onChange({
-      ...background,
-      type,
-      value: newValue
-    });
   };
   
   return (
     <div className="space-y-4">
-      <Tabs value={bgType} onValueChange={handleTypeChange}>
-        <TabsList className="grid grid-cols-4">
+      {label && <Label>{label}</Label>}
+      
+      <Tabs value={activeTab} onValueChange={handleTabChange}>
+        <TabsList className="grid grid-cols-3 w-full">
           <TabsTrigger value="color">Color</TabsTrigger>
           <TabsTrigger value="gradient">Gradient</TabsTrigger>
           <TabsTrigger value="image">Image</TabsTrigger>
-          <TabsTrigger value="video">Video</TabsTrigger>
         </TabsList>
         
         <TabsContent value="color" className="space-y-4 pt-4">
           <ColorPicker
-            color={background.value}
-            onChange={(color) => onChange({ ...background, value: color })}
+            color={bgColor}
+            onChange={(color) => {
+              setBgColor(color);
+              updateBackground('color', color);
+            }}
             label="Background Color"
           />
         </TabsContent>
         
         <TabsContent value="gradient" className="space-y-4 pt-4">
-          <div className="space-y-2">
-            <Label>Gradient Preview</Label>
-            <div 
-              className="w-full h-20 rounded-md border"
-              style={{ background: background.value }}
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="gradientValue">Gradient CSS</Label>
-            <Input
-              id="gradientValue"
-              value={background.value}
-              onChange={(e) => onChange({ ...background, value: e.target.value })}
-              placeholder="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-            />
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4 mt-4">
-            <Button variant="outline" size="sm" className="w-full" onClick={() => onChange({ 
-              ...background, 
-              value: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
-            })}>
-              Purple Blend
-            </Button>
-            <Button variant="outline" size="sm" className="w-full" onClick={() => onChange({ 
-              ...background, 
-              value: 'linear-gradient(to right, #ec4899, #8b5cf6)' 
-            })}>
-              Pink Purple
-            </Button>
-            <Button variant="outline" size="sm" className="w-full" onClick={() => onChange({ 
-              ...background, 
-              value: 'linear-gradient(to right, #0ea5e9, #10b981)' 
-            })}>
-              Blue Green
-            </Button>
-            <Button variant="outline" size="sm" className="w-full" onClick={() => onChange({ 
-              ...background, 
-              value: 'radial-gradient(circle, #fcd34d 0%, #f97316 100%)' 
-            })}>
-              Radial Orange
-            </Button>
-          </div>
+          <GradientGenerator
+            value={bgGradient}
+            onChange={(gradient) => {
+              setBgGradient(gradient);
+              updateBackground('gradient', gradient);
+            }}
+            label="Background Gradient"
+          />
         </TabsContent>
         
         <TabsContent value="image" className="space-y-4 pt-4">
           <div className="space-y-2">
-            <Label htmlFor="imageUrl">Image URL</Label>
+            <Label>Background Image URL</Label>
             <div className="flex gap-2">
               <Input
-                id="imageUrl"
-                value={background.value}
-                onChange={(e) => onChange({ ...background, value: e.target.value })}
-                placeholder="https://example.com/image.jpg"
+                value={bgImage}
+                placeholder="Enter image URL"
+                onChange={(e) => {
+                  setBgImage(e.target.value);
+                  updateBackground('image', e.target.value, bgImageOptions);
+                }}
+                className="flex-1"
               />
-              <Button variant="outline" size="icon">
+              {/* In a real app, you'd have an image upload option here */}
+              <Button variant="outline" size="icon" type="button">
                 <Upload size={16} />
               </Button>
             </div>
           </div>
           
-          {background.value && (
-            <div className="space-y-2">
-              <Label>Preview</Label>
-              <div className="relative w-full h-32 rounded-md border overflow-hidden">
-                <div 
-                  className="w-full h-full bg-center"
-                  style={{ 
-                    backgroundImage: `url(${background.value})`,
-                    backgroundSize: background.size || 'cover',
-                    backgroundPosition: background.position || 'center',
-                    backgroundRepeat: background.repeat || 'no-repeat'
-                  }}
-                />
-                <Button 
-                  variant="destructive"
-                  size="icon"
-                  className="absolute top-2 right-2 w-6 h-6"
-                  onClick={() => onChange({ ...background, value: '' })}
-                >
-                  <Trash size={12} />
-                </Button>
-              </div>
+          {bgImage && (
+            <div 
+              className="h-20 w-full rounded border bg-gray-100 relative bg-center bg-no-repeat"
+              style={{ 
+                backgroundImage: `url(${bgImage})`, 
+                backgroundSize: bgImageOptions.size,
+                backgroundPosition: bgImageOptions.position,
+                backgroundRepeat: bgImageOptions.repeat,
+              }}
+            >
+              <Button 
+                variant="destructive" 
+                size="icon" 
+                className="absolute top-2 right-2 h-6 w-6" 
+                onClick={() => {
+                  setBgImage('');
+                  updateBackground('image', '', bgImageOptions);
+                }}
+              >
+                <Trash size={14} />
+              </Button>
             </div>
           )}
           
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Background Size</Label>
-              <Select
-                value={background.size || 'cover'}
-                onValueChange={(value) => onChange({ ...background, size: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="cover">Cover</SelectItem>
-                  <SelectItem value="contain">Contain</SelectItem>
-                  <SelectItem value="auto">Auto</SelectItem>
-                  <SelectItem value="100%">100%</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="space-y-2">
-              <Label>Position</Label>
-              <Select
-                value={background.position || 'center'}
-                onValueChange={(value) => onChange({ ...background, position: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="center">Center</SelectItem>
-                  <SelectItem value="top">Top</SelectItem>
-                  <SelectItem value="bottom">Bottom</SelectItem>
-                  <SelectItem value="left">Left</SelectItem>
-                  <SelectItem value="right">Right</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <Switch
-              checked={background.parallax || false}
-              onCheckedChange={(checked) => onChange({ ...background, parallax: checked })}
-              id="parallax"
-            />
-            <Label htmlFor="parallax">Enable parallax effect</Label>
-          </div>
-          
           <div className="space-y-2">
-            <Label>Overlay Color</Label>
-            <ColorPicker
-              color={background.overlay || 'rgba(0,0,0,0)'}
-              onChange={(color) => onChange({ ...background, overlay: color })}
-            />
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="video" className="space-y-4 pt-4">
-          <div className="space-y-2">
-            <Label htmlFor="videoUrl">Video URL</Label>
-            <Input
-              id="videoUrl"
-              value={background.value}
-              onChange={(e) => onChange({ ...background, value: e.target.value })}
-              placeholder="https://example.com/video.mp4"
-            />
-          </div>
-          
-          {background.value && (
-            <div className="space-y-2">
-              <Label>Preview</Label>
-              <div className="relative w-full rounded-md border overflow-hidden">
-                <video
-                  src={background.value}
-                  className="w-full"
-                  height="150"
-                  controls
-                />
+            <Label>Background Size</Label>
+            <RadioGroup
+              value={bgImageOptions.size}
+              onValueChange={(value) => {
+                const newOptions = { ...bgImageOptions, size: value };
+                setBgImageOptions(newOptions);
+                updateBackground('image', bgImage, newOptions);
+              }}
+              className="flex space-x-4"
+            >
+              <div className="flex items-center space-x-1">
+                <RadioGroupItem value="cover" id="cover" />
+                <Label htmlFor="cover" className="text-xs">Cover</Label>
               </div>
-            </div>
-          )}
-          
-          <div className="space-y-2 mt-4">
-            <Label>Overlay Color</Label>
-            <ColorPicker
-              color={background.overlay || 'rgba(0,0,0,0)'}
-              onChange={(color) => onChange({ ...background, overlay: color })}
-            />
+              <div className="flex items-center space-x-1">
+                <RadioGroupItem value="contain" id="contain" />
+                <Label htmlFor="contain" className="text-xs">Contain</Label>
+              </div>
+              <div className="flex items-center space-x-1">
+                <RadioGroupItem value="auto" id="auto" />
+                <Label htmlFor="auto" className="text-xs">Original</Label>
+              </div>
+            </RadioGroup>
           </div>
           
-          <div className="flex items-center space-x-2 mt-2">
-            <Switch
-              checked={background.attachment === 'fixed'}
-              onCheckedChange={(checked) => onChange({ 
-                ...background, 
-                attachment: checked ? 'fixed' : 'scroll' 
-              })}
-              id="fixed"
-            />
-            <Label htmlFor="fixed">Fixed background (no scroll)</Label>
+          <div className="space-y-2">
+            <Label>Background Repeat</Label>
+            <RadioGroup
+              value={bgImageOptions.repeat}
+              onValueChange={(value) => {
+                const newOptions = { ...bgImageOptions, repeat: value };
+                setBgImageOptions(newOptions);
+                updateBackground('image', bgImage, newOptions);
+              }}
+              className="flex space-x-4"
+            >
+              <div className="flex items-center space-x-1">
+                <RadioGroupItem value="no-repeat" id="no-repeat" />
+                <Label htmlFor="no-repeat" className="text-xs">No Repeat</Label>
+              </div>
+              <div className="flex items-center space-x-1">
+                <RadioGroupItem value="repeat" id="repeat" />
+                <Label htmlFor="repeat" className="text-xs">Repeat</Label>
+              </div>
+              <div className="flex items-center space-x-1">
+                <RadioGroupItem value="repeat-x" id="repeat-x" />
+                <Label htmlFor="repeat-x" className="text-xs">Repeat X</Label>
+              </div>
+            </RadioGroup>
           </div>
         </TabsContent>
       </Tabs>

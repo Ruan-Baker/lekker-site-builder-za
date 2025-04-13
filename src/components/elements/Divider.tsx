@@ -2,43 +2,77 @@
 import React from 'react';
 
 interface DividerProps {
-  style?: 'solid' | 'dashed' | 'dotted' | 'double';
-  width?: string;
+  orientation?: 'horizontal' | 'vertical';
   color?: string;
   thickness?: number;
-  orientation?: 'horizontal' | 'vertical';
-  margin?: string;
+  style?: 'solid' | 'dashed' | 'dotted';
   className?: string;
+  decorative?: boolean;
+  label?: string;
 }
 
 const Divider: React.FC<DividerProps> = ({
-  style = 'solid',
-  width = '100%',
-  color = '#e5e7eb',
-  thickness = 1,
   orientation = 'horizontal',
-  margin = '1rem 0',
-  className = ''
+  color,
+  thickness = 1,
+  style: borderStyle = 'solid',
+  className = '',
+  decorative = true,
+  label,
 }) => {
-  const dividerStyles = {
-    borderStyle: style,
-    borderColor: color,
-    margin: margin,
-    ...(orientation === 'horizontal' ? {
-      width: width,
-      borderWidth: `${thickness}px 0 0 0`,
-    } : {
-      height: width,
-      borderWidth: `0 0 0 ${thickness}px`,
-      display: 'inline-block',
-    }),
+  const baseStyles = {
+    backgroundColor: 'transparent',
+    borderColor: color || 'currentColor',
+    borderStyle,
   };
-  
+
+  if (orientation === 'horizontal') {
+    return (
+      <div className={`w-full relative flex items-center justify-center ${className}`}>
+        {label ? (
+          <>
+            <div
+              className="flex-grow"
+              style={{
+                ...baseStyles,
+                borderBottomWidth: thickness,
+              }}
+            />
+            <span className="mx-4 text-sm text-gray-500">{label}</span>
+            <div
+              className="flex-grow"
+              style={{
+                ...baseStyles,
+                borderBottomWidth: thickness,
+              }}
+            />
+          </>
+        ) : (
+          <hr
+            className="w-full"
+            style={{
+              ...baseStyles,
+              height: thickness,
+              borderTop: `${thickness}px ${borderStyle} ${color || 'currentColor'}`,
+              margin: 0,
+            }}
+            role={decorative ? 'presentation' : 'separator'}
+          />
+        )}
+      </div>
+    );
+  }
+
   return (
-    <hr 
-      className={`divider ${className}`}
-      style={dividerStyles}
-      aria-orientation={orientation}
+    <div
+      className={`inline-block h-full ${className}`}
+      style={{
+        ...baseStyles,
+        borderLeftWidth: thickness,
+        width: thickness,
+      }}
+      role={decorative ? 'presentation' : 'separator'}
+      aria-orientation="vertical"
     />
   );
 };

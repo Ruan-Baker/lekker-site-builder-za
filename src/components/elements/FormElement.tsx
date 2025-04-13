@@ -1,223 +1,124 @@
 
-import React, { useState } from 'react';
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { CheckboxCheckedIcon } from '@radix-ui/react-icons';
 
-export type FormElementType = 
-  | 'text' 
-  | 'email' 
-  | 'password' 
-  | 'number' 
-  | 'textarea' 
-  | 'checkbox' 
-  | 'radio' 
-  | 'select' 
-  | 'submit';
-
-export interface FormField {
+interface FormField {
   id: string;
-  type: FormElementType;
+  type: 'text' | 'email' | 'password' | 'textarea' | 'checkbox';
   label: string;
   placeholder?: string;
   required?: boolean;
-  options?: Array<{ value: string; label: string }>;
-  defaultValue?: string | boolean;
-  validation?: {
-    minLength?: number;
-    maxLength?: number;
-    pattern?: string;
-    min?: number;
-    max?: number;
-  };
-  customStyles?: {
-    labelStyles?: React.CSSProperties;
-    inputStyles?: React.CSSProperties;
-    containerStyles?: React.CSSProperties;
-  };
+  defaultValue?: string;
 }
 
 interface FormElementProps {
-  field: FormField;
-  onChange?: (id: string, value: string | boolean) => void;
+  fields: FormField[];
+  submitLabel: string;
+  onSubmit?: (data: Record<string, any>) => void;
   className?: string;
+  layout?: 'vertical' | 'horizontal';
+  spacing?: 'tight' | 'normal' | 'loose';
+  buttonVariant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'link';
 }
 
 const FormElement: React.FC<FormElementProps> = ({
-  field,
-  onChange,
-  className = ''
+  fields,
+  submitLabel = 'Submit',
+  onSubmit,
+  className = '',
+  layout = 'vertical',
+  spacing = 'normal',
+  buttonVariant = 'default',
 }) => {
-  const [value, setValue] = useState<string | boolean>(field.defaultValue || '');
+  const [formData, setFormData] = React.useState<Record<string, any>>({});
   
-  const handleChange = (newValue: string | boolean) => {
-    setValue(newValue);
-    if (onChange) {
-      onChange(field.id, newValue);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (onSubmit) {
+      onSubmit(formData);
     }
   };
-
-  const renderField = () => {
-    const {
-      id, type, label, placeholder, required, options,
-      validation, customStyles
-    } = field;
-
-    const containerStyles = customStyles?.containerStyles || {};
-    const labelStyles = customStyles?.labelStyles || {};
-    const inputStyles = customStyles?.inputStyles || {};
-
-    switch (type) {
-      case 'text':
-      case 'email':
-      case 'password':
-      case 'number':
-        return (
-          <div className="space-y-2" style={containerStyles}>
-            <Label 
-              htmlFor={id}
-              style={labelStyles}
-            >
-              {label} {required && <span className="text-red-500">*</span>}
-            </Label>
-            <Input
-              id={id}
-              type={type}
-              placeholder={placeholder}
-              value={value as string}
-              onChange={(e) => handleChange(e.target.value)}
-              required={required}
-              min={validation?.min}
-              max={validation?.max}
-              minLength={validation?.minLength}
-              maxLength={validation?.maxLength}
-              pattern={validation?.pattern}
-              style={inputStyles}
-              className={className}
-            />
-          </div>
-        );
-        
-      case 'textarea':
-        return (
-          <div className="space-y-2" style={containerStyles}>
-            <Label 
-              htmlFor={id}
-              style={labelStyles}
-            >
-              {label} {required && <span className="text-red-500">*</span>}
-            </Label>
-            <Textarea
-              id={id}
-              placeholder={placeholder}
-              value={value as string}
-              onChange={(e) => handleChange(e.target.value)}
-              required={required}
-              minLength={validation?.minLength}
-              maxLength={validation?.maxLength}
-              style={inputStyles}
-              className={className}
-            />
-          </div>
-        );
-        
-      case 'checkbox':
-        return (
-          <div className="flex items-center space-x-2" style={containerStyles}>
-            <Checkbox
-              id={id}
-              checked={value as boolean}
-              onCheckedChange={handleChange}
-              required={required}
-              style={inputStyles}
-              className={className}
-            />
-            <Label 
-              htmlFor={id}
-              style={labelStyles}
-            >
-              {label} {required && <span className="text-red-500">*</span>}
-            </Label>
-          </div>
-        );
-        
-      case 'radio':
-        return (
-          <div className="space-y-2" style={containerStyles}>
-            <Label style={labelStyles}>
-              {label} {required && <span className="text-red-500">*</span>}
-            </Label>
-            <RadioGroup
-              value={value as string}
-              onValueChange={handleChange}
-              required={required}
-              className={className}
-            >
-              {options?.map((option) => (
-                <div key={option.value} className="flex items-center space-x-2">
-                  <RadioGroupItem 
-                    value={option.value} 
-                    id={`${id}-${option.value}`} 
-                    style={inputStyles}
-                  />
-                  <Label htmlFor={`${id}-${option.value}`}>
-                    {option.label}
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
-        );
-        
-      case 'select':
-        return (
-          <div className="space-y-2" style={containerStyles}>
-            <Label 
-              htmlFor={id}
-              style={labelStyles}
-            >
-              {label} {required && <span className="text-red-500">*</span>}
-            </Label>
-            <Select
-              value={value as string}
-              onValueChange={handleChange}
-            >
-              <SelectTrigger id={id} className={className} style={inputStyles}>
-                <SelectValue placeholder={placeholder || `Select ${label}`} />
-              </SelectTrigger>
-              <SelectContent>
-                {options?.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        );
-        
-      case 'submit':
-        return (
-          <Button
-            id={id}
-            type="submit"
-            className={className}
-            style={inputStyles}
+  
+  const handleChange = (id: string, value: string | boolean) => {
+    setFormData(prev => ({ ...prev, [id]: value }));
+  };
+  
+  const spacingClasses = {
+    tight: 'space-y-2',
+    normal: 'space-y-4',
+    loose: 'space-y-6'
+  };
+  
+  return (
+    <form 
+      onSubmit={handleSubmit} 
+      className={`form-element ${spacingClasses[spacing]} ${className}`}
+    >
+      {fields.map((field) => (
+        <div 
+          key={field.id}
+          className={layout === 'horizontal' ? 'sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start' : ''}
+        >
+          <Label 
+            htmlFor={field.id}
+            className={layout === 'horizontal' ? 'sm:pt-2' : 'mb-1 block'}
           >
-            {label}
+            {field.label}
+            {field.required && <span className="text-red-500 ml-1">*</span>}
+          </Label>
+          
+          <div className={layout === 'horizontal' ? 'sm:col-span-2 mt-1 sm:mt-0' : ''}>
+            {field.type === 'textarea' ? (
+              <Textarea
+                id={field.id}
+                placeholder={field.placeholder}
+                required={field.required}
+                defaultValue={field.defaultValue}
+                onChange={(e) => handleChange(field.id, e.target.value)}
+                className="w-full"
+              />
+            ) : field.type === 'checkbox' ? (
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id={field.id}
+                  required={field.required}
+                  defaultChecked={field.defaultValue === 'true'}
+                  onChange={(e) => handleChange(field.id, e.target.checked)}
+                  className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                />
+                <label htmlFor={field.id} className="ml-2 block text-sm text-gray-700">
+                  {field.placeholder || 'Yes, I agree'}
+                </label>
+              </div>
+            ) : (
+              <Input
+                id={field.id}
+                type={field.type}
+                placeholder={field.placeholder}
+                required={field.required}
+                defaultValue={field.defaultValue}
+                onChange={(e) => handleChange(field.id, e.target.value)}
+                className="w-full"
+              />
+            )}
+          </div>
+        </div>
+      ))}
+      
+      <div className={layout === 'horizontal' ? 'sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start' : ''}>
+        <div className={layout === 'horizontal' ? 'sm:col-span-2 sm:col-start-2' : ''}>
+          <Button type="submit" variant={buttonVariant as any} className="w-full sm:w-auto">
+            {submitLabel}
           </Button>
-        );
-        
-      default:
-        return null;
-    }
-  };
-
-  return renderField();
+        </div>
+      </div>
+    </form>
+  );
 };
 
 export default FormElement;

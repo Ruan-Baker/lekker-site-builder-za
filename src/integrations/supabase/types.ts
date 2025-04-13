@@ -11,32 +11,41 @@ export type Database = {
     Tables: {
       design_settings: {
         Row: {
+          animations: Json | null
           color_palette: Json
           created_at: string | null
+          custom_css: string | null
           id: string
           project_id: string
           responsive_settings: Json | null
           spacing_settings: Json
+          theme: string | null
           typography_settings: Json
           updated_at: string | null
         }
         Insert: {
+          animations?: Json | null
           color_palette?: Json
           created_at?: string | null
+          custom_css?: string | null
           id?: string
           project_id: string
           responsive_settings?: Json | null
           spacing_settings?: Json
+          theme?: string | null
           typography_settings?: Json
           updated_at?: string | null
         }
         Update: {
+          animations?: Json | null
           color_palette?: Json
           created_at?: string | null
+          custom_css?: string | null
           id?: string
           project_id?: string
           responsive_settings?: Json | null
           spacing_settings?: Json
+          theme?: string | null
           typography_settings?: Json
           updated_at?: string | null
         }
@@ -221,30 +230,39 @@ export type Database = {
       sections: {
         Row: {
           category: string
+          complexity: string | null
           created_at: string | null
           description: string | null
           id: string
+          industry: string | null
           name: string
+          tags: string[] | null
           template_data: Json
           thumbnail_url: string | null
           updated_at: string | null
         }
         Insert: {
           category: string
+          complexity?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
+          industry?: string | null
           name: string
+          tags?: string[] | null
           template_data?: Json
           thumbnail_url?: string | null
           updated_at?: string | null
         }
         Update: {
           category?: string
+          complexity?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
+          industry?: string | null
           name?: string
+          tags?: string[] | null
           template_data?: Json
           thumbnail_url?: string | null
           updated_at?: string | null

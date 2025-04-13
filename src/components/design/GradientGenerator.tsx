@@ -1,257 +1,239 @@
 
-import React, { useState, useEffect } from 'react';
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
-import { Plus, X, RotateCcw } from "lucide-react";
+import React, { useState } from 'react';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Slider } from '@/components/ui/slider';
+import ColorPicker from './ColorPicker';
 
 interface GradientStop {
   color: string;
   position: number;
-  id: string;
 }
 
 interface GradientGeneratorProps {
   value: string;
   onChange: (value: string) => void;
+  label?: string;
 }
 
-const GradientGenerator: React.FC<GradientGeneratorProps> = ({ value, onChange }) => {
-  const [gradientType, setGradientType] = useState<string>('linear');
-  const [gradientAngle, setGradientAngle] = useState<number>(90);
-  const [stops, setStops] = useState<GradientStop[]>([
-    { color: '#3b82f6', position: 0, id: 'stop-1' },
-    { color: '#8b5cf6', position: 100, id: 'stop-2' }
-  ]);
-
-  // Parse initial gradient value if provided
-  useEffect(() => {
-    if (value && value !== 'none') {
-      try {
-        if (value.includes('linear-gradient')) {
-          setGradientType('linear');
-          
-          // Extract angle
-          const angleMatch = value.match(/linear-gradient\((\d+)deg/);
+const GradientGenerator: React.FC<GradientGeneratorProps> = ({
+  value,
+  onChange,
+  label,
+}) => {
+  // Parse the initial gradient value
+  const parseGradient = (cssGradient: string): {
+    type: string;
+    angle: number;
+    stops: GradientStop[];
+  } => {
+    let type = 'linear';
+    let angle = 180;
+    let stops: GradientStop[] = [
+      { color: '#3b82f6', position: 0 },
+      { color: '#10b981', position: 100 }
+    ];
+    
+    try {
+      if (cssGradient) {
+        const isRadial = cssGradient.includes('radial-gradient');
+        type = isRadial ? 'radial' : 'linear';
+        
+        // Extract angle for linear gradients
+        if (!isRadial && cssGradient.includes('deg')) {
+          const angleMatch = cssGradient.match(/(\d+)deg/);
           if (angleMatch && angleMatch[1]) {
-            setGradientAngle(parseInt(angleMatch[1], 10));
-          }
-          
-          // Extract stops
-          const stopsString = value.match(/linear-gradient\(\d+deg,\s*(.*)\)/);
-          if (stopsString && stopsString[1]) {
-            const parsedStops = stopsString[1].split(',').map((stop, index) => {
-              const trimmedStop = stop.trim();
-              const colorPosMatch = trimmedStop.match(/(#[0-9a-f]{3,8}|rgba?\(.*?\))\s+(\d+)%/i);
-              
-              if (colorPosMatch) {
-                return {
-                  color: colorPosMatch[1],
-                  position: parseInt(colorPosMatch[2], 10),
-                  id: `stop-${index + 1}`
-                };
-              }
-              
-              return null;
-            }).filter(Boolean) as GradientStop[];
-            
-            if (parsedStops.length >= 2) {
-              setStops(parsedStops);
-            }
-          }
-        } else if (value.includes('radial-gradient')) {
-          setGradientType('radial');
-          
-          // Extract stops for radial gradient
-          const stopsString = value.match(/radial-gradient\(circle,\s*(.*)\)/);
-          if (stopsString && stopsString[1]) {
-            const parsedStops = stopsString[1].split(',').map((stop, index) => {
-              const trimmedStop = stop.trim();
-              const colorPosMatch = trimmedStop.match(/(#[0-9a-f]{3,8}|rgba?\(.*?\))\s+(\d+)%/i);
-              
-              if (colorPosMatch) {
-                return {
-                  color: colorPosMatch[1],
-                  position: parseInt(colorPosMatch[2], 10),
-                  id: `stop-${index + 1}`
-                };
-              }
-              
-              return null;
-            }).filter(Boolean) as GradientStop[];
-            
-            if (parsedStops.length >= 2) {
-              setStops(parsedStops);
-            }
+            angle = parseInt(angleMatch[1], 10);
           }
         }
-      } catch (error) {
-        console.error('Failed to parse gradient value:', error);
+        
+        // Extract color stops
+        const stopRegex = /(#[a-zA-Z0-9]+|\w+\([^\)]+\))\s+(\d+)%/g;
+        const stopMatches = [...cssGradient.matchAll(stopRegex)];
+        
+        if (stopMatches.length > 0) {
+          stops = stopMatches.map(match => ({
+            color: match[1],
+            position: parseInt(match[2], 10)
+          }));
+        }
       }
-    }
-  }, []);
-
-  // Update gradient string when params change
-  useEffect(() => {
-    const sortedStops = [...stops].sort((a, b) => a.position - b.position);
-    const stopsString = sortedStops.map(stop => `${stop.color} ${stop.position}%`).join(', ');
-    
-    let gradientString = 'none';
-    
-    if (gradientType === 'linear') {
-      gradientString = `linear-gradient(${gradientAngle}deg, ${stopsString})`;
-    } else if (gradientType === 'radial') {
-      gradientString = `radial-gradient(circle, ${stopsString})`;
+    } catch (error) {
+      console.error('Error parsing gradient:', error);
     }
     
-    onChange(gradientString);
-  }, [gradientType, gradientAngle, stops, onChange]);
-
+    return { type, angle, stops };
+  };
+  
+  const [gradientType, setGradientType] = useState<string>(parseGradient(value).type);
+  const [angle, setAngle] = useState<number>(parseGradient(value).angle);
+  const [stops, setStops] = useState<GradientStop[]>(parseGradient(value).stops);
+  
+  // Generate CSS gradient string
+  const generateGradientCSS = (
+    type: string,
+    angleVal: number,
+    stopsVal: GradientStop[]
+  ): string => {
+    const sortedStops = [...stopsVal].sort((a, b) => a.position - b.position);
+    const stopsCSS = sortedStops
+      .map(stop => `${stop.color} ${stop.position}%`)
+      .join(', ');
+    
+    if (type === 'linear') {
+      return `linear-gradient(${angleVal}deg, ${stopsCSS})`;
+    } else {
+      return `radial-gradient(circle, ${stopsCSS})`;
+    }
+  };
+  
+  // Update the gradient when any property changes
+  const updateGradient = (
+    type: string = gradientType,
+    angleVal: number = angle,
+    stopsVal: GradientStop[] = stops
+  ) => {
+    const newGradientCSS = generateGradientCSS(type, angleVal, stopsVal);
+    onChange(newGradientCSS);
+  };
+  
+  // Handle adding a new color stop
   const addStop = () => {
-    // Find middle position between existing stops
-    const positions = stops.map(stop => stop.position);
-    const minPos = Math.min(...positions);
-    const maxPos = Math.max(...positions);
-    const middlePos = Math.round((minPos + maxPos) / 2);
+    if (stops.length >= 5) return; // Limit to 5 stops
     
-    const newStop: GradientStop = {
-      color: '#4f46e5',
-      position: middlePos,
-      id: `stop-${Date.now()}`
-    };
+    const lastPos = stops.length > 0 ? stops[stops.length - 1].position : 0;
+    const newPos = Math.min(lastPos + 25, 100);
+    const newStop = { color: '#ffffff', position: newPos };
+    const newStops = [...stops, newStop];
     
-    setStops([...stops, newStop]);
+    setStops(newStops);
+    updateGradient(gradientType, angle, newStops);
   };
-
-  const updateStop = (id: string, updates: Partial<GradientStop>) => {
-    setStops(stops.map(stop => 
-      stop.id === id ? { ...stop, ...updates } : stop
-    ));
+  
+  // Handle removing a color stop
+  const removeStop = (index: number) => {
+    if (stops.length <= 2) return; // Keep at least 2 stops
+    
+    const newStops = stops.filter((_, i) => i !== index);
+    setStops(newStops);
+    updateGradient(gradientType, angle, newStops);
   };
-
-  const removeStop = (id: string) => {
-    if (stops.length <= 2) return; // Maintain at least 2 stops
-    setStops(stops.filter(stop => stop.id !== id));
+  
+  // Handle updating a color stop
+  const updateStop = (index: number, key: keyof GradientStop, value: string | number) => {
+    const newStops = [...stops];
+    newStops[index] = { ...newStops[index], [key]: value };
+    
+    setStops(newStops);
+    updateGradient(gradientType, angle, newStops);
   };
-
-  const resetGradient = () => {
-    setGradientType('linear');
-    setGradientAngle(90);
-    setStops([
-      { color: '#3b82f6', position: 0, id: 'stop-1' },
-      { color: '#8b5cf6', position: 100, id: 'stop-2' }
-    ]);
-  };
-
+  
   return (
     <div className="space-y-4">
-      <div className="h-16 rounded-lg border-2 border-gray-200 relative overflow-hidden" 
+      {label && <Label>{label}</Label>}
+      
+      <div 
+        className="h-20 rounded-md border"
         style={{ 
-          background: gradientType === 'linear' 
-            ? `linear-gradient(${gradientAngle}deg, ${stops.map(s => `${s.color} ${s.position}%`).join(', ')})` 
-            : `radial-gradient(circle, ${stops.map(s => `${s.color} ${s.position}%`).join(', ')})`
+          background: generateGradientCSS(gradientType, angle, stops),
+          backgroundSize: 'cover'
         }}
       />
       
-      <div className="flex items-center justify-between">
-        <Label>Gradient Type</Label>
-        <Button variant="outline" size="sm" onClick={resetGradient}>
-          <RotateCcw size={14} className="mr-1" /> Reset
-        </Button>
-      </div>
-      
-      <Select
-        value={gradientType}
-        onValueChange={setGradientType}
-      >
-        <SelectTrigger>
-          <SelectValue placeholder="Select gradient type" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="linear">Linear</SelectItem>
-          <SelectItem value="radial">Radial</SelectItem>
-        </SelectContent>
-      </Select>
-      
-      {gradientType === 'linear' && (
+      <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <div className="flex justify-between">
-            <Label>Angle: {gradientAngle}°</Label>
-          </div>
-          <div className="flex items-center space-x-2">
+          <Label>Gradient Type</Label>
+          <Select 
+            value={gradientType} 
+            onValueChange={(value) => {
+              setGradientType(value);
+              updateGradient(value, angle, stops);
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="linear">Linear</SelectItem>
+              <SelectItem value="radial">Radial</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        
+        {gradientType === 'linear' && (
+          <div className="space-y-2">
+            <Label>Angle: {angle}°</Label>
             <Slider
-              value={[gradientAngle]}
+              value={[angle]}
               min={0}
               max={360}
               step={1}
-              onValueChange={(val) => setGradientAngle(val[0])}
-              className="flex-grow"
-            />
-            <Input
-              type="number"
-              value={gradientAngle}
-              onChange={(e) => setGradientAngle(Number(e.target.value))}
-              className="w-16"
-              min={0}
-              max={360}
+              onValueChange={(value) => {
+                setAngle(value[0]);
+                updateGradient(gradientType, value[0], stops);
+              }}
             />
           </div>
-        </div>
-      )}
+        )}
+      </div>
       
       <div className="space-y-2">
-        <Label>Color Stops</Label>
-        {stops.map((stop) => (
-          <div key={stop.id} className="flex items-center space-x-2 py-1">
-            <div className="w-6 h-6 rounded-md border border-gray-300 overflow-hidden">
-              <Input
-                type="color"
-                value={stop.color}
-                onChange={(e) => updateStop(stop.id, { color: e.target.value })}
-                className="w-8 h-8 p-0 border-0 m-0 transform translate-x-[-4px] translate-y-[-4px]"
+        <div className="flex justify-between items-center">
+          <Label>Color Stops</Label>
+          <button 
+            type="button"
+            onClick={addStop}
+            className="text-xs text-primary hover:underline"
+            disabled={stops.length >= 5}
+          >
+            + Add Stop
+          </button>
+        </div>
+        
+        {stops.map((stop, index) => (
+          <div key={index} className="grid grid-cols-3 gap-2 items-center">
+            <div>
+              <ColorPicker
+                color={stop.color}
+                onChange={(color) => updateStop(index, 'color', color)}
+                showInput={false}
               />
             </div>
-            <div className="flex-grow">
+            
+            <div className="col-span-2 flex items-center gap-2">
               <Slider
                 value={[stop.position]}
                 min={0}
                 max={100}
                 step={1}
-                onValueChange={(val) => updateStop(stop.id, { position: val[0] })}
+                onValueChange={(value) => updateStop(index, 'position', value[0])}
               />
+              
+              <div className="flex items-center gap-1">
+                <Input
+                  type="number"
+                  value={stop.position}
+                  min={0}
+                  max={100}
+                  onChange={(e) => updateStop(index, 'position', parseInt(e.target.value) || 0)}
+                  className="w-16 text-xs"
+                />
+                <span className="text-xs">%</span>
+                
+                {stops.length > 2 && (
+                  <button
+                    type="button"
+                    onClick={() => removeStop(index)}
+                    className="text-xs text-red-500 hover:text-red-700"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
             </div>
-            <div className="w-12">
-              <Input
-                type="number"
-                value={stop.position}
-                onChange={(e) => updateStop(stop.id, { position: Number(e.target.value) })}
-                className="p-1 h-8 text-xs"
-                min={0}
-                max={100}
-              />
-            </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => removeStop(stop.id)}
-              disabled={stops.length <= 2}
-              className="h-8 w-8"
-            >
-              <X size={14} />
-            </Button>
           </div>
         ))}
-        
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={addStop}
-          className="w-full mt-2"
-        >
-          <Plus size={14} className="mr-1" /> Add Stop
-        </Button>
       </div>
     </div>
   );

@@ -1,328 +1,203 @@
 
 import React, { useState, useEffect } from 'react';
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
-import { Plus, X, RotateCcw } from "lucide-react";
+import { Slider } from '@/components/ui/slider';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Input } from '@/components/ui/input';
+import { ColorPicker } from './ColorPicker';
 
-interface ShadowSettings {
+interface ShadowGeneratorProps {
+  value: string;
+  onChange: (value: string) => void;
+  label?: string;
+  type?: 'box' | 'text';
+}
+
+interface ShadowValues {
   offsetX: number;
   offsetY: number;
   blur: number;
   spread: number;
   color: string;
-  opacity: number;
-  type: 'box' | 'text';
   inset: boolean;
 }
 
-interface ShadowGeneratorProps {
-  value: string;
-  type: 'box' | 'text';
-  onChange: (value: string) => void;
-  allowMultiple?: boolean;
-}
-
 const ShadowGenerator: React.FC<ShadowGeneratorProps> = ({
-  value = 'none',
-  type = 'box',
+  value,
   onChange,
-  allowMultiple = false
+  label = 'Shadow',
+  type = 'box',
 }) => {
-  const [shadows, setShadows] = useState<ShadowSettings[]>([
-    { offsetX: 0, offsetY: 4, blur: 8, spread: 0, color: '#000000', opacity: 0.2, type, inset: false }
-  ]);
+  const defaultValues = {
+    offsetX: 0,
+    offsetY: 4,
+    blur: 6,
+    spread: 0,
+    color: 'rgba(0,0,0,0.1)',
+    inset: false,
+  };
 
-  // Parse initial shadow value if provided
-  useEffect(() => {
-    if (value && value !== 'none') {
-      try {
-        const shadowsArray = value.split(',').map(shadow => shadow.trim());
-        
-        const parsedShadows = shadowsArray.map(shadowStr => {
-          const inset = shadowStr.includes('inset');
-          shadowStr = shadowStr.replace('inset', '').trim();
-          
-          const parts = shadowStr.split(' ').filter(part => part !== '');
-          
-          // Extract color (supports rgba, hex, etc)
-          let color = '#000000';
-          let opacity = 1;
-          
-          const colorMatch = shadowStr.match(/(rgba?\(.*?\)|#[0-9a-f]{3,8})/i);
-          if (colorMatch) {
-            color = colorMatch[0];
-            
-            // Extract opacity if it's rgba
-            if (color.startsWith('rgba')) {
-              const rgbaMatch = color.match(/rgba\(.*,\s*([\d.]+)\)/i);
-              if (rgbaMatch && rgbaMatch[1]) {
-                opacity = parseFloat(rgbaMatch[1]);
-              }
-            }
-          }
-          
-          return {
-            offsetX: parseInt(parts[0], 10) || 0,
-            offsetY: parseInt(parts[1], 10) || 4,
-            blur: parseInt(parts[2], 10) || 8,
-            spread: type === 'box' ? (parseInt(parts[3], 10) || 0) : 0,
-            color,
-            opacity,
-            type,
-            inset
-          };
-        });
-        
-        if (parsedShadows.length > 0) {
-          setShadows(parsedShadows);
-        }
-      } catch (error) {
-        console.error('Failed to parse shadow value:', error);
-      }
-    }
-  }, []);
-
-  // Generate shadow string from settings
-  useEffect(() => {
-    if (shadows.length === 0) {
-      onChange('none');
-      return;
-    }
+  // Parse initial shadow value
+  const parseShadowValue = (shadowString: string): ShadowValues => {
+    const defaultReturn = { ...defaultValues };
     
-    const shadowString = shadows.map(shadow => {
-      const { offsetX, offsetY, blur, spread, color, opacity, inset } = shadow;
+    if (!shadowString || shadowString === 'none') {
+      return defaultReturn;
+    }
+
+    try {
+      // Remove "inset" and check if it exists
+      const hasInset = shadowString.includes('inset');
+      let cleanString = shadowString.replace('inset', '').trim();
+
+      // Extract color (assuming it's at the end or in rgba/hex format)
+      let color = 'rgba(0,0,0,0.1)';
+      const rgbaMatch = cleanString.match(/rgba?\([^)]+\)/);
+      const hexMatch = cleanString.match(/(#[0-9a-f]{3,8})/i);
       
-      // Convert hex color to rgba if opacity < 1
-      let colorValue = color;
-      if (opacity < 1) {
-        if (color.startsWith('#')) {
-          // Convert hex to rgba
-          let r = 0, g = 0, b = 0;
-          
-          if (color.length === 4) {
-            r = parseInt(color[1] + color[1], 16);
-            g = parseInt(color[2] + color[2], 16);
-            b = parseInt(color[3] + color[3], 16);
-          } else {
-            r = parseInt(color.slice(1, 3), 16);
-            g = parseInt(color.slice(3, 5), 16);
-            b = parseInt(color.slice(5, 7), 16);
-          }
-          
-          colorValue = `rgba(${r}, ${g}, ${b}, ${opacity})`;
-        } else if (color.startsWith('rgb(')) {
-          // Convert rgb to rgba
-          colorValue = color.replace('rgb(', 'rgba(').replace(')', `, ${opacity})`);
-        }
+      if (rgbaMatch) {
+        color = rgbaMatch[0];
+        cleanString = cleanString.replace(rgbaMatch[0], '').trim();
+      } else if (hexMatch) {
+        color = hexMatch[0];
+        cleanString = cleanString.replace(hexMatch[0], '').trim();
       }
+
+      // Extract numeric values
+      const values = cleanString.split(' ')
+        .filter(Boolean)
+        .map(v => parseInt(v));
+
+      return {
+        offsetX: values[0] || defaultReturn.offsetX,
+        offsetY: values[1] || defaultReturn.offsetY,
+        blur: values[2] || defaultReturn.blur,
+        spread: type === 'box' ? (values[3] || defaultReturn.spread) : defaultReturn.spread,
+        color,
+        inset: hasInset,
+      };
+    } catch (error) {
+      console.error('Error parsing shadow:', error);
+      return defaultReturn;
+    }
+  };
+
+  const [shadowValues, setShadowValues] = useState<ShadowValues>(
+    parseShadowValue(value)
+  );
+
+  // Update shadow string when values change
+  useEffect(() => {
+    const generateShadowString = () => {
+      const { offsetX, offsetY, blur, spread, color, inset } = shadowValues;
+      let shadow = `${offsetX}px ${offsetY}px ${blur}px`;
       
       if (type === 'box') {
-        return `${inset ? 'inset ' : ''}${offsetX}px ${offsetY}px ${blur}px ${spread}px ${colorValue}`;
-      } else {
-        return `${offsetX}px ${offsetY}px ${blur}px ${colorValue}`;
+        shadow += ` ${spread}px`;
       }
-    }).join(', ');
-    
-    onChange(shadowString);
-  }, [shadows, onChange, type]);
-
-  const updateShadow = (index: number, updates: Partial<ShadowSettings>) => {
-    setShadows(prevShadows => 
-      prevShadows.map((shadow, i) => 
-        i === index ? { ...shadow, ...updates } : shadow
-      )
-    );
-  };
-
-  const addShadow = () => {
-    if (!allowMultiple) return;
-    
-    const newShadow: ShadowSettings = {
-      offsetX: 0,
-      offsetY: 6,
-      blur: 10,
-      spread: 0,
-      color: '#000000',
-      opacity: 0.1,
-      type,
-      inset: false
+      
+      shadow += ` ${color}`;
+      
+      if (type === 'box' && inset) {
+        shadow += ' inset';
+      }
+      
+      return shadow;
     };
-    
-    setShadows([...shadows, newShadow]);
-  };
 
-  const removeShadow = (index: number) => {
-    setShadows(prevShadows => prevShadows.filter((_, i) => i !== index));
-  };
+    onChange(generateShadowString());
+  }, [shadowValues, onChange, type]);
 
-  const resetShadow = (index: number) => {
-    const defaultShadow: ShadowSettings = {
-      offsetX: 0,
-      offsetY: 4,
-      blur: 8,
-      spread: 0,
-      color: '#000000',
-      opacity: 0.2,
-      type,
-      inset: false
-    };
-    
-    updateShadow(index, defaultShadow);
+  const handleValueChange = (key: keyof ShadowValues, value: any) => {
+    setShadowValues(prev => ({
+      ...prev,
+      [key]: value
+    }));
   };
 
   return (
     <div className="space-y-4">
-      {shadows.map((shadow, index) => (
-        <div key={index} className="space-y-3 border border-gray-200 rounded-md p-3 bg-gray-50">
-          <div className="flex justify-between items-center">
-            <h4 className="text-sm font-medium">Shadow {shadows.length > 1 ? index + 1 : ''}</h4>
-            <div className="flex space-x-1">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7"
-                onClick={() => resetShadow(index)}
-              >
-                <RotateCcw size={14} />
-              </Button>
-              {shadows.length > 1 && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7 text-red-500 hover:text-red-700"
-                  onClick={() => removeShadow(index)}
-                >
-                  <X size={14} />
-                </Button>
-              )}
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <Label className="text-xs">X Offset: {shadow.offsetX}px</Label>
-              <Slider
-                value={[shadow.offsetX]}
-                min={-50}
-                max={50}
-                step={1}
-                onValueChange={(val) => updateShadow(index, { offsetX: val[0] })}
-              />
-            </div>
-            
-            <div className="space-y-1">
-              <Label className="text-xs">Y Offset: {shadow.offsetY}px</Label>
-              <Slider
-                value={[shadow.offsetY]}
-                min={-50}
-                max={50}
-                step={1}
-                onValueChange={(val) => updateShadow(index, { offsetY: val[0] })}
-              />
-            </div>
-            
-            <div className="space-y-1">
-              <Label className="text-xs">Blur: {shadow.blur}px</Label>
-              <Slider
-                value={[shadow.blur]}
-                min={0}
-                max={100}
-                step={1}
-                onValueChange={(val) => updateShadow(index, { blur: val[0] })}
-              />
-            </div>
-            
-            {type === 'box' && (
-              <div className="space-y-1">
-                <Label className="text-xs">Spread: {shadow.spread}px</Label>
-                <Slider
-                  value={[shadow.spread]}
-                  min={-50}
-                  max={50}
-                  step={1}
-                  onValueChange={(val) => updateShadow(index, { spread: val[0] })}
-                />
-              </div>
-            )}
-            
-            <div className="space-y-1">
-              <Label className="text-xs">Color</Label>
-              <div className="flex items-center space-x-2">
-                <div className="w-6 h-6 rounded-md border border-gray-300 overflow-hidden">
-                  <Input
-                    type="color"
-                    value={shadow.color}
-                    onChange={(e) => updateShadow(index, { color: e.target.value })}
-                    className="w-8 h-8 p-0 border-0 m-0 transform translate-x-[-4px] translate-y-[-4px]"
-                  />
-                </div>
-                <Input
-                  type="text"
-                  value={shadow.color}
-                  onChange={(e) => updateShadow(index, { color: e.target.value })}
-                  className="flex-grow h-7 text-xs"
-                />
-              </div>
-            </div>
-            
-            <div className="space-y-1">
-              <Label className="text-xs">Opacity: {Math.round(shadow.opacity * 100)}%</Label>
-              <Slider
-                value={[shadow.opacity * 100]}
-                min={0}
-                max={100}
-                step={1}
-                onValueChange={(val) => updateShadow(index, { opacity: val[0] / 100 })}
-              />
-            </div>
-            
-            {type === 'box' && (
-              <div className="col-span-2 flex items-center space-x-2 mt-1">
-                <input
-                  type="checkbox"
-                  id={`inset-${index}`}
-                  checked={shadow.inset}
-                  onChange={(e) => updateShadow(index, { inset: e.target.checked })}
-                  className="rounded border-gray-300"
-                />
-                <Label htmlFor={`inset-${index}`} className="text-xs font-normal">
-                  Inner shadow (inset)
-                </Label>
-              </div>
-            )}
-          </div>
-          
-          <div className="h-12 mt-2 rounded border border-gray-300 flex items-center justify-center overflow-hidden bg-white">
-            <div 
-              className={`w-32 h-8 rounded ${type === 'box' ? '' : 'font-bold text-center flex items-center justify-center'}`}
-              style={{
-                boxShadow: type === 'box' ? 
-                  `${shadow.inset ? 'inset ' : ''}${shadow.offsetX}px ${shadow.offsetY}px ${shadow.blur}px ${shadow.spread}px ${shadow.color}${shadow.opacity < 1 ? Math.round(shadow.opacity * 100) / 100 : ''}` : 
-                  'none',
-                textShadow: type === 'text' ? 
-                  `${shadow.offsetX}px ${shadow.offsetY}px ${shadow.blur}px ${shadow.color}${shadow.opacity < 1 ? Math.round(shadow.opacity * 100) / 100 : ''}` : 
-                  'none'
-              }}
-            >
-              {type === 'text' ? 'Sample Text' : ''}
-            </div>
-          </div>
-        </div>
-      ))}
+      {label && <Label>{label}</Label>}
       
-      {allowMultiple && (
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-full"
-          onClick={addShadow}
-        >
-          <Plus size={14} className="mr-1" /> Add Shadow
-        </Button>
-      )}
+      <div 
+        className="p-6 h-24 rounded-md border flex items-center justify-center text-center bg-white"
+        style={{ 
+          [type === 'box' ? 'boxShadow' : 'textShadow']: value 
+        }}
+      >
+        {type === 'text' ? (
+          <span className="text-2xl font-bold">Text Shadow</span>
+        ) : (
+          <span>Preview</span>
+        )}
+      </div>
+      
+      <div className="space-y-3">
+        <div className="space-y-1">
+          <Label className="text-xs">Horizontal Offset: {shadowValues.offsetX}px</Label>
+          <Slider
+            value={[shadowValues.offsetX]}
+            min={-50}
+            max={50}
+            step={1}
+            onValueChange={(val) => handleValueChange('offsetX', val[0])}
+          />
+        </div>
+        
+        <div className="space-y-1">
+          <Label className="text-xs">Vertical Offset: {shadowValues.offsetY}px</Label>
+          <Slider
+            value={[shadowValues.offsetY]}
+            min={-50}
+            max={50}
+            step={1}
+            onValueChange={(val) => handleValueChange('offsetY', val[0])}
+          />
+        </div>
+        
+        <div className="space-y-1">
+          <Label className="text-xs">Blur Radius: {shadowValues.blur}px</Label>
+          <Slider
+            value={[shadowValues.blur]}
+            min={0}
+            max={100}
+            step={1}
+            onValueChange={(val) => handleValueChange('blur', val[0])}
+          />
+        </div>
+        
+        {type === 'box' && (
+          <div className="space-y-1">
+            <Label className="text-xs">Spread Radius: {shadowValues.spread}px</Label>
+            <Slider
+              value={[shadowValues.spread]}
+              min={-50}
+              max={50}
+              step={1}
+              onValueChange={(val) => handleValueChange('spread', val[0])}
+            />
+          </div>
+        )}
+        
+        <div className="space-y-1">
+          <Label className="text-xs">Shadow Color</Label>
+          <ColorPicker
+            color={shadowValues.color}
+            onChange={(color) => handleValueChange('color', color)}
+            allowAlpha
+          />
+        </div>
+        
+        {type === 'box' && (
+          <div className="flex items-center space-x-2">
+            <Switch
+              checked={shadowValues.inset}
+              onCheckedChange={(checked) => handleValueChange('inset', checked)}
+            />
+            <Label>Inset Shadow</Label>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
