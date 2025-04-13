@@ -51,10 +51,6 @@ const Header = () => {
     setMobileMenuOpen(false);
   };
 
-  const handleGetStarted = () => {
-    navigate('/signup');
-  };
-
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -80,10 +76,10 @@ const Header = () => {
         <div className="hidden md:flex items-center space-x-3">
           {user ? (
             <Button 
-              onClick={() => navigate('/builder')}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-base"
+              onClick={() => navigate('/dashboard')}
+              className="bg-blue-600 hover:bg-blue-700 text-white text-base rounded-xl"
             >
-              My Projects
+              Dashboard
             </Button>
           ) : (
             <>
@@ -98,7 +94,7 @@ const Header = () => {
               </Link>
               <Link to="/signup">
                 <Button 
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-base"
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-base rounded-xl"
                 >
                   Get Started Free
                 </Button>
@@ -143,26 +139,26 @@ const Header = () => {
             {user ? (
               <Button 
                 onClick={() => {
-                  navigate('/builder');
+                  navigate('/dashboard');
                   closeMenu();
                 }}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base rounded-xl"
               >
-                My Projects
+                Dashboard
               </Button>
             ) : (
               <>
                 <Link to="/auth" onClick={closeMenu}>
                   <Button 
                     variant="outline" 
-                    className="w-full text-gray-700 text-base"
+                    className="w-full text-gray-700 text-base rounded-xl"
                   >
                     Login
                   </Button>
                 </Link>
                 <Link to="/signup" onClick={closeMenu}>
                   <Button 
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base rounded-xl"
                   >
                     Get Started Free
                   </Button>

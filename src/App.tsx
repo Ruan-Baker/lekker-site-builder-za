@@ -12,6 +12,7 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Builder from "./pages/Builder";
+import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import Signup from "./pages/Signup";
 import ResetConfirmation from "./components/auth/ResetConfirmation";
@@ -54,6 +55,12 @@ const App = () => {
                         <Builder />
                       </BuilderProvider>
                     } />
+                    <Route path="/builder/:projectId" element={
+                      <BuilderProvider>
+                        <Builder />
+                      </BuilderProvider>
+                    } />
+                    <Route path="/dashboard" element={<Dashboard />} />
                   </Route>
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />

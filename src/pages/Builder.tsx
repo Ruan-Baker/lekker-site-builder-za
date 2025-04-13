@@ -18,8 +18,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import KeyboardShortcutsHelp from '@/components/builder/KeyboardShortcutsHelp';
 import GridSectionBuilder from '@/components/sections/GridSectionBuilder';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { LayoutGrid } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { LayoutGrid, Loader2 } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
 const Builder = () => {
   const { projectId } = useParams<{ projectId: string }>();
@@ -28,60 +29,90 @@ const Builder = () => {
   const [pageId, setPageId] = useState<string | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [gridBuilderOpen, setGridBuilderOpen] = useState(false);
+  const [isLoadingProject, setIsLoadingProject] = useState(true);
+  const [projectName, setProjectName] = useState<string>('');
   
   // Use keyboard shortcuts
   useKeyboardShortcuts();
   
   useEffect(() => {
-    // If we don't have a projectId in params, we should create one or redirect
-    if (!projectId && !loading && user) {
-      navigate('/projects');
+    // If we don't have a projectId in params, we should redirect to dashboard
+    if (!loading && user && !projectId) {
+      navigate('/dashboard');
+      return;
     }
   }, [projectId, loading, user, navigate]);
-  
-  // Load the default page (homepage) when the project loads
+
+  // Load project details
   useEffect(() => {
     if (!projectId || !user) return;
     
-    const fetchHomepage = async () => {
+    const fetchProject = async () => {
+      setIsLoadingProject(true);
       try {
         const { data, error } = await supabase
+          .from('projects')
+          .select('name')
+          .eq('id', projectId)
+          .single();
+          
+        if (error) throw error;
+        if (data) setProjectName(data.name);
+        
+        // Also fetch the homepage
+        const { data: pageData, error: pageError } = await supabase
           .from('pages')
           .select('id')
           .eq('project_id', projectId)
           .eq('is_homepage', true)
           .single();
           
-        if (error) {
-          throw error;
-        }
+        if (pageError) throw pageError;
+        if (pageData) setPageId(pageData.id);
         
-        if (data) {
-          setPageId(data.id);
-        }
       } catch (error) {
-        console.error('Error fetching homepage:', error);
+        console.error('Error fetching project:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load project. Redirecting to dashboard.',
+          variant: 'destructive',
+        });
+        navigate('/dashboard');
+      } finally {
+        setIsLoadingProject(false);
       }
     };
     
-    fetchHomepage();
-  }, [projectId, user]);
+    fetchProject();
+  }, [projectId, user, navigate]);
   
-  if (loading) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+  if (loading || isLoadingProject) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-50">
+        <Loader2 className="h-8 w-8 text-blue-600 animate-spin mb-4" />
+        <p className="text-gray-600">{isLoadingProject ? 'Loading project...' : 'Checking authentication...'}</p>
+      </div>
+    );
   }
   
   if (!user) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-50">
         <p className="mb-4 text-lg">Please sign in to access the builder</p>
-        <Button onClick={() => navigate('/auth')}>Sign In</Button>
+        <Button onClick={() => navigate('/auth')} className="bg-blue-600 hover:bg-blue-700">Sign In</Button>
       </div>
     );
   }
   
   if (!projectId) {
-    return <div className="flex items-center justify-center h-screen">Redirecting...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-50">
+        <div className="text-center">
+          <p className="mb-4 text-lg">No project selected</p>
+          <Button onClick={() => navigate('/dashboard')} className="bg-blue-600 hover:bg-blue-700">Go to Dashboard</Button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -92,7 +123,7 @@ const Builder = () => {
             <SectionProvider>
               <DndProvider backend={HTML5Backend}>
                 <div className="min-h-screen flex flex-col bg-gray-50">
-                  <BuilderHeader />
+                  <BuilderHeader projectName={projectName} />
                   <div className="flex flex-1 overflow-hidden">
                     <BuilderSidebar />
                     <BuilderCanvas />
@@ -107,7 +138,7 @@ const Builder = () => {
                       />
                       
                       <Dialog open={gridBuilderOpen} onOpenChange={setGridBuilderOpen}>
-                        <DialogContent className="max-w-5xl">
+                        <DialogContent className="max-w-5xl rounded-xl">
                           <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
                               <LayoutGrid className="h-5 w-5" />
@@ -123,17 +154,14 @@ const Builder = () => {
                   )}
                   
                   <div className="fixed bottom-4 right-4 z-10">
-                    <Dialog open={gridBuilderOpen} onOpenChange={setGridBuilderOpen}>
-                      <DialogTrigger asChild>
-                        <Button 
-                          size="sm" 
-                          className="rounded-full flex items-center gap-2 shadow-md"
-                        >
-                          <LayoutGrid className="h-4 w-4" /> 
-                          Grid Builder
-                        </Button>
-                      </DialogTrigger>
-                    </Dialog>
+                    <Button 
+                      size="sm" 
+                      className="rounded-full flex items-center gap-2 shadow-md bg-blue-600 hover:bg-blue-700"
+                      onClick={() => setGridBuilderOpen(true)}
+                    >
+                      <LayoutGrid className="h-4 w-4" /> 
+                      Grid Builder
+                    </Button>
                   </div>
                 </div>
               </DndProvider>
