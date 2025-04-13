@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDrop } from 'react-dnd';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -7,9 +7,10 @@ import { Plus } from 'lucide-react';
 import { useBuilder } from '@/contexts/BuilderContext';
 import { toast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
+import { supabase } from '@/integrations/supabase/client';
 
 const BuilderCanvas = () => {
-  const { elements, addElement, selectElement, selectedElement } = useBuilder();
+  const { elements, addElement, selectElement, selectedElement, updateElement } = useBuilder();
   
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: 'element',
@@ -46,6 +47,42 @@ const BuilderCanvas = () => {
       canDrop: monitor.canDrop(),
     }),
   });
+  
+  // Autosave elements to Supabase when they change
+  useEffect(() => {
+    const saveElementsToSupabase = async () => {
+      // This would require the page ID to be available
+      // For now, we're just demonstrating the concept
+      console.log('Elements would be saved to Supabase:', elements);
+    };
+    
+    // Debounced save would be implemented here
+    const timer = setTimeout(() => {
+      if (elements.length > 0) {
+        saveElementsToSupabase();
+      }
+    }, 2000);
+    
+    return () => clearTimeout(timer);
+  }, [elements]);
+  
+  // Function to handle element positioning with grid snapping
+  const handleElementDrag = (id: string, position: { x: number; y: number }) => {
+    // Grid size (e.g., 8px)
+    const gridSize = 8;
+    
+    // Snap to grid
+    const x = Math.round(position.x / gridSize) * gridSize;
+    const y = Math.round(position.y / gridSize) * gridSize;
+    
+    updateElement(id, {
+      position: {
+        ...elements.find(el => el.id === id)?.position,
+        x,
+        y
+      }
+    });
+  };
   
   return (
     <div className="flex-1 overflow-y-auto relative">
@@ -94,6 +131,14 @@ const BuilderCanvas = () => {
                   height: element.position.height,
                 }}
                 onClick={() => selectElement(element.id)}
+                drag
+                dragMomentum={false}
+                onDragEnd={(event, info) => {
+                  handleElementDrag(element.id, {
+                    x: element.position.x + info.offset.x,
+                    y: element.position.y + info.offset.y
+                  });
+                }}
               >
                 <div className="text-sm font-medium">
                   {element.properties.content} ({element.type})

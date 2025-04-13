@@ -9,6 +9,44 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      design_settings: {
+        Row: {
+          color_palette: Json
+          created_at: string | null
+          id: string
+          project_id: string
+          spacing_settings: Json
+          typography_settings: Json
+          updated_at: string | null
+        }
+        Insert: {
+          color_palette?: Json
+          created_at?: string | null
+          id?: string
+          project_id: string
+          spacing_settings?: Json
+          typography_settings?: Json
+          updated_at?: string | null
+        }
+        Update: {
+          color_palette?: Json
+          created_at?: string | null
+          id?: string
+          project_id?: string
+          spacing_settings?: Json
+          typography_settings?: Json
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "design_settings_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       elements: {
         Row: {
           created_at: string | null
@@ -139,6 +177,39 @@ export type Database = {
           thumbnail_url?: string | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      sections: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          template_data: Json
+          thumbnail_url: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          template_data?: Json
+          thumbnail_url?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          template_data?: Json
+          thumbnail_url?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
