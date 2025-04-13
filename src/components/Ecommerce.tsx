@@ -18,9 +18,10 @@ const Ecommerce = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
-          <div className="relative overflow-hidden rounded-xl shadow-lg">
-            <div className="bg-gray-900 p-4 h-full w-full font-mono text-sm text-green-400 overflow-hidden">
-              <pre className="animate-typing overflow-hidden whitespace-pre-wrap">
+          <div className="relative overflow-hidden rounded-xl shadow-lg h-[400px]">
+            <div className="bg-gray-900 p-4 h-full w-full font-mono text-sm overflow-hidden">
+              <div className="code-animation-container">
+                <pre className="animate-typing text-green-400 overflow-hidden whitespace-pre-wrap">
 {`// South African E-commerce Platform
 import { createStore } from 'lekker-sites';
 
@@ -60,8 +61,15 @@ store.setFeePercentage(0);
 
 // Deploy your store for FREE!
 store.deploy();`}
-              </pre>
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-10 animate-pulse"></div>
+                </pre>
+              </div>
+              
+              {/* Animated cursor */}
+              <div className="typing-cursor"></div>
+              
+              {/* Code animation elements */}
+              <div className="code-line-highlight"></div>
+              <div className="code-glow-effect"></div>
             </div>
           </div>
           

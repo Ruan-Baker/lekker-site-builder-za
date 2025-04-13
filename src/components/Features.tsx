@@ -61,17 +61,18 @@ const Features = () => {
             </div>
           </div>
           
-          <div className="relative rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+          <div className="relative rounded-2xl overflow-hidden shadow-lg border border-gray-200 h-[500px]">
             <div className="bg-gray-900 p-6 h-full w-full font-mono text-sm">
-              <div className="mb-3 flex items-center justify-start gap-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="text-gray-400 ml-2 text-xs">south-african-optimization.js</span>
-              </div>
-              
-              <div className="overflow-hidden h-full">
-                <pre className="text-blue-400 animate-typing overflow-hidden">
+              <div className="code-editor">
+                <div className="mb-3 flex items-center justify-start gap-2">
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="text-gray-400 ml-2 text-xs">south-african-optimization.js</span>
+                </div>
+                
+                <div className="code-container h-full overflow-hidden">
+                  <pre className="code-text animate-typing text-blue-400">
 {`// South African Market Optimization
 
 const locale = "za-ZA";
@@ -139,7 +140,17 @@ setupPaymentGateways({
     apiKey: "API_KEY"
   }
 });`}
-                </pre>
+                  </pre>
+                  
+                  {/* Animated elements */}
+                  <div className="line-numbers">
+                    {Array.from({ length: 20 }).map((_, i) => (
+                      <div key={i} className="line-number">{i + 1}</div>
+                    ))}
+                  </div>
+                  <div className="cursor-blink"></div>
+                  <div className="syntax-highlight-overlay"></div>
+                </div>
               </div>
               <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-gray-900 to-transparent"></div>
             </div>
@@ -189,7 +200,7 @@ setupPaymentGateways({
                 <div className="flex items-center justify-center mb-4">
                   <div className="text-4xl font-bold text-green-600">100%</div>
                 </div>
-                <p className="text-center text-gray-700">Free Forever</p>
+                <p className="text-center text-gray-700">Free</p>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm">
                 <div className="flex items-center justify-center mb-4">
