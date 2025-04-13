@@ -82,89 +82,95 @@ const ResetConfirmation: React.FC = () => {
   };
   
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Set New Password</CardTitle>
-        <CardDescription>
-          Create a new password for your account
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        {error && (
-          <Alert variant="destructive" className="mb-4">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-        
-        {success ? (
-          <Alert className="mb-4 border-green-500 bg-green-50">
-            <Check className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-green-800">
-              Your password has been reset successfully! You will be redirected to the login page...
-            </AlertDescription>
-          </Alert>
-        ) : (
-          <form onSubmit={handleReset} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="password">New Password</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-0 top-0 h-full"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-perspective-light-gray to-white">
+      <div className="w-full max-w-md space-y-6">
+        <Card className="auth-card bg-white">
+          <CardHeader className="auth-card-header">
+            <CardTitle>Set New Password</CardTitle>
+            <CardDescription className="text-white/90">
+              Create a new password for your account
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-6">
+            {error && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            
+            {success ? (
+              <Alert className="mb-4 border-green-500 bg-green-50">
+                <Check className="h-4 w-4 text-green-600" />
+                <AlertDescription className="text-green-800">
+                  Your password has been reset successfully! You will be redirected to the login page...
+                </AlertDescription>
+              </Alert>
+            ) : (
+              <form onSubmit={handleReset} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="password">New Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                      required
+                      className="h-12 pr-10 rounded-lg bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-0 top-0 h-full"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Password must be at least 6 characters long</p>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="confirmPassword"
+                      type={showPassword ? 'text' : 'password'}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="••••••••"
+                      required
+                      className="h-12 pr-10 rounded-lg bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
+                    />
+                  </div>
+                </div>
+                
+                <Button type="submit" className="w-full btn-gradient h-12" disabled={loading}>
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Resetting Password...
+                    </>
+                  ) : 'Reset Password'}
                 </Button>
-              </div>
-              <p className="text-xs text-muted-foreground">Password must be at least 6 characters long</p>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <div className="relative">
-                <Input
-                  id="confirmPassword"
-                  type={showPassword ? 'text' : 'password'}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                />
-              </div>
-            </div>
-            
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Resetting Password...
-                </>
-              ) : 'Reset Password'}
+              </form>
+            )}
+          </CardContent>
+          <CardFooter className="flex justify-center text-sm text-muted-foreground border-t bg-gray-50 px-6 py-4">
+            <Button 
+              variant="link" 
+              onClick={() => navigate('/auth')} 
+              className="text-sm text-perspective-purple"
+            >
+              Back to Login
             </Button>
-          </form>
-        )}
-      </CardContent>
-      <CardFooter className="flex justify-center">
-        <Button 
-          variant="link" 
-          onClick={() => navigate('/auth')} 
-          className="text-sm"
-        >
-          Back to Login
-        </Button>
-      </CardFooter>
-    </Card>
+          </CardFooter>
+        </Card>
+      </div>
+    </div>
   );
 };
 

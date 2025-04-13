@@ -135,8 +135,8 @@ const Signup = () => {
           </div>
         </div>
         
-        <Card className="shadow-soft border-gray-200 overflow-hidden bg-white">
-          <CardHeader className="bg-gradient-purple-blue text-white">
+        <Card className="auth-card bg-white">
+          <CardHeader className="auth-card-header">
             <CardTitle className="text-2xl">
               {currentStep === 1 && "Create Your Account"}
               {currentStep === 2 && "Business Details"}

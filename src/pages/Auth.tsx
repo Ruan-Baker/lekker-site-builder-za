@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -115,14 +114,14 @@ const Auth = () => {
           </Link>
         </div>
         
-        <Card className="w-full shadow-soft border-gray-200 overflow-hidden bg-white">
-          <CardHeader className="bg-gradient-purple-blue text-white">
+        <Card className="auth-card bg-white">
+          <CardHeader className="auth-card-header">
             <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
             <CardDescription className="text-white/90">
               Sign in to your account to continue
             </CardDescription>
           </CardHeader>
-          <CardContent className="pt-6">
+          <CardContent className="pt-6 p-6">
             {errorMessage && (
               <Alert variant="destructive" className="mb-6">
                 <AlertCircle className="h-4 w-4" />
