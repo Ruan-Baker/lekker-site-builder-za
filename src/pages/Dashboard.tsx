@@ -5,12 +5,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { PlusCircle, FileEdit, Trash2, ExternalLink, BarChart4, Settings, User, Power } from 'lucide-react';
+import { PlusCircle, FileEdit, Trash2, ExternalLink, Power, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import NewProjectDialog from '@/components/dashboard/NewProjectDialog';
 
 interface Project {
   id: string;
@@ -21,6 +18,7 @@ interface Project {
   is_published: boolean;
   published_url: string | null;
   thumbnail_url: string | null;
+  project_type?: string;
 }
 
 const Dashboard = () => {
@@ -30,9 +28,6 @@ const Dashboard = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [projectName, setProjectName] = useState('');
-  const [projectDescription, setProjectDescription] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   
   useEffect(() => {
     const fetchProjects = async () => {
@@ -68,73 +63,6 @@ const Dashboard = () => {
     fetchProjects();
   }, [user]);
   
-  const createProject = async () => {
-    if (!user) return;
-    
-    if (!projectName.trim()) {
-      toast({
-        title: 'Error',
-        description: 'Project name is required',
-        variant: 'destructive'
-      });
-      return;
-    }
-    
-    setIsSubmitting(true);
-    
-    try {
-      const { data: projectData, error: projectError } = await supabase
-        .from('projects')
-        .insert({
-          name: projectName,
-          description: projectDescription,
-          user_id: user.id,
-        })
-        .select()
-        .single();
-      
-      if (projectError) {
-        throw projectError;
-      }
-      
-      const { error: pageError } = await supabase
-        .from('pages')
-        .insert({
-          name: 'Home',
-          slug: 'home',
-          project_id: projectData.id,
-          is_homepage: true,
-        });
-      
-      if (pageError) {
-        await supabase.from('projects').delete().eq('id', projectData.id);
-        throw pageError;
-      }
-      
-      setProjects([projectData, ...projects]);
-      
-      toast({
-        title: 'Success',
-        description: 'Project created successfully'
-      });
-      
-      setProjectName('');
-      setProjectDescription('');
-      setDialogOpen(false);
-      
-      navigate(`/builder/${projectData.id}`);
-    } catch (error) {
-      console.error('Error creating project:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to create project',
-        variant: 'destructive'
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-  
   const deleteProject = async (projectId: string) => {
     if (!confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
       return;
@@ -164,6 +92,13 @@ const Dashboard = () => {
         variant: 'destructive'
       });
     }
+  };
+  
+  const getProjectTypeIcon = (projectType?: string) => {
+    if (projectType === 'funnel') {
+      return <span className="inline-block h-2 w-2 rounded-full bg-purple-500 mr-2"></span>;
+    }
+    return <span className="inline-block h-2 w-2 rounded-full bg-blue-500 mr-2"></span>;
   };
   
   return (
@@ -207,7 +142,10 @@ const Dashboard = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">My Projects</h2>
-          <Button onClick={() => setDialogOpen(true)} className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700">
+          <Button 
+            onClick={() => setDialogOpen(true)} 
+            className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 rounded-md"
+          >
             <PlusCircle size={16} />
             New Project
           </Button>
@@ -250,19 +188,27 @@ const Dashboard = () => {
                   <p className="text-sm text-gray-500">
                     Last updated: {new Date(project.updated_at).toLocaleDateString()}
                   </p>
-                  {project.is_published && (
-                    <div className="flex items-center mt-2">
-                      <span className="inline-block h-2 w-2 rounded-full bg-green-500 mr-2"></span>
-                      <span className="text-sm text-green-600">Published</span>
-                    </div>
-                  )}
+                  <div className="flex items-center mt-2">
+                    {project.project_type && (
+                      <div className="flex items-center mr-4">
+                        {getProjectTypeIcon(project.project_type)}
+                        <span className="text-sm">{project.project_type === 'funnel' ? 'Funnel' : 'Website'}</span>
+                      </div>
+                    )}
+                    {project.is_published && (
+                      <div className="flex items-center">
+                        <span className="inline-block h-2 w-2 rounded-full bg-green-500 mr-2"></span>
+                        <span className="text-sm text-green-600">Published</span>
+                      </div>
+                    )}
+                  </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <Button 
                     variant="outline" 
                     size="sm"
                     onClick={() => navigate(`/builder/${project.id}`)}
-                    className="flex items-center gap-1"
+                    className="flex items-center gap-1 rounded-md"
                   >
                     <FileEdit size={14} />
                     Edit
@@ -272,7 +218,7 @@ const Dashboard = () => {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        className="flex items-center gap-1"
+                        className="flex items-center gap-1 rounded-md"
                         onClick={() => window.open(project.published_url!, '_blank')}
                       >
                         <ExternalLink size={14} />
@@ -282,7 +228,7 @@ const Dashboard = () => {
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="text-red-600 border-red-200 hover:bg-red-50 flex items-center gap-1"
+                      className="text-red-600 border-red-200 hover:bg-red-50 flex items-center gap-1 rounded-md"
                       onClick={() => deleteProject(project.id)}
                     >
                       <Trash2 size={14} />
@@ -303,49 +249,17 @@ const Dashboard = () => {
               <p className="text-gray-500 mb-6 max-w-md">
                 Start building your website by creating a new project
               </p>
-              <Button onClick={() => setDialogOpen(true)} className="bg-blue-600 hover:bg-blue-700">Create Project</Button>
+              <Button 
+                onClick={() => setDialogOpen(true)} 
+                className="bg-blue-600 hover:bg-blue-700 rounded-md"
+              >
+                Create Project
+              </Button>
             </CardContent>
           </Card>
         )}
         
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="rounded-xl">
-            <DialogHeader>
-              <DialogTitle>Create a new project</DialogTitle>
-              <DialogDescription>
-                Give your project a name and optional description
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="project-name">Project Name</Label>
-                <Input 
-                  id="project-name" 
-                  value={projectName} 
-                  onChange={e => setProjectName(e.target.value)} 
-                  placeholder="My Awesome Website" 
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="project-description">Description (Optional)</Label>
-                <Textarea 
-                  id="project-description" 
-                  value={projectDescription} 
-                  onChange={e => setProjectDescription(e.target.value)} 
-                  placeholder="A brief description of your project" 
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setDialogOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={createProject} disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700">
-                {isSubmitting ? 'Creating...' : 'Create Project'}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        <NewProjectDialog open={dialogOpen} onOpenChange={setDialogOpen} />
       </div>
       
       {/* Dashboard Footer */}

@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -15,6 +14,8 @@ export interface Project {
   is_published: boolean;
   published_url: string | null;
   thumbnail_url: string | null;
+  project_type?: string;
+  template_id?: string | null;
 }
 
 interface ProjectContextType {
@@ -25,7 +26,7 @@ interface ProjectContextType {
   createPage: (name: string, isHomepage?: boolean) => Promise<string | null>;
   publishProject: () => Promise<void>;
   loadProject: (projectId: string) => Promise<void>;
-  createNewProject: (name: string, description?: string) => Promise<string | null>;
+  createNewProject: (name: string, description?: string, projectType?: string, templateId?: string) => Promise<string | null>;
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -108,7 +109,6 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     if (!project || !user) return null;
     
     try {
-      // Create slug from name
       const slug = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
       
       const { data, error } = await supabase
@@ -147,7 +147,6 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     if (!project || !user) return;
     
     try {
-      // Generate a published URL or use existing one
       const publishedUrl = project.published_url || 
         `https://lekker-sites.com/site/${project.id}`;
       
@@ -184,19 +183,20 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
   
-  const createNewProject = async (name: string, description?: string) => {
+  const createNewProject = async (name: string, description?: string, projectType: string = 'website', templateId?: string) => {
     if (!user) return null;
     
     setIsLoading(true);
     
     try {
-      // First create project
       const { data: projectData, error: projectError } = await supabase
         .from('projects')
         .insert({
           name,
           description,
           user_id: user.id,
+          project_type: projectType,
+          template_id: templateId || null,
         })
         .select()
         .single();
@@ -205,7 +205,6 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         throw new Error(projectError.message);
       }
       
-      // Then create a default homepage
       const { data: pageData, error: pageError } = await supabase
         .from('pages')
         .insert({
@@ -218,7 +217,6 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         .single();
       
       if (pageError) {
-        // If page creation fails, try to delete the project
         await supabase.from('projects').delete().eq('id', projectData.id);
         throw new Error(pageError.message);
       }
