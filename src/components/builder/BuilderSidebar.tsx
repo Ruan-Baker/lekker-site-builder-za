@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, LayoutGrid, Type, Image, Box } from 'lucide-react';
+import { ChevronDown, LayoutGrid, Type, Image, Box, Button as ButtonIcon } from 'lucide-react';
 import ElementItem from './ElementItem';
 
 const BuilderSidebar = () => {
@@ -20,35 +20,35 @@ const BuilderSidebar = () => {
     { id: 'heading', name: 'Heading', icon: Type },
     { id: 'paragraph', name: 'Paragraph', icon: Type },
     { id: 'image', name: 'Image', icon: Image },
-    { id: 'button', name: 'Button', icon: Box },
+    { id: 'button', name: 'Button', icon: ButtonIcon },
     { id: 'container', name: 'Container', icon: LayoutGrid },
   ];
 
   return (
-    <div className="w-72 bg-white border-r border-lekker-border-gray flex flex-col overflow-hidden">
+    <div className="w-72 bg-white border-r border-gray-200 flex flex-col overflow-hidden">
       <Tabs defaultValue="sections" className="flex-1 flex flex-col">
-        <TabsList className="grid grid-cols-2 mx-2 mt-2">
-          <TabsTrigger value="sections">Sections</TabsTrigger>
-          <TabsTrigger value="elements">Elements</TabsTrigger>
+        <TabsList className="grid grid-cols-2 mx-2 mt-2 bg-gray-100">
+          <TabsTrigger value="sections" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">Sections</TabsTrigger>
+          <TabsTrigger value="elements" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">Elements</TabsTrigger>
         </TabsList>
         
         <div className="flex-1 overflow-y-auto p-4">
           <TabsContent value="sections" className="mt-0">
             {sections.map((section) => (
               <Collapsible key={section.id} className="mb-2">
-                <CollapsibleTrigger className="flex items-center justify-between w-full p-2 hover:bg-lekker-light-gray rounded-md">
+                <CollapsibleTrigger className="flex items-center justify-between w-full p-2 hover:bg-gray-100 rounded-md">
                   <span className="font-medium">{section.name}</span>
                   <div className="flex items-center">
-                    <span className="text-xs text-lekker-gray mr-2">{section.count}</span>
+                    <span className="text-xs text-gray-500 mr-2">{section.count}</span>
                     <ChevronDown className="h-4 w-4" />
                   </div>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="pt-1 pl-2">
                   {/* Placeholder for section previews */}
-                  <div className="h-20 bg-lekker-light-gray/60 rounded-md mb-2 flex items-center justify-center text-xs text-lekker-gray">
+                  <div className="h-20 bg-gray-100 rounded-md mb-2 flex items-center justify-center text-xs text-gray-500">
                     Section Preview
                   </div>
-                  <div className="h-20 bg-lekker-light-gray/60 rounded-md flex items-center justify-center text-xs text-lekker-gray">
+                  <div className="h-20 bg-gray-100 rounded-md flex items-center justify-center text-xs text-gray-500">
                     Section Preview
                   </div>
                 </CollapsibleContent>
