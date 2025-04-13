@@ -23,17 +23,17 @@ const Hero = () => {
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-16">
           <Link to="/builder" className="w-full sm:w-auto">
-            <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center gap-2">
+            <Button className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center gap-2 rounded-xl">
               Start Building Free
               <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
-          <Button variant="outline" className="w-full sm:w-auto mt-3 sm:mt-0 border-gray-300 text-gray-700 hover:bg-gray-50 text-base">
+          <Button variant="outline" className="w-full sm:w-auto mt-3 sm:mt-0 border-gray-300 text-gray-700 hover:bg-gray-50 text-base rounded-xl">
             Watch Demo
           </Button>
         </div>
         
-        <div className="relative rounded-lg sm:rounded-2xl overflow-hidden shadow-lg sm:shadow-xl border border-gray-200 mx-auto max-w-5xl">
+        <div className="relative rounded-2xl overflow-hidden shadow-lg sm:shadow-xl border border-gray-200 mx-auto max-w-5xl">
           <div className="bg-gray-100 h-8 sm:h-10 flex items-center px-3 sm:px-4 border-b border-gray-200">
             <div className="flex space-x-1.5 sm:space-x-2">
               <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-red-500 rounded-full"></div>

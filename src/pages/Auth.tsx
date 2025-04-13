@@ -114,8 +114,8 @@ const Auth = () => {
           </Link>
         </div>
         
-        <Card className="auth-card bg-white">
-          <CardHeader className="auth-card-header">
+        <Card className="overflow-hidden rounded-2xl shadow-lg border border-gray-200 bg-white">
+          <CardHeader className="bg-blue-600 text-white p-6">
             <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
             <CardDescription className="text-white/90">
               Sign in to your account to continue
@@ -147,7 +147,7 @@ const Auth = () => {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   required
-                  className="h-12 mt-2 rounded-lg bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
+                  className="h-12 mt-2 rounded-lg bg-white border-gray-300 focus:border-blue-600 focus:ring-blue-600"
                 />
               </div>
               <div className="space-y-2">
@@ -156,7 +156,7 @@ const Auth = () => {
                   <Button
                     type="button"
                     variant="link"
-                    className="p-0 h-auto text-xs text-perspective-purple"
+                    className="p-0 h-auto text-xs text-blue-600"
                     onClick={() => setShowPasswordReset(true)}
                   >
                     Forgot password?
@@ -170,7 +170,7 @@ const Auth = () => {
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     required
-                    className="h-12 mt-2 pr-10 rounded-lg bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
+                    className="h-12 mt-2 pr-10 rounded-lg bg-white border-gray-300 focus:border-blue-600 focus:ring-blue-600"
                   />
                   <Button
                     type="button"
@@ -183,7 +183,7 @@ const Auth = () => {
                   </Button>
                 </div>
               </div>
-              <Button type="submit" className="w-full btn-gradient h-12" disabled={loading}>
+              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 h-12 rounded-xl" disabled={loading}>
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -198,7 +198,7 @@ const Auth = () => {
                 type="button" 
                 variant="outline" 
                 onClick={handleTestLogin} 
-                className="w-full border-perspective-purple text-perspective-purple hover:bg-perspective-purple/10"
+                className="w-full border-blue-600 text-blue-600 hover:bg-blue-600/10 rounded-xl"
               >
                 Login with Test Account
               </Button>
@@ -207,7 +207,7 @@ const Auth = () => {
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
                 Don't have an account?{' '}
-                <Link to="/signup" className="text-perspective-purple hover:underline font-medium">
+                <Link to="/signup" className="text-blue-600 hover:underline font-medium">
                   Sign up
                 </Link>
               </p>

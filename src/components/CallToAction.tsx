@@ -10,7 +10,7 @@ const CallToAction = () => {
     <section id="pricing" className="py-24 px-6 bg-gradient-to-t from-blue-50 to-white">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <Badge variant="secondary" className="px-4 py-2 bg-green-100 text-green-800 font-medium mb-4">100% FREE</Badge>
+          <Badge variant="secondary" className="px-4 py-2 bg-green-100 text-green-800 font-medium mb-4 rounded-full">100% FREE</Badge>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
             Get Your <span className="text-blue-600">Free Website</span> Today
           </h2>
@@ -19,7 +19,7 @@ const CallToAction = () => {
           </p>
         </div>
         
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg border border-blue-100 p-10 mb-16">
+        <div className="max-w-4xl mx-auto rounded-2xl bg-white shadow-lg border border-blue-100 p-10 mb-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div>
               <div className="flex items-center gap-3 mb-6">
@@ -63,7 +63,7 @@ const CallToAction = () => {
                 <p className="mt-2 text-blue-600 font-medium">No hidden charges ever!</p>
               </div>
               <Link to="/builder" className="w-full">
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center gap-2 justify-center">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center gap-2 justify-center rounded-xl">
                   Start Building Free
                   <ArrowRight className="h-5 w-5" />
                 </Button>

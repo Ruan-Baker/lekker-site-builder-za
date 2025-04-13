@@ -104,7 +104,7 @@ const Signup = () => {
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-perspective-light-gray to-white">
       <div className="w-full max-w-4xl">
         <div className="flex justify-between items-center mb-4">
-          <Link to="/" className="flex items-center text-perspective-gray hover:text-perspective-purple transition">
+          <Link to="/" className="flex items-center text-perspective-gray hover:text-blue-600 transition">
             <ArrowLeft size={18} className="mr-2" />
             Back to Home
           </Link>
@@ -112,31 +112,31 @@ const Signup = () => {
 
         <div className="mb-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-2">
-            <span className="gradient-text">Create Your Account</span>
+            <span className="text-blue-600">Create Your Account</span>
           </h2>
-          <p className="text-perspective-gray text-lg">
+          <p className="text-gray-700 text-lg">
             Let's get you set up with your new website
           </p>
         </div>
         
         <div className="flex justify-center mb-8">
           <div className="flex items-center">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 1 ? 'bg-perspective-purple text-white' : 'bg-perspective-light-gray text-perspective-gray'}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 1 ? 'bg-blue-600 text-white' : 'bg-perspective-light-gray text-perspective-gray'}`}>
               1
             </div>
-            <div className={`h-1 w-12 ${currentStep > 1 ? 'bg-perspective-purple' : 'bg-perspective-light-gray'}`}></div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 2 ? 'bg-perspective-purple text-white' : 'bg-perspective-light-gray text-perspective-gray'}`}>
+            <div className={`h-1 w-12 ${currentStep > 1 ? 'bg-blue-600' : 'bg-perspective-light-gray'}`}></div>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 2 ? 'bg-blue-600 text-white' : 'bg-perspective-light-gray text-perspective-gray'}`}>
               2
             </div>
-            <div className={`h-1 w-12 ${currentStep > 2 ? 'bg-perspective-purple' : 'bg-perspective-light-gray'}`}></div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 3 ? 'bg-perspective-purple text-white' : 'bg-perspective-light-gray text-perspective-gray'}`}>
+            <div className={`h-1 w-12 ${currentStep > 2 ? 'bg-blue-600' : 'bg-perspective-light-gray'}`}></div>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 3 ? 'bg-blue-600 text-white' : 'bg-perspective-light-gray text-perspective-gray'}`}>
               3
             </div>
           </div>
         </div>
         
-        <Card className="auth-card bg-white">
-          <CardHeader className="auth-card-header">
+        <Card className="overflow-hidden rounded-2xl shadow-lg border border-gray-200 bg-white">
+          <CardHeader className="bg-blue-600 text-white">
             <CardTitle className="text-2xl">
               {currentStep === 1 && "Create Your Account"}
               {currentStep === 2 && "Business Details"}
@@ -188,7 +188,7 @@ const Signup = () => {
             {!isSuccess && (
               <p className="text-sm text-muted-foreground">
                 Already have an account?{' '}
-                <Link to="/auth" className="text-perspective-purple hover:underline font-medium">
+                <Link to="/auth" className="text-blue-600 hover:underline font-medium">
                   Log in
                 </Link>
               </p>

@@ -84,8 +84,8 @@ const ResetConfirmation: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-perspective-light-gray to-white">
       <div className="w-full max-w-md space-y-6">
-        <Card className="auth-card bg-white">
-          <CardHeader className="auth-card-header">
+        <Card className="overflow-hidden rounded-2xl shadow-lg border border-gray-200 bg-white">
+          <CardHeader className="bg-blue-600 text-white">
             <CardTitle>Set New Password</CardTitle>
             <CardDescription className="text-white/90">
               Create a new password for your account
@@ -118,7 +118,7 @@ const ResetConfirmation: React.FC = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
                       required
-                      className="h-12 pr-10 rounded-lg bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
+                      className="h-12 pr-10 rounded-lg bg-white border-gray-300 focus:border-blue-600 focus:ring-blue-600"
                     />
                     <Button
                       type="button"
@@ -143,12 +143,12 @@ const ResetConfirmation: React.FC = () => {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="••••••••"
                       required
-                      className="h-12 pr-10 rounded-lg bg-white border-gray-300 focus:border-perspective-purple focus:ring-perspective-purple"
+                      className="h-12 pr-10 rounded-lg bg-white border-gray-300 focus:border-blue-600 focus:ring-blue-600"
                     />
                   </div>
                 </div>
                 
-                <Button type="submit" className="w-full btn-gradient h-12" disabled={loading}>
+                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl h-12" disabled={loading}>
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -163,7 +163,7 @@ const ResetConfirmation: React.FC = () => {
             <Button 
               variant="link" 
               onClick={() => navigate('/auth')} 
-              className="text-sm text-perspective-purple"
+              className="text-sm text-blue-600"
             >
               Back to Login
             </Button>

@@ -23,7 +23,7 @@ const SignupSuccess: React.FC = () => {
       
       <div className="space-y-3">
         <Button 
-          className="w-full btn-gradient h-12" 
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl h-12" 
           onClick={() => navigate('/builder')}
         >
           Go to Website Builder
@@ -31,7 +31,7 @@ const SignupSuccess: React.FC = () => {
         
         <Button 
           variant="outline" 
-          className="w-full h-12 border-perspective-purple text-perspective-purple hover:bg-perspective-purple/10"
+          className="w-full h-12 border-blue-600 text-blue-600 hover:bg-blue-600/10 rounded-xl"
           onClick={() => navigate('/')}
         >
           Go to Homepage
