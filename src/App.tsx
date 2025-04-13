@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { BuilderProvider } from "@/contexts/BuilderContext";
-import { ProjectProvider } from "@/contexts/ProjectContext";
+import { ProjectProvider, ProjectProviderWithRouter } from "@/contexts/ProjectContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -42,33 +42,35 @@ const App = () => {
                 <Toaster />
                 <Sonner />
                 <BrowserRouter>
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/auth" element={<Auth />} />
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path="/auth/reset-confirmation" element={<ResetConfirmation />} />
-                    <Route path="/profile" element={
-                      <ProtectedRoute>
-                        <Auth />
-                      </ProtectedRoute>
-                    } />
-                    <Route element={<ProtectedRoute />}>
-                      <Route path="/builder" element={
-                        <BuilderProvider>
-                          <Builder />
-                        </BuilderProvider>
+                  <ProjectProviderWithRouter>
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/auth" element={<Auth />} />
+                      <Route path="/signup" element={<Signup />} />
+                      <Route path="/auth/reset-confirmation" element={<ResetConfirmation />} />
+                      <Route path="/profile" element={
+                        <ProtectedRoute>
+                          <Auth />
+                        </ProtectedRoute>
                       } />
-                      <Route path="/builder/:projectId" element={
-                        <BuilderProvider>
-                          <Builder />
-                        </BuilderProvider>
-                      } />
-                      <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path="/create-project" element={<CreateProject />} />
-                    </Route>
-                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
+                      <Route element={<ProtectedRoute />}>
+                        <Route path="/builder" element={
+                          <BuilderProvider>
+                            <Builder />
+                          </BuilderProvider>
+                        } />
+                        <Route path="/builder/:projectId" element={
+                          <BuilderProvider>
+                            <Builder />
+                          </BuilderProvider>
+                        } />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/create-project" element={<CreateProject />} />
+                      </Route>
+                      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </ProjectProviderWithRouter>
                 </BrowserRouter>
               </div>
             </TooltipProvider>
