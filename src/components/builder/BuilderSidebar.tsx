@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, LayoutGrid, Type, Image, Box, Button as ButtonIcon } from 'lucide-react';
+import { ChevronDown, LayoutGrid, Type, Image, Box } from 'lucide-react';
+import { Button as ButtonIcon } from 'lucide-react';
 import ElementItem from './ElementItem';
 
 const BuilderSidebar = () => {
