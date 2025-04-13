@@ -8,7 +8,7 @@ const FunnelExpert = () => {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
-            Become a Funnel Expert, For Free.
+            Learn How to Create the Perfect Website for Your Business
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
             Get started with our free templates and training specifically designed for South African business owners.
