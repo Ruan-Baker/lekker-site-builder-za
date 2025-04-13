@@ -8,17 +8,18 @@ const FunnelBuilder = () => {
     <section id="funnels" className="py-24 px-6 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
+          <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">FREE FUNNEL BUILDER</span>
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
             Why Do You Need a <span className="text-blue-600">Lekker Funnel</span>?
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Convert more visitors into paying customers with optimized funnels designed specifically for South African businesses.
+            Convert more visitors into paying customers with optimized funnels - designed specifically for South African businesses and 100% FREE forever.
           </p>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="relative">
-            <div className="aspect-video rounded-xl overflow-hidden bg-gray-200 shadow-lg">
+          <div className="relative rounded-xl overflow-hidden shadow-lg">
+            <div className="aspect-video bg-gray-200 w-full">
               <img 
                 src="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
                 alt="Person talking about funnels" 
@@ -51,7 +52,7 @@ const FunnelBuilder = () => {
               </div>
             </div>
             
-            <h3 className="text-2xl font-semibold mb-6 text-gray-800">How Funnels Grow Your Business:</h3>
+            <h3 className="text-2xl font-semibold mb-6 text-gray-800">How FREE Funnels Grow Your Business:</h3>
             
             <div className="space-y-4">
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">

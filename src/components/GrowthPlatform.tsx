@@ -14,7 +14,7 @@ const GrowthPlatform = () => {
           <path d="M9 21L9 9" stroke="currentColor" strokeWidth="2" />
         </svg>
       ),
-      description: "Create professional websites with our drag-and-drop builder - no coding required."
+      description: "Create professional websites with our FREE drag-and-drop builder - no coding required."
     },
     {
       title: "Payment Processing",
@@ -24,28 +24,26 @@ const GrowthPlatform = () => {
           <path d="M5 5H19C20.1046 5 21 5.89543 21 7V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17V7C3 5.89543 3.89543 5 5 5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       ),
-      description: "Accept payments through South African payment gateways like Payfast, Peach, and SnapScan."
+      description: "Accept payments through South African payment gateways like Payfast, Peach, and SnapScan - all FREE!"
     },
     {
-      title: "Email Marketing",
+      title: "Funnel Builder",
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-purple-600">
-          <path d="M3 8L10.8906 13.2604C11.5624 13.7083 12.4376 13.7083 13.1094 13.2604L21 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M3 3L9 9M21 9H9M21 9C21 7.34315 19.6569 6 18 6H9L21 9ZM21 9C21 10.6569 19.6569 12 18 12H9L21 9ZM9 21V9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       ),
-      description: "Automatically collect leads and send follow-up emails to nurture potential customers."
+      description: "Build sales funnels that convert visitors into paying customers with our easy-to-use funnel builder."
     },
     {
-      title: "Video Hosting",
+      title: "YouTube Integration",
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-red-600">
-          <path d="M8 5H22V15H8V5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M2 19L8 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M8 19V15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M22.54 6.42C22.4212 5.94541 22.1793 5.51057 21.8387 5.15941C21.498 4.80824 21.0708 4.55318 20.6 4.42C18.88 4 12 4 12 4C12 4 5.12 4 3.4 4.46C2.92925 4.59318 2.50198 4.84824 2.16134 5.19941C1.82071 5.55057 1.57878 5.98541 1.46 6.46C1.14521 8.20556 0.991235 9.97631 1 11.75C0.988768 13.537 1.14277 15.3213 1.46 17.08C1.59096 17.5398 1.8333 17.9581 2.16929 18.2945C2.50529 18.6308 2.92884 18.8738 3.4 19C5.12 19.46 12 19.46 12 19.46C12 19.46 18.88 19.46 20.6 19C21.0708 18.8668 21.498 18.6118 21.8387 18.2606C22.1793 17.9094 22.4212 17.4746 22.54 17C22.8524 15.2676 23.0063 13.5103 23 11.75C23.0112 9.96295 22.8572 8.1787 22.54 6.42Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M9.75 15.02L15.5 11.75L9.75 8.48001V15.02Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       ),
-      description: "Upload and host videos directly on your website without needing YouTube or Vimeo."
+      description: "Easily embed YouTube videos on your website to engage visitors and showcase your products or services."
     },
     {
       title: "Appointment Scheduling",
@@ -59,7 +57,7 @@ const GrowthPlatform = () => {
           <path d="M4 7H20C20.5523 7 21 7.44772 21 8V19C21 19.5523 20.5523 20 20 20H4C3.44772 20 3 19.5523 3 19V8C3 7.44772 3.44772 7 4 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       ),
-      description: "Let customers book appointments directly through your website with automatic reminders."
+      description: "Let customers book appointments directly through your FREE website with automatic reminders."
     },
     {
       title: "Analytics",
@@ -71,25 +69,26 @@ const GrowthPlatform = () => {
           <path d="M5 4H19C20.1046 4 21 4.89543 21 6V20C21 21.1046 20.1046 22 19 22H5C3.89543 22 3 21.1046 3 20V6C3 4.89543 3.89543 4 5 4Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       ),
-      description: "Track visitor behavior and see exactly how people interact with your website."
+      description: "Track visitor behavior and see exactly how people interact with your FREE website."
     }
   ];
 
   return (
-    <section className="py-24 px-6 bg-gradient-to-b from-white to-gray-50">
+    <section id="tools" className="py-24 px-6 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
+          <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">ALL-IN-ONE PLATFORM</span>
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
-            All You Need to Grow in One Place
+            Everything You Need - FREE
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Everything you need to build, launch, and grow your online business in South Africa - all in one simple platform.
+            All the tools you need to build, launch, and grow your online business in South Africa - in one simple, FREE platform.
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {features.slice(0, 6).map((feature, index) => (
-            <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all">
+            <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all h-full">
               <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mb-4">
                 {feature.icon}
               </div>
@@ -104,7 +103,7 @@ const GrowthPlatform = () => {
             <div className="lg:col-span-2 bg-blue-50 p-8 lg:p-12 flex items-center">
               <div>
                 <h3 className="text-2xl font-bold mb-4 text-gray-900">Beautifully simple funnel builder</h3>
-                <p className="text-gray-700 mb-6">Build your sales funnel in minutes with our drag-and-drop editor. No technical skills required.</p>
+                <p className="text-gray-700 mb-6">Build your sales funnel in minutes with our FREE drag-and-drop editor. No technical skills required.</p>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-3">
                     <Check className="h-5 w-5 text-blue-600" />
@@ -132,20 +131,6 @@ const GrowthPlatform = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-          </div>
-        </div>
-        
-        <div className="mt-16 text-center">
-          <p className="text-lg text-gray-700 mb-8">
-            Join thousands of South African businesses already using Lekker Sites to build their online presence
-          </p>
-          
-          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-16">
-            <div className="font-bold text-2xl text-gray-400">Takealot</div>
-            <div className="font-bold text-2xl text-gray-400">Woolworths</div>
-            <div className="font-bold text-2xl text-gray-400">Standard Bank</div>
-            <div className="font-bold text-2xl text-gray-400">MTN</div>
-            <div className="font-bold text-2xl text-gray-400">Dis-Chem</div>
           </div>
         </div>
       </div>

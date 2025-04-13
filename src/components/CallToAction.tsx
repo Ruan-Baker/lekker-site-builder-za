@@ -9,12 +9,12 @@ const CallToAction = () => {
     <section id="pricing" className="py-24 px-6 bg-gradient-to-t from-blue-50 to-white">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">COMPLETELY FREE</span>
+          <span className="inline-block px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium mb-4">100% FREE FOREVER</span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
             Get Your <span className="text-blue-600">Free Website</span> Today
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Create your professional website or sales funnel without paying anything. No hidden fees, no credit card required, and no charges ever.
+            Create your professional website or sales funnel without paying anything - ever! No hidden fees, no credit card required, and absolutely no charges ever.
           </p>
         </div>
         
@@ -54,12 +54,12 @@ const CallToAction = () => {
             </div>
             <div className="flex flex-col justify-center">
               <div className="text-center mb-8">
-                <div className="inline-block p-1 bg-green-100 text-green-800 rounded-full text-sm font-medium mb-4">FOREVER FREE PLAN</div>
+                <div className="inline-block p-1 px-4 bg-green-100 text-green-800 rounded-full text-sm font-medium mb-4">FOREVER FREE PLAN</div>
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-5xl font-bold text-gray-900">R0</span>
                   <span className="text-xl text-gray-600">/ month</span>
                 </div>
-                <p className="mt-2 text-blue-600 font-medium">No hidden charges ever</p>
+                <p className="mt-2 text-blue-600 font-medium">No hidden charges ever!</p>
               </div>
               <Link to="/builder" className="w-full">
                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-6 text-lg font-medium shadow-md">
@@ -74,7 +74,7 @@ const CallToAction = () => {
         
         <div className="text-center">
           <p className="mb-8 text-gray-700 max-w-3xl mx-auto">
-            Join over 10,000 South African businesses already using Lekker Sites to grow their online presence without spending a cent.
+            Join thousands of South African businesses already using Lekker Sites to grow their online presence without spending a cent.
           </p>
           
           <div className="inline-flex flex-wrap justify-center items-center gap-4 bg-blue-50 rounded-full px-6 py-3 border border-blue-100">

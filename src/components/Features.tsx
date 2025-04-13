@@ -8,11 +8,12 @@ const Features = () => {
     <section id="features" className="py-24 px-6 bg-white">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
+          <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">100% FREE FOREVER</span>
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
             Website Builder Made for <span className="text-blue-600">South African Businesses</span>
           </h2>
           <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-            We've created the easiest way to build professional websites that convert visitors into customers - even if you've never built a website before.
+            We've created the easiest way to build professional websites that convert visitors into customers - even if you've never built a website before. And it's completely FREE!
           </p>
         </div>
         
@@ -22,7 +23,7 @@ const Features = () => {
               Pre-optimized for the South African market
             </h3>
             <p className="text-lg text-gray-700 mb-8">
-              Our builder provides all the tools South African businesses need to establish their online presence quickly and convert more customers.
+              Our FREE builder provides all the tools South African businesses need to establish their online presence quickly and convert more customers.
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -61,16 +62,18 @@ const Features = () => {
           </div>
           
           <div className="relative">
-            <div className="rounded-2xl overflow-hidden bg-gray-100 aspect-video shadow-lg border border-gray-200">
-              <img 
-                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" 
-                alt="Funnel builder demonstration" 
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                <Button variant="outline" size="icon" className="rounded-full w-16 h-16 bg-white/80 border-none hover:bg-white hover:scale-110 transition-all duration-300">
-                  <Play className="h-8 w-8 text-blue-600" fill="currentColor" />
-                </Button>
+            <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+              <div className="aspect-video bg-gray-100 w-full">
+                <img 
+                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" 
+                  alt="Funnel builder demonstration" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  <Button variant="outline" size="icon" className="rounded-full w-16 h-16 bg-white/80 border-none hover:bg-white hover:scale-110 transition-all duration-300">
+                    <Play className="h-8 w-8 text-blue-600" fill="currentColor" />
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -79,7 +82,7 @@ const Features = () => {
         <div className="bg-blue-50 rounded-2xl p-8 md:p-12 border border-blue-100">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">What Makes Our Website Builder Different?</h3>
+              <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">What Makes Our FREE Website Builder Different?</h3>
               <p className="text-lg text-gray-700 mb-6">Unlike other website builders, we focus exclusively on helping South African businesses succeed online with:</p>
               
               <ul className="space-y-4">
@@ -89,7 +92,7 @@ const Features = () => {
                 </li>
                 <li className="flex gap-3">
                   <Check className="h-6 w-6 text-green-600 flex-shrink-0" />
-                  <span className="text-gray-700">R0 setup fee, R0 monthly fee - completely free</span>
+                  <span className="text-gray-700">R0 setup fee, R0 monthly fee - completely free forever</span>
                 </li>
                 <li className="flex gap-3">
                   <Check className="h-6 w-6 text-green-600 flex-shrink-0" />
@@ -111,21 +114,21 @@ const Features = () => {
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm">
                 <div className="flex items-center justify-center mb-4">
-                  <div className="text-4xl font-bold text-purple-600">10K+</div>
-                </div>
-                <p className="text-center text-gray-700">SA Businesses</p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm">
-                <div className="flex items-center justify-center mb-4">
-                  <div className="text-4xl font-bold text-green-600">24/7</div>
+                  <div className="text-4xl font-bold text-purple-600">24/7</div>
                 </div>
                 <p className="text-center text-gray-700">Local Support</p>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm">
                 <div className="flex items-center justify-center mb-4">
+                  <div className="text-4xl font-bold text-green-600">100%</div>
+                </div>
+                <p className="text-center text-gray-700">Free Forever</p>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-sm">
+                <div className="flex items-center justify-center mb-4">
                   <div className="text-4xl font-bold text-orange-600">R0</div>
                 </div>
-                <p className="text-center text-gray-700">Forever Free</p>
+                <p className="text-center text-gray-700">No Hidden Fees</p>
               </div>
             </div>
           </div>

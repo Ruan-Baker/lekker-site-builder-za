@@ -10,17 +10,18 @@ const Hero = () => {
       <div className="max-w-6xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-10 md:mb-12">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-gray-900">
-            Double Your Business with <span className="text-blue-600">Lekker Funnels</span>™
+            Create Your FREE Website with <span className="text-blue-600">Lekker Funnels</span>™
           </h1>
           <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
-            Create professional websites and sales funnels in minutes with our intuitive drag-and-drop builder, designed specifically for South African businesses.
+            Build professional websites and sales funnels in minutes - 100% FREE forever! 
+            No credit card required, no hidden fees, designed specifically for South African businesses.
           </p>
         </div>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
           <Link to="/builder">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-6 text-lg font-medium shadow-md">
-              Start Building Free
+              Start Building FREE
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
@@ -40,21 +41,10 @@ const Hero = () => {
           
           <div className="bg-white p-0">
             <img 
-              src="/lovable-uploads/c579b62f-abb9-466a-b813-1daa0c762771.png" 
+              src="/lovable-uploads/3502f0e2-87c7-447f-ba87-86aa904adb3a.png" 
               alt="Lekker Sites Builder Interface" 
               className="w-full object-cover" 
             />
-          </div>
-        </div>
-        
-        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 mt-16">
-          <span className="text-gray-500 font-medium text-sm uppercase tracking-wider">TRUSTED BY</span>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-            <span className="font-bold text-xl text-gray-700">Woolworths</span>
-            <span className="font-bold text-xl text-gray-700">Checkers</span>
-            <span className="font-bold text-xl text-gray-700">Pick n Pay</span>
-            <span className="font-bold text-xl text-gray-700">Takealot</span>
-            <span className="font-bold text-xl text-gray-700">FNB</span>
           </div>
         </div>
       </div>

@@ -70,11 +70,12 @@ const Templates = () => {
     <section id="templates" className="py-24 px-6 bg-gradient-to-b from-white to-blue-50">
       <div className="max-w-6xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-12">
+          <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">FREE TEMPLATES</span>
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
             Templates Designed for South African Industries
           </h2>
           <p className="text-gray-700 text-lg mb-8">
-            Choose from our collection of professionally designed templates tailored specifically for South African businesses across various industries.
+            Choose from our collection of professionally designed templates tailored specifically for South African businesses across various industries - all completely FREE!
           </p>
         </div>
         
@@ -82,15 +83,15 @@ const Templates = () => {
           {industryTemplates.map((template, index) => (
             <div 
               key={index} 
-              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100"
+              className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col h-full"
             >
               <div className={`${template.thumbnail} h-32 flex items-center justify-center p-6`}>
                 {template.icon}
               </div>
-              <div className="p-6">
+              <div className="p-6 flex flex-col flex-grow">
                 <h3 className="text-xl font-semibold mb-3 text-gray-900">{template.industry}</h3>
-                <p className="text-gray-700 mb-4">{template.description}</p>
-                <Button variant="outline" className="w-full border-gray-300 text-gray-800 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300">
+                <p className="text-gray-700 mb-6 flex-grow">{template.description}</p>
+                <Button variant="outline" className="w-full border-gray-300 text-gray-800 bg-white hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300">
                   View Templates
                 </Button>
               </div>
@@ -100,7 +101,7 @@ const Templates = () => {
         
         <div className="text-center mt-16">
           <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-full shadow-md">
-            Browse All Templates
+            Browse All FREE Templates
           </Button>
         </div>
       </div>

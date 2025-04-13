@@ -32,7 +32,7 @@ const Header = () => {
       <div className="container mx-auto px-6 flex items-center justify-between">
         <Link to="/" className="flex items-center">
           <h1 className="text-2xl font-bold">
-            <span className="text-gray-900">Lekker</span><span className="text-blue-600">Sites</span>
+            <span className="text-blue-700">Lekker</span><span className="text-blue-500">Sites</span>
           </h1>
         </Link>
         
@@ -41,7 +41,9 @@ const Header = () => {
           <a href="#features" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">Features</a>
           <a href="#templates" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">Templates</a>
           <a href="#funnels" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">Funnels</a>
-          <a href="#pricing" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">Pricing</a>
+          <a href="#ecommerce" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">E-commerce</a>
+          <a href="#why" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">Our Mission</a>
+          <a href="#pricing" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">Free Forever</a>
         </nav>
         
         <div className="hidden md:flex items-center space-x-3">
@@ -71,7 +73,9 @@ const Header = () => {
             <a href="#features" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>Features</a>
             <a href="#templates" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>Templates</a>
             <a href="#funnels" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>Funnels</a>
-            <a href="#pricing" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>Pricing</a>
+            <a href="#ecommerce" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>E-commerce</a>
+            <a href="#why" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>Our Mission</a>
+            <a href="#pricing" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>Free Forever</a>
           </nav>
           
           <div className="mt-8 flex flex-col space-y-4">
