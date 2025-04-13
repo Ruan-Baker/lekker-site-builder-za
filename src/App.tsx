@@ -1,4 +1,5 @@
 
+import React, { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,7 +14,6 @@ import NotFound from "./pages/NotFound";
 import Builder from "./pages/Builder";
 import Auth from "./pages/Auth";
 import SeoStructuredData from "./components/SeoStructuredData";
-import { useEffect } from "react";
 
 const queryClient = new QueryClient();
 const helmetContext = {};
