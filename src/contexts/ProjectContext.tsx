@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -26,7 +27,7 @@ interface ProjectContextType {
   createPage: (name: string, isHomepage?: boolean) => Promise<string | null>;
   publishProject: () => Promise<void>;
   loadProject: (projectId: string) => Promise<void>;
-  createNewProject: (name: string, description?: string, projectType?: string, templateId?: string) => Promise<string | null>;
+  createNewProject: (name: string, description?: string, projectType?: string, templateId?: string | null) => Promise<string | null>;
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -183,7 +184,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
   
-  const createNewProject = async (name: string, description?: string, projectType: string = 'website', templateId?: string) => {
+  const createNewProject = async (name: string, description?: string, projectType: string = 'website', templateId?: string | null) => {
     if (!user) return null;
     
     setIsLoading(true);

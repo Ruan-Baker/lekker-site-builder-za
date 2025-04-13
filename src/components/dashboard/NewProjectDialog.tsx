@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import { useProject } from '@/contexts/ProjectContext';
 import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,7 +29,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useAuth } from '@/contexts/AuthContext';
 import { Globe, LayoutDashboard, FileText, ArrowRight, Laptop, PlusCircle } from 'lucide-react';
 
 // Project type options
@@ -57,7 +56,7 @@ interface NewProjectDialogProps {
 }
 
 const NewProjectDialog = ({ open, onOpenChange }: NewProjectDialogProps) => {
-  const { user } = useAuth();
+  const { createNewProject } = useProject();
   const navigate = useNavigate();
   
   const [step, setStep] = useState<'name' | 'type' | 'template'>('name');
@@ -99,9 +98,7 @@ const NewProjectDialog = ({ open, onOpenChange }: NewProjectDialogProps) => {
   
   const templates = projectType === 'website' ? WEBSITE_TEMPLATES : FUNNEL_TEMPLATES;
   
-  const createProject = async () => {
-    if (!user) return;
-    
+  const handleCreateProject = async () => {
     if (!projectName.trim()) {
       toast({
         title: 'Error',
@@ -114,46 +111,25 @@ const NewProjectDialog = ({ open, onOpenChange }: NewProjectDialogProps) => {
     setIsSubmitting(true);
     
     try {
-      const { data: projectData, error: projectError } = await supabase
-        .from('projects')
-        .insert({
-          name: projectName,
-          description: projectDescription,
-          user_id: user.id,
-          project_type: projectType,
-          template_id: selectedTemplate !== 'blank' ? selectedTemplate : null,
-        })
-        .select()
-        .single();
+      const projectId = await createNewProject(
+        projectName, 
+        projectDescription, 
+        projectType, 
+        selectedTemplate !== 'blank' ? selectedTemplate : null
+      );
       
-      if (projectError) {
-        throw projectError;
-      }
-      
-      const { error: pageError } = await supabase
-        .from('pages')
-        .insert({
-          name: 'Home',
-          slug: 'home',
-          project_id: projectData.id,
-          is_homepage: true,
+      if (projectId) {
+        toast({
+          title: 'Success',
+          description: 'Project created successfully'
         });
-      
-      if (pageError) {
-        await supabase.from('projects').delete().eq('id', projectData.id);
-        throw pageError;
+        
+        resetState();
+        onOpenChange(false);
+        navigate(`/builder/${projectId}`);
       }
-      
-      toast({
-        title: 'Success',
-        description: 'Project created successfully'
-      });
-      
-      resetState();
-      onOpenChange(false);
-      navigate(`/builder/${projectData.id}`);
-    } catch (error) {
-      console.error('Error creating project:', error);
+    } catch (err) {
+      console.error('Error creating project:', err);
       toast({
         title: 'Error',
         description: 'Failed to create project',
@@ -334,7 +310,7 @@ const NewProjectDialog = ({ open, onOpenChange }: NewProjectDialogProps) => {
                 Back
               </Button>
               <Button 
-                onClick={createProject}
+                onClick={handleCreateProject}
                 disabled={isSubmitting}
                 className="bg-blue-600 hover:bg-blue-700 rounded-md"
               >
