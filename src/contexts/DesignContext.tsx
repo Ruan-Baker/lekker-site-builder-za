@@ -30,12 +30,22 @@ export interface SpacingSettings {
   sectionSpacing: string;
 }
 
+export interface ResponsiveSettings {
+  desktop: Record<string, any>;
+  tablet: Record<string, any>;
+  mobile: Record<string, any>;
+}
+
+export type ViewportSize = 'desktop' | 'tablet' | 'mobile';
+
 export interface DesignSettings {
   id?: string;
   project_id: string;
   typography_settings: TypographySettings;
   color_palette: ColorPalette;
   spacing_settings: SpacingSettings;
+  responsive_settings?: ResponsiveSettings;
+  animations?: Record<string, any>;
 }
 
 interface DesignContextType {
@@ -47,6 +57,9 @@ interface DesignContextType {
   setSelectedFont: (font: string) => void;
   primaryColor: string;
   setPrimaryColor: (color: string) => void;
+  viewportSize: ViewportSize;
+  setViewportSize: (size: ViewportSize) => void;
+  getResponsiveValue: (key: string, defaultValue: any) => any;
 }
 
 const defaultDesignSettings: DesignSettings = {
@@ -66,6 +79,11 @@ const defaultDesignSettings: DesignSettings = {
     containerPadding: '1rem',
     sectionSpacing: '4rem',
   },
+  responsive_settings: {
+    desktop: {},
+    tablet: {},
+    mobile: {}
+  }
 };
 
 // Available fonts
@@ -90,7 +108,35 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
   const [isLoading, setIsLoading] = useState(true);
   const [selectedFont, setSelectedFont] = useState('Inter');
   const [primaryColor, setPrimaryColor] = useState('#3b82f6');
+  const [viewportSize, setViewportSize] = useState<ViewportSize>('desktop');
   const { user } = useAuth();
+  
+  // Get responsive value based on current viewport size
+  const getResponsiveValue = (key: string, defaultValue: any): any => {
+    if (!designSettings?.responsive_settings) return defaultValue;
+    
+    // Check for value in current viewport first
+    const viewportSettings = designSettings.responsive_settings[viewportSize];
+    if (viewportSettings && viewportSettings[key] !== undefined) {
+      return viewportSettings[key];
+    }
+    
+    // Fall back to tablet if mobile
+    if (viewportSize === 'mobile') {
+      const tabletSettings = designSettings.responsive_settings.tablet;
+      if (tabletSettings && tabletSettings[key] !== undefined) {
+        return tabletSettings[key];
+      }
+    }
+    
+    // Fall back to desktop
+    const desktopSettings = designSettings.responsive_settings.desktop;
+    if (desktopSettings && desktopSettings[key] !== undefined) {
+      return desktopSettings[key];
+    }
+    
+    return defaultValue;
+  };
   
   useEffect(() => {
     if (!projectId || !user) return;
@@ -115,7 +161,8 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
               project_id: projectId,
               typography_settings: defaultDesignSettings.typography_settings as unknown as Json,
               color_palette: defaultDesignSettings.color_palette as unknown as Json,
-              spacing_settings: defaultDesignSettings.spacing_settings as unknown as Json
+              spacing_settings: defaultDesignSettings.spacing_settings as unknown as Json,
+              responsive_settings: defaultDesignSettings.responsive_settings as unknown as Json
             };
             
             const { data: insertedData, error: insertError } = await supabase
@@ -138,7 +185,8 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
                 project_id: insertedData.project_id,
                 typography_settings: insertedData.typography_settings as unknown as TypographySettings,
                 color_palette: insertedData.color_palette as unknown as ColorPalette,
-                spacing_settings: insertedData.spacing_settings as unknown as SpacingSettings
+                spacing_settings: insertedData.spacing_settings as unknown as SpacingSettings,
+                responsive_settings: insertedData.responsive_settings as unknown as ResponsiveSettings
               };
               
               setDesignSettings(settings);
@@ -159,7 +207,8 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
             project_id: data.project_id,
             typography_settings: data.typography_settings as unknown as TypographySettings,
             color_palette: data.color_palette as unknown as ColorPalette,
-            spacing_settings: data.spacing_settings as unknown as SpacingSettings
+            spacing_settings: data.spacing_settings as unknown as SpacingSettings,
+            responsive_settings: data.responsive_settings as unknown as ResponsiveSettings
           };
           
           setDesignSettings(settings);
@@ -195,7 +244,8 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
         project_id: updatedSettings.project_id,
         typography_settings: updatedSettings.typography_settings as unknown as Json,
         color_palette: updatedSettings.color_palette as unknown as Json,
-        spacing_settings: updatedSettings.spacing_settings as unknown as Json
+        spacing_settings: updatedSettings.spacing_settings as unknown as Json,
+        responsive_settings: updatedSettings.responsive_settings as unknown as Json
       };
       
       const { error } = await supabase
@@ -239,6 +289,9 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
         setSelectedFont,
         primaryColor,
         setPrimaryColor,
+        viewportSize,
+        setViewportSize,
+        getResponsiveValue,
       }}
     >
       {children}

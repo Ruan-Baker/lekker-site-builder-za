@@ -31,6 +31,8 @@ interface BuilderContextType {
   saveElements: (pageId: string) => Promise<void>;
   loadElements: (pageId: string) => Promise<void>;
   isLoading: boolean;
+  setElements: (elements: ElementData[]) => void;
+  duplicateElement: (id: string) => void;
 }
 
 const BuilderContext = createContext<BuilderContextType | undefined>(undefined);
@@ -57,6 +59,29 @@ export const BuilderProvider: React.FC<{ children: React.ReactNode }> = ({ child
     if (selectedElement === id) {
       setSelectedElement(null);
     }
+  };
+  
+  const duplicateElement = (id: string) => {
+    const elementToDuplicate = elements.find(el => el.id === id);
+    if (!elementToDuplicate) return;
+    
+    const newElement = {
+      ...elementToDuplicate,
+      id: `${elementToDuplicate.type}-${Date.now()}`,
+      position: {
+        ...elementToDuplicate.position,
+        x: elementToDuplicate.position.x + 20,
+        y: elementToDuplicate.position.y + 20
+      }
+    };
+    
+    setElements(prev => [...prev, newElement]);
+    setSelectedElement(newElement.id);
+    
+    toast({
+      title: 'Element duplicated',
+      description: `Duplicated ${elementToDuplicate.type} element`
+    });
   };
 
   const selectElement = (id: string | null) => {
@@ -163,7 +188,9 @@ export const BuilderProvider: React.FC<{ children: React.ReactNode }> = ({ child
         selectElement,
         saveElements,
         loadElements,
-        isLoading
+        isLoading,
+        setElements,
+        duplicateElement
       }}
     >
       {children}
