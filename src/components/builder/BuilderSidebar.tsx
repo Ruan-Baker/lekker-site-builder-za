@@ -7,11 +7,11 @@ import {
   LayoutGrid, 
   Type, 
   Image as ImageIcon, 
-  Button as ButtonIcon, 
+  Square as ButtonIcon, 
   Box, 
   Layout, 
   ListOrdered, 
-  Form,
+  FormInput,
   Video
 } from 'lucide-react';
 import ElementItem from './ElementItem';
@@ -20,11 +20,25 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useBuilder } from '@/contexts/BuilderContext';
 
+// Define the section type
+interface Section {
+  id: string;
+  name: string;
+  count: number;
+}
+
+// Define the element type for sidebar items
+interface SidebarElement {
+  id: string;
+  name: string;
+  icon: React.FC<any>;
+}
+
 const BuilderSidebar = () => {
   const { user, signOut } = useAuth();
   const { elements } = useBuilder();
   
-  const sections = [
+  const sections: Section[] = [
     { id: 'headers', name: 'Headers', count: 5 },
     { id: 'hero', name: 'Hero Sections', count: 8 },
     { id: 'features', name: 'Features', count: 12 },
@@ -34,7 +48,7 @@ const BuilderSidebar = () => {
     { id: 'footer', name: 'Footers', count: 5 },
   ];
 
-  const elements = [
+  const sidebarElements: SidebarElement[] = [
     { id: 'heading', name: 'Heading', icon: Type },
     { id: 'paragraph', name: 'Paragraph', icon: Type },
     { id: 'image', name: 'Image', icon: ImageIcon },
@@ -42,7 +56,7 @@ const BuilderSidebar = () => {
     { id: 'container', name: 'Container', icon: Layout },
     { id: 'video', name: 'Video', icon: Video },
     { id: 'list', name: 'List', icon: ListOrdered },
-    { id: 'form', name: 'Form', icon: Form },
+    { id: 'form', name: 'Form', icon: FormInput },
   ];
 
   return (
@@ -97,7 +111,7 @@ const BuilderSidebar = () => {
           
           <TabsContent value="elements" className="mt-0">
             <div className="grid grid-cols-2 gap-2">
-              {elements.map((element) => (
+              {sidebarElements.map((element) => (
                 <ElementItem key={element.id} id={element.id} name={element.name} Icon={element.icon} />
               ))}
             </div>
