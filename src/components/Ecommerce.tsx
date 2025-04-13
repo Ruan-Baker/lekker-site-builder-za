@@ -18,154 +18,44 @@ const Ecommerce = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
-          <div className="relative overflow-hidden rounded-xl shadow-lg h-[400px]">
-            {/* Website Builder UI Illustration */}
-            <div className="bg-white h-full w-full relative border border-gray-200">
-              {/* Builder Header */}
-              <div className="bg-blue-600 p-3 text-white flex items-center justify-between">
-                <div className="flex items-center">
-                  <span className="font-bold text-sm">LekkerSites E-commerce Builder</span>
-                </div>
-                <div className="flex gap-2">
-                  <div className="bg-white/20 rounded-sm px-2 py-1 text-xs">Preview</div>
-                  <div className="bg-white/20 rounded-sm px-2 py-1 text-xs">Save</div>
-                  <div className="bg-white rounded-sm px-2 py-1 text-xs text-blue-600 font-semibold">Publish</div>
+          {/* Simple E-commerce Builder Illustration */}
+          <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
+            <div className="bg-blue-600 p-3 text-white">
+              <div className="font-bold">E-commerce Builder</div>
+            </div>
+            
+            <div className="p-6">
+              {/* Simple Store Preview */}
+              <div className="mb-6">
+                <div className="h-5 bg-gray-800 w-40 rounded mb-4"></div>
+                
+                {/* Product Grid */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="border border-gray-200 rounded p-2">
+                    <div className="h-24 bg-gray-100 rounded mb-2"></div>
+                    <div className="h-3 bg-gray-300 w-3/4 rounded mb-2"></div>
+                    <div className="h-6 bg-blue-500 w-16 rounded text-white text-xs flex items-center justify-center">R 299</div>
+                  </div>
+                  
+                  <div className="border border-gray-200 rounded p-2">
+                    <div className="h-24 bg-gray-100 rounded mb-2"></div>
+                    <div className="h-3 bg-gray-300 w-3/4 rounded mb-2"></div>
+                    <div className="h-6 bg-blue-500 w-16 rounded text-white text-xs flex items-center justify-center">R 499</div>
+                  </div>
                 </div>
               </div>
-
-              {/* Builder Interface */}
-              <div className="flex h-[calc(100%-48px)]">
-                {/* Left Sidebar - Elements Panel */}
-                <div className="w-48 bg-gray-50 border-r border-gray-200 p-3">
-                  <div className="text-sm font-medium mb-2 text-gray-800">E-commerce Elements</div>
-                  
-                  {/* Elements List */}
-                  <div className="space-y-2">
-                    <div className="bg-white p-2 rounded border border-gray-200 flex items-center gap-2 cursor-pointer transition-all hover:border-blue-300 group">
-                      <div className="w-5 h-5 bg-blue-100 rounded flex items-center justify-center">
-                        <ShoppingBag className="w-3 h-3 text-blue-600" />
-                      </div>
-                      <span className="text-xs text-gray-700 group-hover:text-blue-600">Product Card</span>
-                    </div>
-                    
-                    <div className="bg-blue-50 p-2 rounded border border-blue-300 flex items-center gap-2 cursor-pointer">
-                      <div className="w-5 h-5 bg-blue-500 rounded flex items-center justify-center">
-                        <CreditCard className="w-3 h-3 text-white" />
-                      </div>
-                      <span className="text-xs text-blue-700 font-medium">Payment Gateway</span>
-                    </div>
-                    
-                    <div className="bg-white p-2 rounded border border-gray-200 flex items-center gap-2 cursor-pointer transition-all hover:border-blue-300 group">
-                      <div className="w-5 h-5 bg-blue-100 rounded flex items-center justify-center">
-                        <Package className="w-3 h-3 text-blue-600" />
-                      </div>
-                      <span className="text-xs text-gray-700 group-hover:text-blue-600">Product Grid</span>
-                    </div>
-                    
-                    <div className="bg-white p-2 rounded border border-gray-200 flex items-center gap-2 cursor-pointer transition-all hover:border-blue-300 group">
-                      <div className="w-5 h-5 bg-blue-100 rounded flex items-center justify-center">
-                        <Truck className="w-3 h-3 text-blue-600" />
-                      </div>
-                      <span className="text-xs text-gray-700 group-hover:text-blue-600">Shipping Options</span>
-                    </div>
-                  </div>
+              
+              {/* Payment Methods */}
+              <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+                <div className="text-sm font-medium text-gray-700 mb-2">South African Payment Methods</div>
+                <div className="flex gap-2 mb-2">
+                  <div className="h-8 w-16 bg-blue-100 rounded flex items-center justify-center text-xs">Payfast</div>
+                  <div className="h-8 w-16 bg-purple-100 rounded flex items-center justify-center text-xs">Peach</div>
+                  <div className="h-8 w-16 bg-green-100 rounded flex items-center justify-center text-xs">SnapScan</div>
                 </div>
-
-                {/* Main Canvas */}
-                <div className="flex-1 bg-gray-100 p-3 overflow-hidden relative">
-                  <div className="bg-white h-full w-full rounded border border-dashed border-gray-300 p-4">
-                    {/* Store Preview */}
-                    <div className="mb-4 text-sm font-medium text-gray-700">South African Online Store</div>
-                    
-                    {/* Product Grid Being Built */}
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-white border border-gray-200 rounded p-3">
-                        <div className="h-20 bg-gray-100 rounded mb-2"></div>
-                        <div className="h-3 w-3/4 bg-gray-300 rounded mb-1"></div>
-                        <div className="h-3 w-1/2 bg-gray-300 rounded mb-2"></div>
-                        <div className="flex justify-between items-center">
-                          <div className="h-6 w-16 bg-blue-500 rounded text-xs text-white flex items-center justify-center">R 299</div>
-                          <div className="h-6 w-8 bg-blue-100 rounded-full flex items-center justify-center">
-                            <ShoppingBag className="w-3 h-3 text-blue-600" />
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-white border border-gray-200 rounded p-3">
-                        <div className="h-20 bg-gray-100 rounded mb-2"></div>
-                        <div className="h-3 w-3/4 bg-gray-300 rounded mb-1"></div>
-                        <div className="h-3 w-1/2 bg-gray-300 rounded mb-2"></div>
-                        <div className="flex justify-between items-center">
-                          <div className="h-6 w-16 bg-blue-500 rounded text-xs text-white flex items-center justify-center">R 499</div>
-                          <div className="h-6 w-8 bg-blue-100 rounded-full flex items-center justify-center">
-                            <ShoppingBag className="w-3 h-3 text-blue-600" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Element Being Dragged Animation */}
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 bg-white border-2 border-blue-500 rounded shadow-lg p-3 animate-float-short">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-medium text-blue-800">SA Payment Gateway</span>
-                        <CreditCard className="w-4 h-4 text-blue-600" />
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="h-8 bg-blue-50 rounded flex items-center justify-center">
-                          <span className="text-xs">Payfast</span>
-                        </div>
-                        <div className="h-8 bg-purple-50 rounded flex items-center justify-center">
-                          <span className="text-xs">Peach</span>
-                        </div>
-                        <div className="h-8 bg-orange-50 rounded flex items-center justify-center">
-                          <span className="text-xs">Ozow</span>
-                        </div>
-                        <div className="h-8 bg-green-50 rounded flex items-center justify-center">
-                          <span className="text-xs">SnapScan</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Mouse Pointer */}
-                    <div className="absolute w-4 h-4 border-t-2 border-l-2 border-blue-600 transform -rotate-45 animate-cursor-move-realistic" style={{ right: '30%', top: '30%' }}></div>
-                  </div>
-                </div>
-
-                {/* Right Sidebar - Properties Panel */}
-                <div className="w-56 bg-gray-50 border-l border-gray-200 p-3">
-                  <div className="text-sm font-medium mb-3 text-gray-800">Payment Settings</div>
-                  
-                  <div className="space-y-3">
-                    <div className="space-y-1">
-                      <label className="text-xs text-gray-500">Currency</label>
-                      <div className="bg-white border border-gray-200 rounded p-2 text-xs flex justify-between items-center">
-                        <span>South African Rand (R)</span>
-                        <div className="w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-[10px]">R</div>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-1">
-                      <label className="text-xs text-gray-500">Gateway</label>
-                      <div className="bg-white border border-blue-200 rounded p-2 text-xs flex justify-between items-center">
-                        <span className="text-blue-700">Payfast</span>
-                        <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-1">
-                      <label className="text-xs text-gray-500">Transaction Fee</label>
-                      <div className="bg-white border border-green-200 rounded p-2 text-xs flex justify-between items-center">
-                        <span className="text-green-700">0% (Free)</span>
-                        <Tag className="w-3 h-3 text-green-500" />
-                      </div>
-                    </div>
-                    
-                    <div className="mt-4">
-                      <div className="bg-blue-600 rounded text-center p-2 cursor-pointer">
-                        <span className="text-xs text-white font-medium">Apply Changes</span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="flex justify-between mt-3">
+                  <div className="text-xs text-green-600 font-semibold">0% Transaction Fee</div>
+                  <div className="text-xs text-gray-500">R0 Monthly</div>
                 </div>
               </div>
             </div>

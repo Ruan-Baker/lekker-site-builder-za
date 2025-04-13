@@ -12,6 +12,7 @@ import GrowthPlatform from '@/components/GrowthPlatform';
 import FunnelExpert from '@/components/FunnelExpert';
 import Ecommerce from '@/components/Ecommerce';
 import FounderMessage from '@/components/FounderMessage';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   return (
@@ -30,6 +31,7 @@ const Index = () => {
         <FunnelExpert />
         <CallToAction />
       </main>
+      <Footer />
     </div>
   );
 };
