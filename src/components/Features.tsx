@@ -61,35 +61,80 @@ const Features = () => {
             </div>
           </div>
           
-          <div className="relative rounded-2xl overflow-hidden shadow-lg border border-gray-200 h-[500px]">
-            {/* Website Builder Interface Animation */}
-            <div className="bg-gray-900 h-full w-full relative">
+          <div className="relative rounded-xl overflow-hidden shadow-lg border border-gray-200 h-[500px]">
+            {/* Website Builder Interface Illustration */}
+            <div className="bg-white h-full w-full relative">
               {/* Builder Interface Header */}
-              <div className="bg-gray-800 p-3 border-b border-gray-700 flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-500 ml-1"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500 ml-1"></div>
-                <div className="text-xs text-gray-400 ml-4">South African Website Builder</div>
+              <div className="bg-blue-600 p-3 text-white flex items-center justify-between">
+                <div className="flex items-center">
+                  <span className="font-bold text-sm">LekkerSites Builder</span>
+                </div>
+                <div className="flex gap-2">
+                  <div className="bg-white/20 rounded-sm px-2 py-1 text-xs">Desktop</div>
+                  <div className="bg-white/20 rounded-sm px-2 py-1 text-xs">Mobile</div>
+                  <div className="bg-white rounded-sm px-2 py-1 text-xs text-blue-600 font-semibold">Publish</div>
+                </div>
               </div>
               
               {/* Builder Content */}
-              <div className="grid grid-cols-12 h-[calc(100%-40px)]">
+              <div className="grid grid-cols-12 h-[calc(100%-48px)]">
                 {/* Left Sidebar - Elements Panel */}
-                <div className="col-span-2 bg-gray-800 border-r border-gray-700 p-2 text-xs">
-                  <div className="text-gray-400 mb-2 text-center">Templates</div>
-                  <div className="bg-gray-700 p-2 rounded mb-2 text-blue-300 text-center animate-pulse">South African</div>
-                  <div className="bg-gray-700 p-2 rounded mb-2 text-gray-300 text-center">Business</div>
-                  <div className="bg-gray-700 p-2 rounded mb-2 text-gray-300 text-center">Portfolio</div>
-                  <div className="bg-gray-700 p-2 rounded mb-2 text-gray-300 text-center">E-commerce</div>
+                <div className="col-span-3 bg-gray-50 border-r border-gray-200 p-3">
+                  <div className="text-sm font-medium mb-3 text-gray-800">Templates</div>
+                  
+                  {/* Template Categories */}
+                  <div className="space-y-2">
+                    <div className="bg-blue-50 p-2 rounded border border-blue-300 flex items-center gap-2 cursor-pointer">
+                      <div className="w-5 h-5 bg-blue-500 rounded flex items-center justify-center">
+                        <Globe className="w-3 h-3 text-white" />
+                      </div>
+                      <span className="text-xs text-blue-700 font-medium">South African</span>
+                    </div>
+                    
+                    <div className="bg-white p-2 rounded border border-gray-200 flex items-center gap-2 cursor-pointer transition-all hover:border-blue-300 group">
+                      <div className="w-5 h-5 bg-gray-100 rounded flex items-center justify-center">
+                        <Code className="w-3 h-3 text-gray-600" />
+                      </div>
+                      <span className="text-xs text-gray-700 group-hover:text-blue-600">Business</span>
+                    </div>
+                    
+                    <div className="bg-white p-2 rounded border border-gray-200 flex items-center gap-2 cursor-pointer transition-all hover:border-blue-300 group">
+                      <div className="w-5 h-5 bg-gray-100 rounded flex items-center justify-center">
+                        <CreditCard className="w-3 h-3 text-gray-600" />
+                      </div>
+                      <span className="text-xs text-gray-700 group-hover:text-blue-600">E-commerce</span>
+                    </div>
+                    
+                    <div className="mt-4">
+                      <div className="text-sm font-medium mb-2 text-gray-800">Page Settings</div>
+                      <div className="space-y-2">
+                        <div className="space-y-1">
+                          <label className="text-xs text-gray-500">Currency</label>
+                          <div className="bg-white border border-gray-200 rounded p-2 text-xs flex justify-between items-center">
+                            <span>ZAR (R)</span>
+                            <div className="w-4 h-4 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-[10px]">R</div>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-1">
+                          <label className="text-xs text-gray-500">Region</label>
+                          <div className="bg-white border border-blue-200 rounded p-2 text-xs flex justify-between items-center">
+                            <span className="text-blue-700">South Africa</span>
+                            <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 
                 {/* Main Canvas */}
-                <div className="col-span-8 bg-white p-0 relative">
-                  {/* Website Being Built Animation */}
-                  <div className="h-full">
+                <div className="col-span-7 bg-gray-100 p-4 relative">
+                  {/* Website Being Built */}
+                  <div className="bg-white h-full rounded overflow-hidden border border-gray-200 shadow-sm">
                     {/* Website Header */}
-                    <div className="bg-blue-600 text-white p-2 flex justify-between items-center">
-                      <div className="font-bold text-sm">SA Business</div>
+                    <div className="bg-blue-600 text-white p-3 flex justify-between items-center">
+                      <div className="font-semibold">SA Business</div>
                       <div className="flex gap-3">
                         <div className="h-2 w-8 bg-white rounded-full"></div>
                         <div className="h-2 w-8 bg-white rounded-full"></div>
@@ -99,70 +144,97 @@ const Features = () => {
                     
                     {/* Hero Section */}
                     <div className="p-4 bg-blue-50 border-b border-gray-200">
-                      <div className="h-4 w-3/4 bg-gray-400 rounded mb-2"></div>
-                      <div className="h-3 w-1/2 bg-gray-300 rounded mb-3"></div>
-                      <div className="h-8 w-32 bg-blue-500 rounded-lg"></div>
+                      <div className="h-5 w-3/4 bg-gray-400 rounded mb-2"></div>
+                      <div className="h-4 w-1/2 bg-gray-300 rounded mb-3"></div>
+                      <div className="h-8 w-32 bg-blue-500 rounded"></div>
                     </div>
                     
                     {/* Features Section */}
                     <div className="p-4 bg-white">
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <div className="h-2 w-3/4 bg-gray-300 rounded mb-2"></div>
-                          <div className="h-2 w-1/2 bg-gray-200 rounded"></div>
+                          <div className="h-3 w-3/4 bg-gray-300 rounded mb-2"></div>
+                          <div className="h-2 w-1/2 bg-gray-200 rounded mb-3"></div>
+                          <div className="h-10 w-full bg-gray-100 rounded"></div>
                         </div>
                         <div>
-                          <div className="h-2 w-3/4 bg-gray-300 rounded mb-2"></div>
-                          <div className="h-2 w-1/2 bg-gray-200 rounded"></div>
+                          <div className="h-3 w-3/4 bg-gray-300 rounded mb-2"></div>
+                          <div className="h-2 w-1/2 bg-gray-200 rounded mb-3"></div>
+                          <div className="h-10 w-full bg-gray-100 rounded"></div>
                         </div>
                       </div>
                     </div>
-                    
-                    {/* Payment Section Being Added */}
-                    <div className="absolute top-32 left-20 animate-float-medium">
-                      <div className="bg-green-50 border-2 border-dashed border-green-500 p-3 rounded-lg shadow-lg w-48">
-                        <div className="h-4 w-3/4 bg-gray-400 rounded mb-2"></div>
-                        <div className="flex gap-2 mb-2">
-                          <div className="h-8 w-8 bg-blue-100 rounded-md flex items-center justify-center text-xs text-blue-500">PF</div>
-                          <div className="h-8 w-8 bg-purple-100 rounded-md flex items-center justify-center text-xs text-purple-500">SS</div>
-                          <div className="h-8 w-8 bg-green-100 rounded-md flex items-center justify-center text-xs text-green-500">OZ</div>
-                        </div>
-                        <div className="h-2 w-full bg-gray-200 rounded mb-1"></div>
-                        <div className="h-2 w-3/4 bg-gray-200 rounded"></div>
-                      </div>
-                    </div>
-                    
-                    {/* Mouse Pointer */}
-                    <div className="absolute w-4 h-4 border-t-2 border-l-2 border-blue-600 transform -rotate-45 animate-cursor-move-realistic" style={{ left: '80px', top: '120px' }}></div>
                   </div>
+                  
+                  {/* South African Payment Section Being Dragged */}
+                  <div className="absolute top-1/4 left-1/4 w-48 bg-white border-2 border-blue-400 rounded shadow-lg p-3 animate-float-medium">
+                    <div className="mb-2 text-xs font-medium text-blue-800 flex items-center justify-between">
+                      <span>Local Payment Section</span>
+                      <CreditCard className="w-4 h-4 text-blue-600" />
+                    </div>
+                    <div className="bg-blue-50 p-2 rounded text-center">
+                      <div className="flex justify-center gap-2 mb-2">
+                        <div className="h-6 w-6 rounded bg-blue-100 flex items-center justify-center">
+                          <span className="text-[8px] font-bold text-blue-800">PF</span>
+                        </div>
+                        <div className="h-6 w-6 rounded bg-purple-100 flex items-center justify-center">
+                          <span className="text-[8px] font-bold text-purple-800">SS</span>
+                        </div>
+                        <div className="h-6 w-6 rounded bg-green-100 flex items-center justify-center">
+                          <span className="text-[8px] font-bold text-green-800">OZ</span>
+                        </div>
+                      </div>
+                      <div className="h-2 w-full bg-gray-200 rounded"></div>
+                    </div>
+                  </div>
+                  
+                  {/* Cursor */}
+                  <div className="absolute w-4 h-4 border-t-2 border-l-2 border-blue-600 transform -rotate-45 animate-cursor-move-realistic" style={{ left: '30%', top: '30%' }}></div>
                 </div>
                 
                 {/* Right Sidebar - Properties Panel */}
-                <div className="col-span-2 bg-gray-800 border-l border-gray-700 p-2 text-xs">
-                  <div className="text-gray-400 mb-2 text-center">Settings</div>
-                  <div className="mb-2">
-                    <div className="text-gray-300 mb-1">Currency</div>
-                    <div className="bg-gray-700 p-1 rounded text-white">ZAR (R)</div>
-                  </div>
-                  <div className="mb-2">
-                    <div className="text-gray-300 mb-1">Region</div>
-                    <div className="bg-gray-700 p-1 rounded text-white">South Africa</div>
-                  </div>
-                  <div className="mb-2">
-                    <div className="text-gray-300 mb-1">Language</div>
-                    <div className="bg-gray-700 p-1 rounded text-white">English (ZA)</div>
-                  </div>
-                  <div className="mb-2">
-                    <div className="text-gray-300 mb-1">Payments</div>
-                    <div className="bg-blue-600 p-1 rounded text-white animate-pulse">Payfast</div>
+                <div className="col-span-2 bg-gray-50 border-l border-gray-200 p-3">
+                  <div className="text-sm font-medium mb-3 text-gray-800">Properties</div>
+                  
+                  <div className="space-y-3">
+                    <div className="space-y-1">
+                      <label className="text-xs text-gray-500">Element Type</label>
+                      <div className="bg-white border border-gray-200 rounded p-2 text-xs">
+                        Payment Section
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-1">
+                      <label className="text-xs text-gray-500">Payment Gateways</label>
+                      <div className="bg-white border border-blue-200 rounded p-2 text-xs flex justify-between items-center">
+                        <span className="text-blue-700">Payfast</span>
+                        <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-1">
+                      <label className="text-xs text-gray-500">Allow EFT</label>
+                      <div className="bg-white border border-gray-200 rounded p-2 text-xs flex justify-between items-center">
+                        <span>Yes</span>
+                        <div className="w-6 h-3 bg-green-500 rounded-full"></div>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-1">
+                      <label className="text-xs text-gray-500">Show Logos</label>
+                      <div className="bg-white border border-gray-200 rounded p-2 text-xs flex justify-between items-center">
+                        <span>Yes</span>
+                        <div className="w-6 h-3 bg-green-500 rounded-full"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
               
               {/* Builder Status Bar */}
-              <div className="absolute bottom-0 left-0 right-0 bg-green-600 h-5 text-xs text-white flex items-center justify-between px-2">
-                <span>All changes saved</span>
-                <span className="animate-pulse">South African optimizations active</span>
+              <div className="absolute bottom-0 left-0 right-0 bg-blue-500 h-5 text-xs text-white flex items-center justify-between px-3">
+                <span>South African optimizations active</span>
+                <span className="animate-pulse">Changes saved automatically</span>
               </div>
             </div>
           </div>
