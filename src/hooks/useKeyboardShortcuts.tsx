@@ -4,6 +4,7 @@ import { useHistory } from '@/contexts/HistoryContext';
 import { useBuilder } from '@/contexts/BuilderContext';
 import { useClipboard } from '@/hooks/useClipboard';
 import { toast } from '@/hooks/use-toast';
+import { ElementData } from '@/contexts/BuilderContext';
 
 export const useKeyboardShortcuts = () => {
   // We'll check if we're in a HistoryProvider context
@@ -27,11 +28,11 @@ export const useKeyboardShortcuts = () => {
 
   // Also safely get builder context
   let selectedElement = null;
-  let deleteElement = () => {};
-  let selectElement = () => {};
-  let elements = [];
-  let duplicateElement = () => {};
-  let updateElement = () => {}; 
+  let deleteElement: (id: string) => void = () => {}; 
+  let selectElement: (id: string | null) => void = () => {};
+  let elements: ElementData[] = [];
+  let duplicateElement: (id: string) => void = () => {};
+  let updateElement: (id: string, data: Partial<ElementData>) => void = () => {};
   
   try {
     const builderContext = useBuilder();
