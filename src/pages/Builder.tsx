@@ -22,62 +22,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { LayoutGrid, Loader2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
-const BuilderContent = () => {
-  const { projectId } = useParams<{ projectId: string }>();
-  const [pageId, setPageId] = useState<string | null>(null);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [gridBuilderOpen, setGridBuilderOpen] = useState(false);
-  const [projectName, setProjectName] = useState<string>('');
-  
-  // Now useKeyboardShortcuts is called within the context of all necessary providers
-  useKeyboardShortcuts();
-  
-  return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <BuilderHeader projectName={projectName} />
-      <div className="flex flex-1 overflow-hidden">
-        <BuilderSidebar />
-        <BuilderCanvas />
-      </div>
-      
-      {pageId && (
-        <>
-          <PreviewMode 
-            open={previewOpen} 
-            onClose={() => setPreviewOpen(false)} 
-            pageId={pageId}
-          />
-          
-          <Dialog open={gridBuilderOpen} onOpenChange={setGridBuilderOpen}>
-            <DialogContent className="max-w-5xl rounded-xl">
-              <DialogHeader>
-                <DialogTitle className="flex items-center gap-2">
-                  <LayoutGrid className="h-5 w-5" />
-                  Grid Section Builder
-                </DialogTitle>
-              </DialogHeader>
-              <GridSectionBuilder 
-                onSave={() => setGridBuilderOpen(false)} 
-              />
-            </DialogContent>
-          </Dialog>
-        </>
-      )}
-      
-      <div className="fixed bottom-4 right-4 z-10">
-        <Button 
-          size="sm" 
-          className="rounded-full flex items-center gap-2 shadow-md bg-blue-600 hover:bg-blue-700"
-          onClick={() => setGridBuilderOpen(true)}
-        >
-          <LayoutGrid className="h-4 w-4" /> 
-          Grid Builder
-        </Button>
-      </div>
-    </div>
-  );
-};
-
 const Builder = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const { user, loading } = useAuth();
@@ -85,6 +29,8 @@ const Builder = () => {
   const [isLoadingProject, setIsLoadingProject] = useState(true);
   const [pageId, setPageId] = useState<string | null>(null);
   const [projectName, setProjectName] = useState<string>('');
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [gridBuilderOpen, setGridBuilderOpen] = useState(false);
   
   useEffect(() => {
     // If we don't have a projectId in params, we should redirect to dashboard
@@ -169,56 +115,54 @@ const Builder = () => {
   return (
     <ProjectProvider>
       <DesignProvider projectId={projectId}>
-        <BuilderProvider>
-          <HistoryProvider projectId={projectId} pageId={pageId || undefined}>
-            <SectionProvider>
-              <DndProvider backend={HTML5Backend}>
-                <div className="min-h-screen flex flex-col bg-gray-50">
-                  <BuilderHeader projectName={projectName} />
-                  <div className="flex flex-1 overflow-hidden">
-                    <BuilderSidebar />
-                    <BuilderCanvas />
-                  </div>
-                  
-                  {pageId && (
-                    <>
-                      <PreviewMode 
-                        open={previewOpen} 
-                        onClose={() => setPreviewOpen(false)} 
-                        pageId={pageId}
-                      />
-                      
-                      <Dialog open={gridBuilderOpen} onOpenChange={setGridBuilderOpen}>
-                        <DialogContent className="max-w-5xl rounded-xl">
-                          <DialogHeader>
-                            <DialogTitle className="flex items-center gap-2">
-                              <LayoutGrid className="h-5 w-5" />
-                              Grid Section Builder
-                            </DialogTitle>
-                          </DialogHeader>
-                          <GridSectionBuilder 
-                            onSave={() => setGridBuilderOpen(false)} 
-                          />
-                        </DialogContent>
-                      </Dialog>
-                    </>
-                  )}
-                  
-                  <div className="fixed bottom-4 right-4 z-10">
-                    <Button 
-                      size="sm" 
-                      className="rounded-full flex items-center gap-2 shadow-md bg-blue-600 hover:bg-blue-700"
-                      onClick={() => setGridBuilderOpen(true)}
-                    >
-                      <LayoutGrid className="h-4 w-4" /> 
-                      Grid Builder
-                    </Button>
-                  </div>
+        <HistoryProvider projectId={projectId} pageId={pageId || undefined}>
+          <SectionProvider>
+            <DndProvider backend={HTML5Backend}>
+              <div className="min-h-screen flex flex-col bg-gray-50">
+                <BuilderHeader projectName={projectName} />
+                <div className="flex flex-1 overflow-hidden">
+                  <BuilderSidebar />
+                  <BuilderCanvas />
                 </div>
-              </DndProvider>
-            </SectionProvider>
-          </HistoryProvider>
-        </BuilderProvider>
+                
+                {pageId && (
+                  <>
+                    <PreviewMode 
+                      open={previewOpen} 
+                      onClose={() => setPreviewOpen(false)} 
+                      pageId={pageId}
+                    />
+                    
+                    <Dialog open={gridBuilderOpen} onOpenChange={setGridBuilderOpen}>
+                      <DialogContent className="max-w-5xl rounded-xl">
+                        <DialogHeader>
+                          <DialogTitle className="flex items-center gap-2">
+                            <LayoutGrid className="h-5 w-5" />
+                            Grid Section Builder
+                          </DialogTitle>
+                        </DialogHeader>
+                        <GridSectionBuilder 
+                          onSave={() => setGridBuilderOpen(false)} 
+                        />
+                      </DialogContent>
+                    </Dialog>
+                  </>
+                )}
+                
+                <div className="fixed bottom-4 right-4 z-10">
+                  <Button 
+                    size="sm" 
+                    className="rounded-full flex items-center gap-2 shadow-md bg-blue-600 hover:bg-blue-700"
+                    onClick={() => setGridBuilderOpen(true)}
+                  >
+                    <LayoutGrid className="h-4 w-4" /> 
+                    Grid Builder
+                  </Button>
+                </div>
+              </div>
+            </DndProvider>
+          </SectionProvider>
+        </HistoryProvider>
       </DesignProvider>
     </ProjectProvider>
   );

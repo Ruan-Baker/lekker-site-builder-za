@@ -25,8 +25,39 @@ export const useKeyboardShortcuts = () => {
     console.warn('History context not available for keyboard shortcuts');
   }
 
-  const { selectedElement, deleteElement, selectElement, elements, duplicateElement } = useBuilder();
-  const { copySelected, paste, hasClipboardData } = useClipboard();
+  // Also safely get builder context
+  let selectedElement = null;
+  let deleteElement = () => {};
+  let selectElement = () => {};
+  let elements = [];
+  let duplicateElement = () => {};
+  let updateElement = () => {}; 
+  
+  try {
+    const builderContext = useBuilder();
+    selectedElement = builderContext.selectedElement;
+    deleteElement = builderContext.deleteElement;
+    selectElement = builderContext.selectElement;
+    elements = builderContext.elements;
+    duplicateElement = builderContext.duplicateElement;
+    updateElement = builderContext.updateElement;
+  } catch (e) {
+    console.warn('Builder context not available for keyboard shortcuts');
+  }
+  
+  // Also safely get clipboard context
+  let copySelected = () => {};
+  let paste = () => {};
+  let hasClipboardData = false;
+  
+  try {
+    const clipboardContext = useClipboard();
+    copySelected = clipboardContext.copySelected;
+    paste = clipboardContext.paste;
+    hasClipboardData = clipboardContext.hasClipboardData;
+  } catch (e) {
+    console.warn('Clipboard context not available for keyboard shortcuts');
+  }
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -119,6 +150,9 @@ export const useKeyboardShortcuts = () => {
 
       // Arrow keys to nudge selected element
       if (selectedElement && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        // We need to be careful here since elements might not be available
+        if (!elements || !updateElement || typeof updateElement !== 'function') return;
+        
         const element = elements.find(el => el.id === selectedElement);
         if (element) {
           e.preventDefault();
@@ -142,15 +176,9 @@ export const useKeyboardShortcuts = () => {
               break;
           }
           
-          // Only try to updateElement if it exists in the builder context
-          if (typeof duplicateElement === 'function') {
-            const { updateElement } = useBuilder();
-            if (typeof updateElement === 'function') {
-              updateElement(selectedElement, {
-                position: { ...element.position, x: newX, y: newY }
-              });
-            }
-          }
+          updateElement(selectedElement, {
+            position: { ...element.position, x: newX, y: newY }
+          });
         }
       }
     };
@@ -163,6 +191,6 @@ export const useKeyboardShortcuts = () => {
     canUndo, canRedo, undo, redo, 
     selectedElement, deleteElement, selectElement, 
     elements, duplicateElement, copySelected, paste, 
-    hasClipboardData
+    hasClipboardData, updateElement
   ]);
 };
