@@ -18,47 +18,12 @@ const Ecommerce = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
-          {/* Simple E-commerce Builder Illustration */}
-          <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
-            <div className="bg-blue-600 p-3 text-white">
-              <div className="font-bold">E-commerce Builder</div>
-            </div>
-            
-            <div className="p-6">
-              {/* Simple Store Preview */}
-              <div className="mb-6">
-                <div className="h-5 bg-gray-800 w-40 rounded mb-4"></div>
-                
-                {/* Product Grid */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="border border-gray-200 rounded p-2">
-                    <div className="h-24 bg-gray-100 rounded mb-2"></div>
-                    <div className="h-3 bg-gray-300 w-3/4 rounded mb-2"></div>
-                    <div className="h-6 bg-blue-500 w-16 rounded text-white text-xs flex items-center justify-center">R 299</div>
-                  </div>
-                  
-                  <div className="border border-gray-200 rounded p-2">
-                    <div className="h-24 bg-gray-100 rounded mb-2"></div>
-                    <div className="h-3 bg-gray-300 w-3/4 rounded mb-2"></div>
-                    <div className="h-6 bg-blue-500 w-16 rounded text-white text-xs flex items-center justify-center">R 499</div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Payment Methods */}
-              <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
-                <div className="text-sm font-medium text-gray-700 mb-2">South African Payment Methods</div>
-                <div className="flex gap-2 mb-2">
-                  <div className="h-8 w-16 bg-blue-100 rounded flex items-center justify-center text-xs">Payfast</div>
-                  <div className="h-8 w-16 bg-purple-100 rounded flex items-center justify-center text-xs">Peach</div>
-                  <div className="h-8 w-16 bg-green-100 rounded flex items-center justify-center text-xs">SnapScan</div>
-                </div>
-                <div className="flex justify-between mt-3">
-                  <div className="text-xs text-green-600 font-semibold">0% Transaction Fee</div>
-                  <div className="text-xs text-gray-500">R0 Monthly</div>
-                </div>
-              </div>
-            </div>
+          <div className="flex items-center justify-center">
+            <img 
+              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" 
+              alt="Woman setting up online store" 
+              className="rounded-lg shadow-lg border border-gray-200 object-cover h-auto max-w-full" 
+            />
           </div>
           
           <div>
