@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -9,6 +10,22 @@ import { useBuilder } from '@/contexts/BuilderContext';
 import { useDesign } from '@/contexts/DesignContext';
 import { Grid3X3, Grid2X2, GridIcon, LayoutGrid } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+
+// Define a GridStyles interface to fix TypeScript errors
+export interface GridStyles {
+  display?: string;
+  gridTemplateColumns?: string;
+  gridTemplateRows?: string;
+  gap?: string;
+  gridAutoFlow?: string;
+  justifyItems?: string;
+  alignItems?: string;
+  placeContent?: string;
+  gridColumnStart?: string | number;
+  gridColumnEnd?: string | number;
+  gridRowStart?: string | number;
+  gridRowEnd?: string | number;
+}
 
 interface ResponsiveGridControlsProps {
   elementId: string;
