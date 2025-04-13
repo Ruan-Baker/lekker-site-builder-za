@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -6,12 +7,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { AlertCircle, ArrowRight, Check, Mail, Github, Facebook, Linkedin } from 'lucide-react';
+import { AlertCircle, ArrowRight, Check, Mail, Github, Facebook, Linkedin, Eye, EyeOff, Loader2, Google, Twitter, AlertTriangle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
-import { PasswordReset } from '@/components/auth/PasswordReset';
-import { UserProfile } from '@/components/auth/UserProfile';
+import PasswordReset from '@/components/auth/PasswordReset';
+import UserProfile from '@/components/auth/UserProfile';
 
 const Auth = () => {
   const [email, setEmail] = useState('');

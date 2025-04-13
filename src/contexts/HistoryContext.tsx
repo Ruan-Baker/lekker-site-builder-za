@@ -19,6 +19,8 @@ interface HistoryContextType {
   redo: () => void;
   saveSnapshot: () => void;
   snapshotCount: number;
+  canSave: boolean;  // Add this property
+  saveState: () => void;  // Add this function
 }
 
 interface HistoryRecord {
@@ -41,6 +43,7 @@ export const HistoryProvider: React.FC<{
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
   const { elements, setElements } = useBuilder();
   const { user } = useAuth();
+  const [lastSavedState, setLastSavedState] = useState<string>('');
   
   // Load history from Supabase when the page changes
   useEffect(() => {
@@ -65,6 +68,10 @@ export const HistoryProvider: React.FC<{
           
           setHistory(formattedHistory);
           setCurrentIndex(formattedHistory.length - 1);
+          
+          // Set last saved state
+          const currentState = JSON.stringify(formattedHistory[formattedHistory.length - 1].elements);
+          setLastSavedState(currentState);
         }
       } catch (error) {
         console.error('Error loading history:', error);
@@ -110,6 +117,10 @@ export const HistoryProvider: React.FC<{
       
       setHistory(limitedHistory);
       setCurrentIndex(limitedHistory.length - 1);
+      
+      // Update last saved state
+      const currentState = JSON.stringify(elements);
+      setLastSavedState(currentState);
       
       // Clean up old history items if over limit
       if (newHistory.length > 50) {
@@ -170,6 +181,20 @@ export const HistoryProvider: React.FC<{
     }
   }, [currentIndex, history, setElements]);
   
+  // Added saveState function for manual saving
+  const saveState = useCallback(() => {
+    saveSnapshot();
+    
+    toast({
+      title: 'Saved',
+      description: 'Your changes have been saved.',
+    });
+  }, [saveSnapshot]);
+  
+  // Determine if there are unsaved changes
+  const currentStateStr = JSON.stringify(elements);
+  const canSave = currentStateStr !== lastSavedState && elements.length > 0;
+  
   return (
     <HistoryContext.Provider
       value={{
@@ -178,7 +203,9 @@ export const HistoryProvider: React.FC<{
         undo,
         redo,
         saveSnapshot,
-        snapshotCount: history.length
+        snapshotCount: history.length,
+        canSave,
+        saveState
       }}
     >
       {children}
