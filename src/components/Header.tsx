@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,21 +25,25 @@ const Header = () => {
     };
   }, []);
 
+  const closeMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'
+        isScrolled ? 'bg-white backdrop-blur-md shadow-sm py-2 sm:py-3' : 'bg-transparent py-3 sm:py-5'
       }`}
     >
-      <div className="container mx-auto px-6 flex items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between">
         <Link to="/" className="flex items-center">
-          <h1 className="text-2xl font-bold">
+          <h1 className="text-xl sm:text-2xl font-bold">
             <span className="text-blue-700">Lekker</span><span className="text-blue-500">Sites</span>
           </h1>
         </Link>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
           <a href="#features" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">Features</a>
           <a href="#templates" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">Templates</a>
           <a href="#funnels" className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors">Funnels</a>
@@ -56,24 +62,25 @@ const Header = () => {
         
         {/* Mobile Menu Button */}
         <button 
-          className="md:hidden text-gray-800 hover:text-gray-900"
+          className="md:hidden text-gray-800 hover:text-gray-900 p-2"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
         
         {/* Mobile Navigation */}
         <div className={`
-          fixed inset-0 bg-white z-40 flex flex-col pt-24 px-6 
-          transition-transform duration-300 md:hidden
+          fixed inset-0 bg-white z-40 flex flex-col pt-20 px-6 
+          transition-transform duration-300 ease-in-out md:hidden
           ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
         `}>
           <nav className="flex flex-col space-y-6">
-            <a href="#features" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>Features</a>
-            <a href="#templates" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>Templates</a>
-            <a href="#funnels" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>Funnels</a>
-            <a href="#ecommerce" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>E-commerce</a>
-            <a href="#why" className="text-lg font-medium text-gray-800" onClick={() => setMobileMenuOpen(false)}>Our Mission</a>
+            <a href="#features" className="text-lg font-medium text-gray-800" onClick={closeMenu}>Features</a>
+            <a href="#templates" className="text-lg font-medium text-gray-800" onClick={closeMenu}>Templates</a>
+            <a href="#funnels" className="text-lg font-medium text-gray-800" onClick={closeMenu}>Funnels</a>
+            <a href="#ecommerce" className="text-lg font-medium text-gray-800" onClick={closeMenu}>E-commerce</a>
+            <a href="#why" className="text-lg font-medium text-gray-800" onClick={closeMenu}>Our Mission</a>
           </nav>
           
           <div className="mt-8 flex flex-col space-y-4">
