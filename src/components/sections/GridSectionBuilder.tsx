@@ -204,7 +204,7 @@ const GridSectionBuilder: React.FC<GridSectionBuilderProps> = ({ onSave }) => {
         category: sectionCategory,
         industry: null,
         tags: [],
-        complexity: 'medium'
+        complexity: "medium" as const // Fixed: explicitly use a valid literal type
       };
       
       await saveSectionAsTemplate(sectionData, metadata);

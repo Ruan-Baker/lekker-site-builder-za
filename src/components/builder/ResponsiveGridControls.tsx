@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { useBuilder } from '@/contexts/BuilderContext';
 import { useDesign } from '@/contexts/DesignContext';
-import { Grid3X3, Grid2X2, GridIcon, LayoutGrid, Columns, ColumnsVertical, Grid, Table2 } from 'lucide-react';
+import { Grid3X3, Grid2X2, GridIcon, LayoutGrid, Columns, Table2 } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';

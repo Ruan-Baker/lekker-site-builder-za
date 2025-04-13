@@ -109,7 +109,7 @@ const AdvancedDesignTools: React.FC<AdvancedDesignToolsProps> = ({ elementId }) 
               <AdvancedTypographyControls
                 value={element.properties.typography || {}}
                 onChange={handleTypographyChange}
-                fonts={designSettings?.typography_settings?.availableFonts || []}
+                fonts={designSettings?.typography_settings?.fonts || []}
               />
             </CardContent>
           </Card>
