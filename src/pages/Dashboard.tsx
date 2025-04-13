@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -8,6 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { PlusCircle, FileEdit, Trash2, ExternalLink, Power, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import NewProjectDialog from '@/components/dashboard/NewProjectDialog';
+import { ProjectProvider } from '@/contexts/ProjectContext';
 
 interface Project {
   id: string;
@@ -103,7 +103,6 @@ const Dashboard = () => {
   
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Dashboard Header */}
       <header className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center">
@@ -138,7 +137,6 @@ const Dashboard = () => {
         </div>
       </header>
       
-      {/* Dashboard Content */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">My Projects</h2>
@@ -259,10 +257,11 @@ const Dashboard = () => {
           </Card>
         )}
         
-        <NewProjectDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+        <ProjectProvider>
+          <NewProjectDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+        </ProjectProvider>
       </div>
       
-      {/* Dashboard Footer */}
       <footer className="bg-white border-t border-gray-200 py-4">
         <div className="container mx-auto px-4 text-center text-sm text-gray-500">
           &copy; {new Date().getFullYear()} LekkerSites. All rights reserved.
