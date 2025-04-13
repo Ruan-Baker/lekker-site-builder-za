@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { Json } from '@/integrations/supabase/types';
 
 // Define types for our design settings
 export interface TypographySettings {
@@ -111,8 +112,10 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
           // If no settings exist, create default ones
           if (error.code === 'PGRST116') {
             const newSettings = {
-              ...defaultDesignSettings,
               project_id: projectId,
+              typography_settings: defaultDesignSettings.typography_settings as unknown as Json,
+              color_palette: defaultDesignSettings.color_palette as unknown as Json,
+              spacing_settings: defaultDesignSettings.spacing_settings as unknown as Json
             };
             
             const { data: insertedData, error: insertError } = await supabase
@@ -129,9 +132,18 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
                 variant: 'destructive',
               });
             } else {
-              setDesignSettings(insertedData);
-              setSelectedFont(insertedData.typography_settings.headings.fontFamily);
-              setPrimaryColor(insertedData.color_palette.primary);
+              // Transform the inserted data to our DesignSettings type
+              const settings: DesignSettings = {
+                id: insertedData.id,
+                project_id: insertedData.project_id,
+                typography_settings: insertedData.typography_settings as unknown as TypographySettings,
+                color_palette: insertedData.color_palette as unknown as ColorPalette,
+                spacing_settings: insertedData.spacing_settings as unknown as SpacingSettings
+              };
+              
+              setDesignSettings(settings);
+              setSelectedFont(settings.typography_settings.headings.fontFamily);
+              setPrimaryColor(settings.color_palette.primary);
             }
           } else {
             toast({
@@ -141,9 +153,18 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
             });
           }
         } else {
-          setDesignSettings(data);
-          setSelectedFont(data.typography_settings.headings.fontFamily);
-          setPrimaryColor(data.color_palette.primary);
+          // Transform the fetched data to our DesignSettings type
+          const settings: DesignSettings = {
+            id: data.id,
+            project_id: data.project_id,
+            typography_settings: data.typography_settings as unknown as TypographySettings,
+            color_palette: data.color_palette as unknown as ColorPalette,
+            spacing_settings: data.spacing_settings as unknown as SpacingSettings
+          };
+          
+          setDesignSettings(settings);
+          setSelectedFont(settings.typography_settings.headings.fontFamily);
+          setPrimaryColor(settings.color_palette.primary);
         }
       } catch (error) {
         console.error('Unexpected error:', error);
@@ -169,9 +190,17 @@ export const DesignProvider: React.FC<{ children: React.ReactNode; projectId: st
         ...settings,
       };
       
+      // Transform our types to Json for Supabase
+      const dataToUpdate = {
+        project_id: updatedSettings.project_id,
+        typography_settings: updatedSettings.typography_settings as unknown as Json,
+        color_palette: updatedSettings.color_palette as unknown as Json,
+        spacing_settings: updatedSettings.spacing_settings as unknown as Json
+      };
+      
       const { error } = await supabase
         .from('design_settings')
-        .update(updatedSettings)
+        .update(dataToUpdate)
         .eq('id', designSettings.id);
         
       if (error) {

@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { Json } from '@/integrations/supabase/types';
 
 // Element type definitions
 export interface ElementPosition {
@@ -83,8 +84,8 @@ export const BuilderProvider: React.FC<{ children: React.ReactNode }> = ({ child
         const elementsToInsert = elements.map(element => ({
           page_id: pageId,
           type: element.type,
-          properties: element.properties,
-          position: element.position
+          properties: element.properties as Json,
+          position: element.position as unknown as Json
         }));
         
         // Insert new elements
@@ -129,7 +130,15 @@ export const BuilderProvider: React.FC<{ children: React.ReactNode }> = ({ child
       }
       
       if (data) {
-        setElements(data);
+        // Transform database data to our ElementData format
+        const transformedData: ElementData[] = data.map(item => ({
+          id: item.id,
+          type: item.type,
+          properties: item.properties as Record<string, any>,
+          position: item.position as unknown as ElementPosition
+        }));
+        
+        setElements(transformedData);
       }
     } catch (error) {
       console.error('Error loading elements:', error);
