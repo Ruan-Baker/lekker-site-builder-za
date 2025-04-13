@@ -68,17 +68,6 @@ const Testimonials = () => {
             </div>
           ))}
         </div>
-        
-        <div className="mt-20">
-          <h3 className="text-xl font-semibold text-center mb-12 text-gray-800">Trusted by businesses across South Africa</h3>
-          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-16">
-            <div className="font-bold text-2xl text-gray-700">Takealot</div>
-            <div className="font-bold text-2xl text-gray-700">Woolworths</div>
-            <div className="font-bold text-2xl text-gray-700">Standard Bank</div>
-            <div className="font-bold text-2xl text-gray-700">MTN</div>
-            <div className="font-bold text-2xl text-gray-700">Dis-Chem</div>
-          </div>
-        </div>
       </div>
     </section>
   );

@@ -9,8 +9,7 @@ import Templates from '../components/Templates';
 import FunnelBuilder from '../components/FunnelBuilder';
 import FunnelExpert from '../components/FunnelExpert';
 import Testimonials from '../components/Testimonials';
-import BuilderPreview from '../components/BuilderPreview';
-import MobileFirst from '../components/MobileFirst';
+import FunnelExpert from '../components/FunnelExpert';
 import BusinessResults from '../components/BusinessResults';
 import FounderMessage from '../components/FounderMessage';
 import CallToAction from '../components/CallToAction';
@@ -41,8 +40,6 @@ const Index = () => {
       <FunnelBuilder />
       <FunnelExpert />
       <Testimonials />
-      <BuilderPreview />
-      <MobileFirst />
       <BusinessResults />
       <FounderMessage />
       <CallToAction />
