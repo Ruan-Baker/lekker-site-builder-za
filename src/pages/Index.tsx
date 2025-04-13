@@ -1,36 +1,60 @@
 
 import React from 'react';
-import Header from '@/components/Header';
-import Hero from '@/components/Hero';
-import Features from '@/components/Features';
-import FunnelBuilder from '@/components/FunnelBuilder';
-import Templates from '@/components/Templates';
-import Testimonials from '@/components/Testimonials';
-import CallToAction from '@/components/CallToAction';
-import BusinessResults from '@/components/BusinessResults';
-import GrowthPlatform from '@/components/GrowthPlatform';
-import FunnelExpert from '@/components/FunnelExpert';
-import Ecommerce from '@/components/Ecommerce';
-import FounderMessage from '@/components/FounderMessage';
-import Footer from '@/components/Footer';
+import Header from '../components/Header';
+import Hero from '../components/Hero';
+import Features from '../components/Features';
+import GrowthPlatform from '../components/GrowthPlatform';
+import Ecommerce from '../components/Ecommerce';
+import Templates from '../components/Templates';
+import SignUpForm from '../components/SignUpForm';
+import FunnelBuilder from '../components/FunnelBuilder';
+import FunnelExpert from '../components/FunnelExpert';
+import Testimonials from '../components/Testimonials';
+import BuilderPreview from '../components/BuilderPreview';
+import MobileFirst from '../components/MobileFirst';
+import BusinessResults from '../components/BusinessResults';
+import FounderMessage from '../components/FounderMessage';
+import CallToAction from '../components/CallToAction';
+import Footer from '../components/Footer';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
+  const { user } = useAuth();
+  
   return (
-    <div className="min-h-screen bg-white">
+    <div>
       <Header />
-      <main>
-        <Hero />
-        <Features />
-        <FunnelBuilder />
-        <Ecommerce />
-        <BusinessResults />
-        <Templates />
-        <GrowthPlatform />
-        <FounderMessage />
-        <Testimonials />
-        <FunnelExpert />
-        <CallToAction />
-      </main>
+      {user ? (
+        <div className="bg-blue-50 py-2 text-center">
+          <span className="mr-2">Welcome back! Continue building your site</span>
+          <Link to="/builder">
+            <Button size="sm" variant="default">Go to Builder</Button>
+          </Link>
+        </div>
+      ) : (
+        <div className="bg-blue-50 py-2 text-center">
+          <span className="mr-2">Already have an account?</span>
+          <Link to="/auth">
+            <Button size="sm" variant="outline">Sign In</Button>
+          </Link>
+        </div>
+      )}
+      <Hero />
+      <Features />
+      <GrowthPlatform />
+      <Ecommerce />
+      <Templates />
+      <SignUpForm />
+      <FunnelBuilder />
+      <FunnelExpert />
+      <Testimonials />
+      <BuilderPreview />
+      <MobileFirst />
+      <BusinessResults />
+      <FounderMessage />
+      <CallToAction />
       <Footer />
     </div>
   );

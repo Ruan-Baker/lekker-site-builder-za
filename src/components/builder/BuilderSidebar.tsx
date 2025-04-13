@@ -2,10 +2,28 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, LayoutGrid, Type, Image, Box, CircleStopIcon } from 'lucide-react';
+import { 
+  ChevronDown, 
+  LayoutGrid, 
+  Type, 
+  Image as ImageIcon, 
+  Button as ButtonIcon, 
+  Box, 
+  Layout, 
+  ListOrdered, 
+  Form,
+  Video
+} from 'lucide-react';
 import ElementItem from './ElementItem';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useBuilder } from '@/contexts/BuilderContext';
 
 const BuilderSidebar = () => {
+  const { user, signOut } = useAuth();
+  const { elements } = useBuilder();
+  
   const sections = [
     { id: 'headers', name: 'Headers', count: 5 },
     { id: 'hero', name: 'Hero Sections', count: 8 },
@@ -19,13 +37,35 @@ const BuilderSidebar = () => {
   const elements = [
     { id: 'heading', name: 'Heading', icon: Type },
     { id: 'paragraph', name: 'Paragraph', icon: Type },
-    { id: 'image', name: 'Image', icon: Image },
-    { id: 'button', name: 'Button', icon: CircleStopIcon },
-    { id: 'container', name: 'Container', icon: LayoutGrid },
+    { id: 'image', name: 'Image', icon: ImageIcon },
+    { id: 'button', name: 'Button', icon: ButtonIcon },
+    { id: 'container', name: 'Container', icon: Layout },
+    { id: 'video', name: 'Video', icon: Video },
+    { id: 'list', name: 'List', icon: ListOrdered },
+    { id: 'form', name: 'Form', icon: Form },
   ];
 
   return (
     <div className="w-72 bg-white border-r border-gray-200 flex flex-col overflow-hidden">
+      {/* User info */}
+      <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <Avatar>
+            <AvatarImage src={user?.user_metadata?.avatar_url} />
+            <AvatarFallback>{user?.email?.[0]?.toUpperCase()}</AvatarFallback>
+          </Avatar>
+          <div className="space-y-0.5">
+            <div className="text-sm font-medium">
+              {user?.user_metadata?.display_name || user?.email?.split('@')[0]}
+            </div>
+            <div className="text-xs text-gray-500">{elements.length} elements</div>
+          </div>
+        </div>
+        <Button variant="ghost" size="sm" onClick={signOut}>
+          Sign out
+        </Button>
+      </div>
+      
       <Tabs defaultValue="sections" className="flex-1 flex flex-col">
         <TabsList className="grid grid-cols-2 mx-2 mt-2 bg-gray-100">
           <TabsTrigger value="sections" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">Sections</TabsTrigger>
