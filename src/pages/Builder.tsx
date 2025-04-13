@@ -15,6 +15,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import PreviewMode from '@/components/builder/PreviewMode';
 import { supabase } from '@/integrations/supabase/client';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 const Builder = () => {
   const { projectId } = useParams<{ projectId: string }>();
@@ -22,6 +23,9 @@ const Builder = () => {
   const navigate = useNavigate();
   const [pageId, setPageId] = useState<string | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
+  
+  // Use keyboard shortcuts
+  useKeyboardShortcuts();
   
   useEffect(() => {
     // If we don't have a projectId in params, we should create one or redirect
