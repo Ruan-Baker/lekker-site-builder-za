@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -12,7 +11,8 @@ import {
   Layout, 
   ListOrdered, 
   FormInput,
-  Video
+  Video,
+  LucideIcon
 } from 'lucide-react';
 import ElementItem from './ElementItem';
 import { useAuth } from '@/contexts/AuthContext';
@@ -31,7 +31,7 @@ interface Section {
 interface SidebarElement {
   id: string;
   name: string;
-  icon: React.FC<any>;
+  icon: LucideIcon;
 }
 
 const BuilderSidebar = () => {
@@ -61,7 +61,6 @@ const BuilderSidebar = () => {
 
   return (
     <div className="w-72 bg-white border-r border-gray-200 flex flex-col overflow-hidden">
-      {/* User info */}
       <div className="p-4 border-b border-gray-200 flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <Avatar>
