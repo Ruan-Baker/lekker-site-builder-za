@@ -8,34 +8,64 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 13%;
+    --foreground: 240 10% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 13%;
+    --card-foreground: 240 10% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 13%;
+    --popover-foreground: 240 10% 12%;
 
-    --primary: 263 60% 52%;
+    --primary: 252 68% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 13%;
+    --secondary: 210 100% 62%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
 
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 13%;
+    --accent: 169 82% 69%;
+    --accent-foreground: 240 10% 12%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 263 60% 52%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 252 68% 55%;
 
     --radius: 1rem;
+  }
+
+  .dark {
+    --background: 240 24% 12%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 24% 14%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 24% 14%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 252 68% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 100% 62%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 6% 20%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 169 82% 69%;
+    --accent-foreground: 240 10% 12%;
+
+    --destructive: 0 62.8% 50.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 6% 24%;
+    --input: 240 6% 24%;
+    --ring: 252 68% 65%;
   }
 
   * {
@@ -50,16 +80,44 @@
     @apply font-sans font-semibold tracking-tight;
   }
   
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl leading-tight;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl leading-tight;
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+  
+  h4 {
+    @apply text-xl md:text-2xl;
+  }
+  
+  p {
+    @apply leading-relaxed;
+  }
+  
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-purple-blue animate-gradient-flow bg-[length:200%_auto];
+  }
+  
+  .gradient-border {
+    @apply relative before:absolute before:inset-0 before:-z-10 before:p-[1px] before:rounded-[inherit] before:bg-gradient-purple-pink;
+  }
+  
   .cursor-custom {
-    @apply pointer-events-none absolute w-6 h-6 bg-lekker-purple rounded-full opacity-70 z-10;
+    @apply pointer-events-none absolute w-6 h-6 bg-perspective-purple rounded-full opacity-70 z-10;
   }
   
   .browser-frame {
-    @apply rounded-lg overflow-hidden bg-white;
+    @apply rounded-lg overflow-hidden bg-white shadow-soft;
   }
   
   .browser-top {
-    @apply bg-lekker-light-gray p-3 border-b border-lekker-border-gray flex items-center gap-2;
+    @apply bg-perspective-light-gray p-3 border-b border-perspective-gray/10 flex items-center gap-2;
   }
   
   .browser-dot {
@@ -67,7 +125,11 @@
   }
   
   .website-block {
-    @apply relative shadow-sm;
+    @apply relative shadow-soft;
+  }
+  
+  .glow {
+    @apply relative after:absolute after:inset-0 after:rounded-[inherit] after:opacity-0 hover:after:opacity-100 after:transition-opacity after:shadow-glow;
   }
 }
 
@@ -77,35 +139,39 @@
   }
   
   .nav-link {
-    @apply text-sm font-medium text-lekker-gray transition-all duration-200 hover:text-lekker-black;
+    @apply text-sm font-medium text-perspective-gray transition-all duration-200 hover:text-perspective-purple;
   }
   
   .btn-primary {
-    @apply bg-lekker-purple hover:bg-lekker-purple-hover text-white rounded-2xl px-6 py-4 font-medium transition-all duration-300;
+    @apply bg-perspective-purple hover:bg-perspective-purple-dark text-white rounded-xl px-6 py-3 font-medium transition-all duration-300 shadow-soft;
   }
   
   .btn-secondary {
-    @apply bg-transparent border border-lekker-border-gray text-lekker-black hover:bg-lekker-light-gray rounded-2xl px-6 py-4 font-medium transition-all duration-300;
+    @apply bg-transparent border border-perspective-purple text-perspective-purple hover:bg-perspective-purple/10 rounded-xl px-6 py-3 font-medium transition-all duration-300;
+  }
+  
+  .btn-gradient {
+    @apply relative bg-gradient-purple-blue text-white rounded-xl px-6 py-3 font-medium transition-all duration-300 shadow-soft overflow-hidden hover:shadow-glow;
   }
   
   .feature-card {
-    @apply flex flex-col gap-6 p-6;
+    @apply flex flex-col gap-6 p-6 rounded-xl bg-perspective-white border border-perspective-light-gray/50 hover:border-perspective-purple/20 transition-all duration-300 hover:shadow-soft;
   }
   
   .feature-icon {
-    @apply w-6 h-6 text-lekker-purple;
+    @apply w-10 h-10 rounded-lg bg-gradient-purple-blue p-2 text-white;
   }
   
   .template-thumbnail {
-    @apply border border-lekker-border-gray rounded-lg overflow-hidden hover:scale-[1.03] transition-transform duration-300 cursor-pointer shadow-softer hover:shadow-soft;
+    @apply border border-perspective-light-gray rounded-lg overflow-hidden hover:scale-[1.03] transition-transform duration-300 cursor-pointer shadow-softer hover:shadow-soft;
   }
   
   .template-label {
-    @apply text-sm mt-2 text-lekker-gray;
+    @apply text-sm mt-2 text-perspective-gray;
   }
   
   .testimonial-card {
-    @apply bg-white p-6 rounded-lg shadow-softer;
+    @apply bg-perspective-white p-6 rounded-xl shadow-softer border border-perspective-light-gray/30;
   }
   
   .section-animation-container {
@@ -116,7 +182,28 @@
     @apply animate-section-build;
   }
   
-  .drag-element {
-    @apply absolute bg-white border border-lekker-border-gray rounded-md p-4 shadow-soft;
+  .card-glow {
+    @apply relative bg-perspective-white border border-perspective-light-gray/50 rounded-xl p-6 shadow-soft hover:shadow-glow hover:border-perspective-purple/20 transition-all duration-300;
   }
+  
+  .glass-card {
+    @apply backdrop-blur-md bg-white/80 border border-white/20 rounded-xl p-6 shadow-soft;
+  }
+  
+  .drag-element {
+    @apply absolute bg-perspective-white border border-perspective-light-gray rounded-md p-4 shadow-soft;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-perspective-light-gray;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-perspective-gray/40 rounded-full hover:bg-perspective-purple/40 transition-colors;
 }

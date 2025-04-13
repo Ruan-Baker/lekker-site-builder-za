@@ -11,7 +11,7 @@ const Builder = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="min-h-screen flex flex-col bg-lekker-light-gray">
+      <div className="min-h-screen flex flex-col bg-perspective-light-gray">
         <BuilderHeader />
         <div className="flex flex-1 overflow-hidden">
           <BuilderSidebar />
