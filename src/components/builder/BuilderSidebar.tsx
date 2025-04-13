@@ -44,7 +44,6 @@ const BuilderSidebar = () => {
                   </div>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="pt-1 pl-2">
-                  {/* Placeholder for section previews */}
                   <div className="h-20 bg-gray-100 rounded-md mb-2 flex items-center justify-center text-xs text-gray-500">
                     Section Preview
                   </div>
