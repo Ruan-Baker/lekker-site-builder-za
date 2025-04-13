@@ -12,7 +12,7 @@ const BusinessResults = () => {
             Results in All Business-Critical Areas
           </h2>
           <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-            We analyzed over 100,000 funnels on our platform to create the highest-converting templates to get qualified leads, sell online, and hire top talent.
+            We analyzed over 100,000 funnels on our platform to create the highest-converting templates to get qualified leads and sell online effectively.
           </p>
         </div>
         
@@ -63,19 +63,19 @@ const BusinessResults = () => {
             </div>
           </div>
           
-          {/* Customer Retention Card */}
+          {/* Customer Success Card - Replaced "Hire Top Talent" */}
           <div className="rounded-xl overflow-hidden shadow-md border border-gray-200">
             <div className="bg-yellow-50 p-4">
               <img 
                 src="/lovable-uploads/976d4e3c-4063-4a3c-925c-b10a08ae8e05.png" 
-                alt="Hire Top Talent" 
+                alt="Customer Success" 
                 className="w-full h-auto object-contain rounded-lg"
               />
             </div>
             <div className="p-6">
-              <h3 className="text-xl font-bold mb-3 text-gray-800">Hire Top Talent</h3>
+              <h3 className="text-xl font-bold mb-3 text-gray-800">Customer Success</h3>
               <p className="text-gray-700 mb-6">
-                Our funnel templates revolutionize recruiting - no resumes, just quick and easy applications.
+                Our website templates help maintain customer relationships and deliver ongoing value long after the first sale.
               </p>
               <div className="flex justify-center">
                 <Button variant="outline" className="rounded-full text-yellow-600 border-yellow-600 hover:bg-yellow-50 flex items-center gap-2">
