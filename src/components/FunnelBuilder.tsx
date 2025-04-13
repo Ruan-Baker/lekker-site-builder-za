@@ -7,27 +7,26 @@ const FunnelBuilder = () => {
   return (
     <section id="funnels" className="py-24 px-6 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">FREE FUNNEL BUILDER</span>
+        <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
-            Why Do You Need a <span className="text-blue-600">Lekker Funnel</span>?
+            Why Do You Need a <span className="text-blue-600">Lekker Funnel™</span> ?
           </h2>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Convert more visitors into paying customers with optimized funnels - designed specifically for South African businesses and 100% FREE forever.
+          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+            Your website & funnel are killing your conversions! Traditional solutions are slow, static, and not built
+            for today's mobile-first world. Meanwhile, <span className="font-bold">98.5%</span> of your audience is scrolling social media on their
+            phones. If your funnel doesn't match their experience, they bounce. Lekker Funnels™ are built
+            for this reality: mobile-first, fast, interactive, and personalized to match your audience's journey.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="relative rounded-xl overflow-hidden shadow-lg">
-            <div className="aspect-video bg-gray-200 w-full">
+        <div className="flex flex-col lg:flex-row gap-8 items-center mb-16">
+          <div className="w-full lg:w-1/2 rounded-xl overflow-hidden shadow-lg">
+            <div className="relative aspect-video w-full bg-gray-100">
               <img 
-                src="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
-                alt="Person talking about funnels" 
+                src="/lovable-uploads/243f158e-a205-41ef-b2b7-7ac49abe0716.png" 
+                alt="Lekker Funnels Demonstration" 
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
-                <h3 className="text-white text-xl font-semibold">See how funnels transform your business</h3>
-              </div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <Button variant="outline" size="icon" className="rounded-full w-16 h-16 bg-white/80 border-none hover:bg-white hover:scale-110 transition-all duration-300">
                   <Play className="h-8 w-8 text-blue-600" fill="currentColor" />
@@ -36,25 +35,23 @@ const FunnelBuilder = () => {
             </div>
           </div>
           
-          <div>
-            <div className="grid grid-cols-3 gap-8 mb-10">
-              <div className="text-center p-4 bg-blue-50 rounded-xl border border-blue-100">
+          <div className="w-full lg:w-1/2">
+            <div className="grid grid-cols-3 gap-8">
+              <div className="text-center">
                 <div className="text-4xl font-bold text-blue-600 mb-2">700%</div>
-                <p className="text-sm text-gray-700">Higher Conversion Rate</p>
+                <p className="text-sm text-gray-700">Higher Conversion</p>
               </div>
-              <div className="text-center p-4 bg-green-50 rounded-xl border border-green-100">
-                <div className="text-4xl font-bold text-green-600 mb-2">42%</div>
-                <p className="text-sm text-gray-700">Lower Customer Acquisition Cost</p>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-blue-600 mb-2">42x</div>
+                <p className="text-sm text-gray-700">Faster Building</p>
               </div>
-              <div className="text-center p-4 bg-purple-50 rounded-xl border border-purple-100">
-                <div className="text-4xl font-bold text-purple-600 mb-2">300%</div>
-                <p className="text-sm text-gray-700">Increase in Revenue</p>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-blue-600 mb-2">300%</div>
+                <p className="text-sm text-gray-700">Better Lead Quality</p>
               </div>
             </div>
             
-            <h3 className="text-2xl font-semibold mb-6 text-gray-800">How FREE Funnels Grow Your Business:</h3>
-            
-            <div className="space-y-4">
+            <div className="mt-12 space-y-6">
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 <div className="flex gap-4">
                   <CheckCircle className="text-blue-500 h-6 w-6 flex-shrink-0 mt-1" />

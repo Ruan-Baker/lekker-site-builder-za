@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { FileText, LayoutDashboard, CheckCircle } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 
 const BusinessResults = () => {
   return (
@@ -10,57 +11,72 @@ const BusinessResults = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
             Results in All Business-Critical Areas
           </h2>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Our funnels help South African businesses achieve dramatic improvements across their entire customer journey.
+          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+            We analyzed over 100,000 funnels on our platform to create the highest-converting templates to get qualified leads, sell online, and hire top talent.
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="border border-blue-200 bg-blue-50 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div className="h-52 bg-blue-100 flex items-center justify-center">
-              <FileText size={80} className="text-blue-500" />
+          {/* Lead Generation Card */}
+          <div className="rounded-xl overflow-hidden shadow-md border border-gray-200">
+            <div className="bg-blue-50 p-4">
+              <img 
+                src="/lovable-uploads/243f158e-a205-41ef-b2b7-7ac49abe0716.png" 
+                alt="Get Qualified Leads" 
+                className="w-full h-auto object-contain rounded-lg"
+              />
             </div>
             <div className="p-6">
-              <h3 className="text-xl font-bold mb-3 text-gray-800">Lead Generation</h3>
-              <p className="text-gray-700 mb-4">Convert more visitors into leads with optimized landing pages and forms.</p>
-              <div className="text-sm font-semibold text-blue-600 flex items-center">
-                <span>Grow your email list</span>
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-              </div>
+              <h3 className="text-xl font-bold mb-3 text-gray-800">Get Qualified Leads</h3>
+              <p className="text-gray-700 mb-6">
+                Our webinar, case study, quiz, freebie, and VSL funnel templates get you ready-to-buy leads.
+              </p>
+              <Button variant="outline" className="rounded-full text-blue-600 border-blue-600 hover:bg-blue-50 flex items-center gap-2">
+                <span>Learn more</span>
+                <ArrowRight className="h-4 w-4" />
+              </Button>
             </div>
           </div>
           
-          <div className="border border-red-200 bg-red-50 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div className="h-52 bg-red-100 flex items-center justify-center">
-              <LayoutDashboard size={80} className="text-red-500" />
+          {/* Sales Conversion Card */}
+          <div className="rounded-xl overflow-hidden shadow-md border border-gray-200">
+            <div className="bg-red-50 p-4">
+              <img 
+                src="/lovable-uploads/243f158e-a205-41ef-b2b7-7ac49abe0716.png" 
+                alt="Sell Smarter Online" 
+                className="w-full h-auto object-contain rounded-lg"
+              />
             </div>
             <div className="p-6">
-              <h3 className="text-xl font-bold mb-3 text-gray-800">Sales Conversion</h3>
-              <p className="text-gray-700 mb-4">Turn potential customers into paying customers with persuasive sales pages.</p>
-              <div className="text-sm font-semibold text-red-600 flex items-center">
-                <span>Increase your revenue</span>
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-              </div>
+              <h3 className="text-xl font-bold mb-3 text-gray-800">Sell Smarter Online</h3>
+              <p className="text-gray-700 mb-6">
+                Personalize your offer and sell your product or offer directly in the funnel without further tools.
+              </p>
+              <Button variant="outline" className="rounded-full text-red-600 border-red-600 hover:bg-red-50 flex items-center gap-2">
+                <span>Learn more</span>
+                <ArrowRight className="h-4 w-4" />
+              </Button>
             </div>
           </div>
           
-          <div className="border border-yellow-200 bg-yellow-50 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div className="h-52 bg-yellow-100 flex items-center justify-center">
-              <CheckCircle size={80} className="text-yellow-500" />
+          {/* Customer Retention Card */}
+          <div className="rounded-xl overflow-hidden shadow-md border border-gray-200">
+            <div className="bg-yellow-50 p-4">
+              <img 
+                src="/lovable-uploads/243f158e-a205-41ef-b2b7-7ac49abe0716.png" 
+                alt="Hire Top Talent" 
+                className="w-full h-auto object-contain rounded-lg"
+              />
             </div>
             <div className="p-6">
-              <h3 className="text-xl font-bold mb-3 text-gray-800">Customer Retention</h3>
-              <p className="text-gray-700 mb-4">Keep customers coming back with follow-up sequences and loyalty programs.</p>
-              <div className="text-sm font-semibold text-yellow-600 flex items-center">
-                <span>Build loyal customers</span>
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-              </div>
+              <h3 className="text-xl font-bold mb-3 text-gray-800">Hire Top Talent</h3>
+              <p className="text-gray-700 mb-6">
+                Our funnel templates revolutionize recruiting - no resumes, just quick and easy applications.
+              </p>
+              <Button variant="outline" className="rounded-full text-yellow-600 border-yellow-600 hover:bg-yellow-50 flex items-center gap-2">
+                <span>Learn more</span>
+                <ArrowRight className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </div>
