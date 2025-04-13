@@ -1,26 +1,30 @@
 
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Crown } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const CallToAction = () => {
   return (
-    <section id="pricing" className="py-24 px-6 bg-gray-50">
+    <section id="pricing" className="py-24 px-6 bg-gradient-to-t from-blue-50 to-white">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
+          <span className="inline-block px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-4">COMPLETELY FREE</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
             Get Your <span className="text-blue-600">Free Website</span> Today
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Create your professional website or sales funnel without paying anything. No hidden fees or charges.
+            Create your professional website or sales funnel without paying anything. No hidden fees, no credit card required, and no charges ever.
           </p>
         </div>
         
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-100 p-10 mb-16">
+        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg border border-blue-100 p-10 mb-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div>
-              <h3 className="text-2xl font-bold mb-6 text-gray-900">100% Free Forever</h3>
+              <div className="flex items-center gap-3 mb-6">
+                <Crown className="h-6 w-6 text-yellow-500" />
+                <h3 className="text-2xl font-bold text-gray-900">100% Free Forever</h3>
+              </div>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <Check className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
@@ -42,13 +46,20 @@ const CallToAction = () => {
                   <Check className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
                   <span className="text-gray-700">Free hosting included</span>
                 </li>
+                <li className="flex items-start gap-3">
+                  <Check className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">Local customer support</span>
+                </li>
               </ul>
             </div>
             <div className="flex flex-col justify-center">
-              <div className="text-center mb-6">
-                <span className="text-4xl font-bold text-gray-900">R0</span>
-                <span className="text-xl text-gray-600"> / month</span>
-                <p className="mt-2 text-blue-600 font-medium">Forever Free</p>
+              <div className="text-center mb-8">
+                <div className="inline-block p-1 bg-green-100 text-green-800 rounded-full text-sm font-medium mb-4">FOREVER FREE PLAN</div>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-5xl font-bold text-gray-900">R0</span>
+                  <span className="text-xl text-gray-600">/ month</span>
+                </div>
+                <p className="mt-2 text-blue-600 font-medium">No hidden charges ever</p>
               </div>
               <Link to="/builder" className="w-full">
                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-6 text-lg font-medium shadow-md">
@@ -56,6 +67,7 @@ const CallToAction = () => {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
+              <p className="text-center text-sm text-gray-500 mt-4">No credit card required. No commitments.</p>
             </div>
           </div>
         </div>
@@ -65,11 +77,11 @@ const CallToAction = () => {
             Join over 10,000 South African businesses already using Lekker Sites to grow their online presence without spending a cent.
           </p>
           
-          <div className="inline-flex items-center gap-4 bg-blue-50 rounded-full px-6 py-3 border border-blue-100">
+          <div className="inline-flex flex-wrap justify-center items-center gap-4 bg-blue-50 rounded-full px-6 py-3 border border-blue-100">
             <span className="text-blue-600 font-medium">No hidden charges</span>
-            <div className="h-1.5 w-1.5 rounded-full bg-blue-600"></div>
+            <div className="h-1.5 w-1.5 rounded-full bg-blue-600 hidden sm:block"></div>
             <span className="text-blue-600 font-medium">No credit card needed</span>
-            <div className="h-1.5 w-1.5 rounded-full bg-blue-600"></div>
+            <div className="h-1.5 w-1.5 rounded-full bg-blue-600 hidden sm:block"></div>
             <span className="text-blue-600 font-medium">Free forever</span>
           </div>
         </div>
