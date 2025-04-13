@@ -28,7 +28,7 @@ const IconElement: React.FC<IconElementProps> = ({
   animation = 'none'
 }) => {
   // Get the icon component dynamically
-  const IconComponent = LucideIcons[icon];
+  const IconComponent = LucideIcons[icon] as React.ElementType;
   
   if (!IconComponent) {
     console.error(`Icon "${icon}" not found`);
