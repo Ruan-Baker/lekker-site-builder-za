@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -12,13 +11,13 @@ import DeploymentManager from '@/components/deployment/DeploymentManager';
 interface ProjectData {
   id: string;
   name: string;
-  description: string;
+  description: string | null;
   user_id: string;
   created_at: string;
   updated_at: string;
-  is_published: boolean;
-  published_url: string;
-  thumbnail_url: string;
+  is_published: boolean | null;
+  published_url: string | null;
+  thumbnail_url: string | null;
   vercel_project_id?: string;
 }
 
@@ -32,7 +31,6 @@ const Deployment = () => {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
-    // Redirect if user is not logged in
     if (!loading && !user) {
       navigate('/auth');
     }
@@ -58,7 +56,6 @@ const Deployment = () => {
       const projectData = data as ProjectData;
       setProject(projectData);
       
-      // Check if project has vercel_project_id
       if (projectData.vercel_project_id) {
         setVercelProjectId(projectData.vercel_project_id);
       }
@@ -73,17 +70,17 @@ const Deployment = () => {
     try {
       setIsLoading(true);
       
-      // Update the project with the Vercel project ID
       const { error } = await supabase
         .from('projects')
-        .update({ vercel_project_id: newVercelProjectId })
+        .update({ 
+          vercel_project_id: newVercelProjectId,
+        } as any)
         .eq('id', projectId);
         
       if (error) throw error;
       
       setVercelProjectId(newVercelProjectId);
       
-      // Re-fetch the project
       fetchProject();
     } catch (error) {
       console.error('Error connecting to Vercel:', error);
