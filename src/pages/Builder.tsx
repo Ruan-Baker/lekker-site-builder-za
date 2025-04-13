@@ -14,6 +14,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import PreviewMode from '@/components/builder/PreviewMode';
+import { supabase } from '@/integrations/supabase/client';
 
 const Builder = () => {
   const { projectId } = useParams<{ projectId: string }>();
@@ -82,7 +83,7 @@ const Builder = () => {
             <SectionProvider>
               <DndProvider backend={HTML5Backend}>
                 <div className="min-h-screen flex flex-col bg-gray-50">
-                  <BuilderHeader onPreviewClick={() => setPreviewOpen(true)} />
+                  <BuilderHeader />
                   <div className="flex flex-1 overflow-hidden">
                     <BuilderSidebar />
                     <BuilderCanvas />

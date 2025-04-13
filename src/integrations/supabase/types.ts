@@ -15,6 +15,7 @@ export type Database = {
           created_at: string | null
           id: string
           project_id: string
+          responsive_settings: Json | null
           spacing_settings: Json
           typography_settings: Json
           updated_at: string | null
@@ -24,6 +25,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           project_id: string
+          responsive_settings?: Json | null
           spacing_settings?: Json
           typography_settings?: Json
           updated_at?: string | null
@@ -33,6 +35,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           project_id?: string
+          responsive_settings?: Json | null
           spacing_settings?: Json
           typography_settings?: Json
           updated_at?: string | null
@@ -78,6 +81,41 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "elements_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      history: {
+        Row: {
+          created_at: string
+          elements: Json
+          id: string
+          metadata: Json | null
+          page_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          elements?: Json
+          id?: string
+          metadata?: Json | null
+          page_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          elements?: Json
+          id?: string
+          metadata?: Json | null
+          page_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "history_page_id_fkey"
             columns: ["page_id"]
             isOneToOne: false
             referencedRelation: "pages"

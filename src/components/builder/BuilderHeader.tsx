@@ -11,7 +11,8 @@ import {
   Upload, 
   Sparkles,
   Undo,
-  Redo
+  Redo,
+  Rocket
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
@@ -20,9 +21,11 @@ import { useDesign } from '@/contexts/DesignContext';
 import { useHistory } from '@/contexts/HistoryContext';
 import ResponsiveViewControls from './ResponsiveViewControls';
 import { useBuilder } from '@/contexts/BuilderContext';
+import { useParams } from 'react-router-dom';
 
 const BuilderHeader = () => {
   const navigate = useNavigate();
+  const { projectId } = useParams<{ projectId: string }>();
   const { project, saveProject, publishProject } = useProject();
   const { isLoading: designLoading } = useDesign();
   const { canUndo, canRedo, undo, redo } = useHistory();
@@ -119,6 +122,17 @@ const BuilderHeader = () => {
         >
           <Eye className="h-4 w-4" />
         </Button>
+        
+        {projectId && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(`/deployment/${projectId}`)}
+            title="Deployment settings"
+          >
+            <Rocket className="h-4 w-4" />
+          </Button>
+        )}
         
         <Button 
           variant="outline"

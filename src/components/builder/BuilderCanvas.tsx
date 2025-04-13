@@ -102,14 +102,14 @@ const BuilderCanvas = () => {
       ? {
           backgroundColor: element.properties.interactions.hover.backgroundColor,
           color: element.properties.interactions.hover.textColor,
-          transform: `scale(${element.properties.interactions.hover.scale || 1})`,
-          transition: `all ${element.properties.interactions.hover.transitionDuration || 200}ms ease`
+          scale: element.properties.interactions.hover.scale || 1,
+          transition: { duration: (element.properties.interactions.hover.transitionDuration || 200) / 1000 }
         }
       : {};
     
     // Start with base styles
     const styles = {
-      position: 'absolute',
+      position: 'absolute' as const,
       left: `${element.position.x}px`,
       top: `${element.position.y}px`,
       width: currentViewport.width || `${element.position.width}px`,

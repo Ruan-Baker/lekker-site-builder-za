@@ -21,6 +21,15 @@ interface HistoryContextType {
   snapshotCount: number;
 }
 
+interface HistoryRecord {
+  id: string;
+  page_id: string;
+  user_id: string;
+  elements: ElementData[];
+  created_at: string;
+  metadata: any;
+}
+
 const HistoryContext = createContext<HistoryContextType | undefined>(undefined);
 
 export const HistoryProvider: React.FC<{
@@ -43,13 +52,13 @@ export const HistoryProvider: React.FC<{
           .from('history')
           .select('*')
           .eq('page_id', pageId)
-          .order('created_at', { ascending: true });
+          .order('created_at', { ascending: true }) as { data: HistoryRecord[] | null, error: any };
           
         if (error) throw error;
         
         if (data && data.length > 0) {
           const formattedHistory = data.map(item => ({
-            elements: item.elements,
+            elements: item.elements as ElementData[],
             timestamp: new Date(item.created_at).getTime(),
             id: item.id
           }));
@@ -76,18 +85,21 @@ export const HistoryProvider: React.FC<{
         .insert({
           page_id: pageId,
           elements: elements,
-          user_id: user.id
+          user_id: user.id,
         })
-        .select()
-        .single();
+        .select() as { data: HistoryRecord[] | null, error: any };
         
       if (error) throw error;
       
+      if (!data || data.length === 0) {
+        throw new Error('Failed to create history record');
+      }
+
       // Create new history item
       const newHistoryItem: HistoryState = {
         elements: elements,
         timestamp: new Date().getTime(),
-        id: data.id
+        id: data[0].id
       };
       
       // Remove any forward history if we're not at the most recent state
