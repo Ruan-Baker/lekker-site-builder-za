@@ -1,117 +1,124 @@
 
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useProject } from '@/contexts/ProjectContext';
-import { useHistory } from '@/contexts/HistoryContext';
+import React from 'react';
 import { Button } from '@/components/ui/button';
-import ResponsiveViewControls from './ResponsiveViewControls';
+import { 
+  Save, 
+  Play, 
+  Upload, 
+  ArrowLeft, 
+  Settings, 
+  ChevronDown,
+  Eye,
+  Code,
+  Palette,
+  FileCode,
+  Laptop,
+  Phone,
+  Tablet,
+  Menu
+} from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useHistory } from '@/contexts/HistoryContext';
+import { useNavigate } from 'react-router-dom';
 import UndoRedoControls from './UndoRedoControls';
-import { Eye, Save } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
-import { useBuilder } from '@/contexts/BuilderContext';
-import KeyboardShortcutsHelp from './KeyboardShortcutsHelp';
+import ResponsiveViewControls from './ResponsiveViewControls';
 
 const BuilderHeader = () => {
-  const { projectId } = useParams<{ projectId: string }>();
-  const { project, isLoading: projectLoading } = useProject();
-  const { saveElements, isLoading: builderLoading } = useBuilder();
-  const [pages, setPages] = useState<any[]>([]);
-  const [currentPage, setCurrentPage] = useState<string | null>(null);
-  const [previewMode, setPreviewMode] = useState(false);
-  const { isSaving } = useHistory();
-  
-  useEffect(() => {
-    if (projectId) {
-      fetchPages();
-    }
-  }, [projectId]);
-  
-  const fetchPages = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('pages')
-        .select('*')
-        .eq('project_id', projectId);
-        
-      if (error) throw error;
-      
-      if (data) {
-        setPages(data);
-        
-        // Set homepage as default
-        const homepage = data.find(page => page.is_homepage);
-        if (homepage) {
-          setCurrentPage(homepage.id);
-        } else if (data.length > 0) {
-          setCurrentPage(data[0].id);
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching pages:', error);
-    }
-  };
-  
-  const handleSave = async () => {
-    if (!currentPage) {
-      toast({
-        title: 'No page selected',
-        description: 'Please select a page to save your changes',
-        variant: 'destructive'
-      });
-      return;
-    }
-    
-    try {
-      await saveElements(currentPage);
-      
-      toast({
-        title: 'Changes saved',
-        description: 'Your page has been saved successfully'
-      });
-    } catch (error) {
-      console.error('Error saving:', error);
-      toast({
-        title: 'Error saving',
-        description: 'There was a problem saving your changes',
-        variant: 'destructive'
-      });
-    }
-  };
+  const navigate = useNavigate();
+  const { canSave, saveState } = useHistory();
   
   return (
-    <header className="h-14 border-b border-gray-200 bg-white px-4 flex items-center justify-between">
-      <div className="flex items-center space-x-4">
-        <h1 className="text-lg font-semibold">
-          {projectLoading ? 'Loading...' : project?.name || 'New Project'}
-        </h1>
+    <header className="border-b border-gray-200 bg-white">
+      <div className="px-4 h-14 flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => navigate('/projects')}
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          
+          <div className="flex items-center">
+            <h1 className="font-semibold text-xl">Builder</h1>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="ml-2">
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                <DropdownMenuItem>
+                  <Settings className="mr-2 h-4 w-4" />
+                  Project Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <FileCode className="mr-2 h-4 w-4" />
+                  Export Code
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          
+          <Tabs defaultValue="design">
+            <TabsList>
+              <TabsTrigger value="design" className="flex items-center">
+                <Palette className="mr-1 h-4 w-4" />
+                Design
+              </TabsTrigger>
+              <TabsTrigger value="code" className="flex items-center">
+                <Code className="mr-1 h-4 w-4" />
+                Code
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
         
-        <UndoRedoControls />
-      </div>
-      
-      <div className="flex items-center space-x-2">
-        <KeyboardShortcutsHelp />
-      
-        <ResponsiveViewControls />
-        
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-2"
-          onClick={() => setPreviewMode(!previewMode)}
-        >
-          <Eye className="mr-2 h-4 w-4" />
-          Preview
-        </Button>
-        
-        <Button 
-          onClick={handleSave}
-          disabled={builderLoading || isSaving}
-          size="sm"
-        >
-          <Save className="mr-2 h-4 w-4" />
-          {isSaving ? 'Saving...' : 'Save'}
-        </Button>
+        <div className="flex items-center space-x-4">
+          <ResponsiveViewControls />
+          
+          <UndoRedoControls />
+          
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center"
+            onClick={() => {}}
+          >
+            <Eye className="mr-1 h-4 w-4" />
+            Preview
+          </Button>
+          
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center"
+          >
+            <Upload className="mr-1 h-4 w-4" />
+            Publish
+          </Button>
+          
+          <Button
+            variant="default"
+            size="sm"
+            className="flex items-center"
+            onClick={saveState}
+            disabled={!canSave}
+          >
+            <Save className="mr-1 h-4 w-4" />
+            Save
+          </Button>
+          
+          <Button variant="ghost" size="icon" className="md:hidden">
+            <Menu className="h-5 w-5" />
+          </Button>
+        </div>
       </div>
     </header>
   );

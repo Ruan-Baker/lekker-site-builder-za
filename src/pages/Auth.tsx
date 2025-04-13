@@ -1,18 +1,17 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { AlertCircle, ArrowRight, Check, Mail, Github, Facebook, Linkedin } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
-import { useAuth } from '@/contexts/AuthContext';
-import { Eye, EyeOff, Github, Twitter, Mail, AlertTriangle, Loader2, Facebook, Linkedin, Google } from 'lucide-react';
-import PasswordReset from '@/components/auth/PasswordReset';
-import UserProfile from '@/components/auth/UserProfile';
+import { PasswordReset } from '@/components/auth/PasswordReset';
+import { UserProfile } from '@/components/auth/UserProfile';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -26,7 +25,6 @@ const Auth = () => {
   const location = useLocation();
   
   useEffect(() => {
-    // If user is logged in and not on the profile page, redirect to home
     if (user && location.pathname !== '/profile') {
       navigate('/');
     }

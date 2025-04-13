@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDrop } from 'react-dnd';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -9,29 +8,47 @@ import { useDesign } from '@/contexts/DesignContext';
 import { toast } from '@/hooks/use-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Define viewport widths
 const VIEWPORT_WIDTHS = {
   desktop: '100%',
   tablet: '768px',
   mobile: '375px'
 };
 
+const GRID_SIZE = 8;
+const ALIGNMENT_THRESHOLD = 10;
+const SPACING_GUIDES = [8, 16, 24, 32];
+
 const BuilderCanvas = () => {
   const { elements, addElement, selectElement, selectedElement, updateElement } = useBuilder();
   const { viewportSize, getResponsiveValue } = useDesign();
   const [showGrid, setShowGrid] = useState(true);
   const [showGuides, setShowGuides] = useState(true);
+  const [alignmentGuides, setAlignmentGuides] = useState({ horizontal: null, vertical: null });
+  const [spacingGuides, setSpacingGuides] = useState([]);
+  const canvasRef = useRef(null);
   
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: 'element',
     drop: (item: any, monitor) => {
       const delta = monitor.getDifferenceFromInitialOffset();
-      const left = Math.round(delta ? delta.x : 0);
-      const top = Math.round(delta ? delta.y : 0);
+      const canvasBounds = canvasRef.current?.getBoundingClientRect();
       
-      console.log('Item dropped:', item);
+      let left = Math.round(delta ? delta.x : 0);
+      let top = Math.round(delta ? delta.y : 0);
       
-      // Add the element to our context
+      if (canvasBounds) {
+        const dropPosition = monitor.getClientOffset();
+        left = dropPosition.x - canvasBounds.left;
+        top = dropPosition.y - canvasBounds.top;
+      }
+      
+      if (showGrid) {
+        left = Math.round(left / GRID_SIZE) * GRID_SIZE;
+        top = Math.round(top / GRID_SIZE) * GRID_SIZE;
+      }
+      
+      console.log('Item dropped at position:', { left, top });
+      
       addElement({
         type: item.id,
         properties: {
@@ -71,25 +88,149 @@ const BuilderCanvas = () => {
     }),
   });
   
-  // Function to handle element positioning with grid snapping
-  const handleElementDrag = (id: string, position: { x: number; y: number }) => {
-    // Grid size (e.g., 8px)
-    const gridSize = showGrid ? 8 : 1;
+  const findAlignmentGuides = (draggedId, dragPosition) => {
+    if (!showGuides) return { horizontal: null, vertical: null };
     
-    // Snap to grid
-    const x = Math.round(position.x / gridSize) * gridSize;
-    const y = Math.round(position.y / gridSize) * gridSize;
+    const guides = { horizontal: null, vertical: null };
+    const draggedElement = elements.find(el => el.id === draggedId);
+    
+    if (!draggedElement) return guides;
+    
+    const draggedCenterX = dragPosition.x + (draggedElement.position.width / 2);
+    const draggedCenterY = dragPosition.y + (draggedElement.position.height / 2);
+    
+    const draggedRight = dragPosition.x + draggedElement.position.width;
+    const draggedBottom = dragPosition.y + draggedElement.position.height;
+    
+    elements.forEach(element => {
+      if (element.id === draggedId) return;
+      
+      const centerX = element.position.x + (element.position.width / 2);
+      const centerY = element.position.y + (element.position.height / 2);
+      const right = element.position.x + element.position.width;
+      const bottom = element.position.y + element.position.height;
+      
+      if (Math.abs(dragPosition.x - element.position.x) < ALIGNMENT_THRESHOLD) {
+        guides.horizontal = { position: element.position.x, type: 'left' };
+      } else if (Math.abs(draggedCenterX - centerX) < ALIGNMENT_THRESHOLD) {
+        guides.horizontal = { position: centerX - (draggedElement.position.width / 2), type: 'center' };
+      } else if (Math.abs(draggedRight - right) < ALIGNMENT_THRESHOLD) {
+        guides.horizontal = { position: right - draggedElement.position.width, type: 'right' };
+      }
+      
+      if (Math.abs(dragPosition.y - element.position.y) < ALIGNMENT_THRESHOLD) {
+        guides.vertical = { position: element.position.y, type: 'top' };
+      } else if (Math.abs(draggedCenterY - centerY) < ALIGNMENT_THRESHOLD) {
+        guides.vertical = { position: centerY - (draggedElement.position.height / 2), type: 'center' };
+      } else if (Math.abs(draggedBottom - bottom) < ALIGNMENT_THRESHOLD) {
+        guides.vertical = { position: bottom - draggedElement.position.height, type: 'bottom' };
+      }
+    });
+    
+    return guides;
+  };
+  
+  const findSpacingGuides = (draggedId, dragPosition) => {
+    if (!showGuides) return [];
+    
+    const guides = [];
+    const draggedElement = elements.find(el => el.id === draggedId);
+    
+    if (!draggedElement) return guides;
+    
+    const draggedRight = dragPosition.x + draggedElement.position.width;
+    const draggedBottom = dragPosition.y + draggedElement.position.height;
+    
+    elements.forEach(element => {
+      if (element.id === draggedId) return;
+      
+      const right = element.position.x + element.position.width;
+      const bottom = element.position.y + element.position.height;
+      
+      const horizontalSpacing = dragPosition.x - right;
+      if (horizontalSpacing > 0 && horizontalSpacing < 100) {
+        SPACING_GUIDES.forEach(space => {
+          if (Math.abs(horizontalSpacing - space) < ALIGNMENT_THRESHOLD) {
+            guides.push({
+              type: 'horizontal',
+              start: { x: right, y: Math.max(element.position.y, dragPosition.y) + 10 },
+              end: { x: dragPosition.x, y: Math.max(element.position.y, dragPosition.y) + 10 },
+              value: space
+            });
+          }
+        });
+      }
+      
+      const verticalSpacing = dragPosition.y - bottom;
+      if (verticalSpacing > 0 && verticalSpacing < 100) {
+        SPACING_GUIDES.forEach(space => {
+          if (Math.abs(verticalSpacing - space) < ALIGNMENT_THRESHOLD) {
+            guides.push({
+              type: 'vertical',
+              start: { x: Math.max(element.position.x, dragPosition.x) + 10, y: bottom },
+              end: { x: Math.max(element.position.x, dragPosition.x) + 10, y: dragPosition.y },
+              value: space
+            });
+          }
+        });
+      }
+    });
+    
+    return guides;
+  };
+  
+  const handleElementDrag = (id: string, position: { x: number; y: number }) => {
+    const elementIndex = elements.findIndex(el => el.id === id);
+    if (elementIndex === -1) return;
+    
+    const element = elements[elementIndex];
+    
+    let x = position.x;
+    let y = position.y;
+    
+    if (showGrid) {
+      x = Math.round(x / GRID_SIZE) * GRID_SIZE;
+      y = Math.round(y / GRID_SIZE) * GRID_SIZE;
+    }
+    
+    const guides = findAlignmentGuides(id, { x, y });
+    setAlignmentGuides(guides);
+    
+    if (guides.horizontal) {
+      x = guides.horizontal.position;
+    }
+    
+    if (guides.vertical) {
+      y = guides.vertical.position;
+    }
+    
+    const spacing = findSpacingGuides(id, { x, y });
+    setSpacingGuides(spacing);
+    
+    spacing.forEach(guide => {
+      if (guide.type === 'horizontal' && Math.abs(guide.end.x - guide.start.x - guide.value) < ALIGNMENT_THRESHOLD) {
+        x = guide.start.x + guide.value;
+      }
+      
+      if (guide.type === 'vertical' && Math.abs(guide.end.y - guide.start.y - guide.value) < ALIGNMENT_THRESHOLD) {
+        y = guide.start.y + guide.value;
+      }
+    });
     
     updateElement(id, {
       position: {
-        ...elements.find(el => el.id === id)?.position,
+        ...elements[elementIndex].position,
         x,
         y
       }
     });
   };
   
-  // Generate the appropriate styles for interactive elements
+  const handleDragEnd = () => {
+    setAlignmentGuides({ horizontal: null, vertical: null });
+    setSpacingGuides([]);
+  };
+  
   const getElementStyles = (element) => {
     const responsive = element.properties.responsive || {
       desktop: {}, tablet: {}, mobile: {}
@@ -97,7 +238,6 @@ const BuilderCanvas = () => {
     
     const currentViewport = responsive[viewportSize] || {};
     
-    // Get hover styles if they exist
     const hoverStyles = element.properties.interactions?.hover?.enabled 
       ? {
           backgroundColor: element.properties.interactions.hover.backgroundColor,
@@ -107,7 +247,6 @@ const BuilderCanvas = () => {
         }
       : {};
     
-    // Start with base styles
     const styles = {
       position: 'absolute' as const,
       left: `${element.position.x}px`,
@@ -124,7 +263,6 @@ const BuilderCanvas = () => {
     return { styles, hoverStyles };
   };
   
-  // Get the animation properties for an element
   const getAnimationProps = (element) => {
     const animations = element.properties.interactions?.animations;
     
@@ -132,7 +270,6 @@ const BuilderCanvas = () => {
       return {};
     }
     
-    // Determine animation properties based on type
     switch (animations.type) {
       case 'fade':
         return {
@@ -203,7 +340,10 @@ const BuilderCanvas = () => {
       
       <div className="px-4 py-8 overflow-auto min-h-[calc(100vh-8rem)]">
         <div 
-          ref={drop}
+          ref={(node) => {
+            drop(node);
+            canvasRef.current = node;
+          }}
           className={`mx-auto bg-white rounded-lg shadow-softer transition-all p-6 ${isOver ? 'ring-2 ring-blue-600/50' : ''}`}
           style={{
             width: VIEWPORT_WIDTHS[viewportSize],
@@ -224,12 +364,67 @@ const BuilderCanvas = () => {
             </div>
           ) : (
             <div className="relative w-full h-full">
+              {showGuides && alignmentGuides.horizontal && (
+                <div 
+                  className="absolute left-0 right-0 border-t border-blue-500 pointer-events-none"
+                  style={{ 
+                    top: alignmentGuides.horizontal.position,
+                    zIndex: 1000
+                  }}
+                />
+              )}
+              
+              {showGuides && alignmentGuides.vertical && (
+                <div 
+                  className="absolute top-0 bottom-0 border-l border-blue-500 pointer-events-none"
+                  style={{ 
+                    left: alignmentGuides.vertical.position,
+                    zIndex: 1000
+                  }}
+                />
+              )}
+              
+              {showGuides && spacingGuides.map((guide, index) => (
+                guide.type === 'horizontal' ? (
+                  <div key={`spacing-${index}`} className="absolute pointer-events-none" style={{ zIndex: 1000 }}>
+                    <div className="border-t border-dashed border-blue-400" style={{ 
+                      position: 'absolute',
+                      left: guide.start.x,
+                      top: guide.start.y,
+                      width: guide.end.x - guide.start.x
+                    }}></div>
+                    <div className="bg-blue-400 text-white text-xs px-1 rounded" style={{
+                      position: 'absolute',
+                      left: (guide.start.x + guide.end.x) / 2 - 8,
+                      top: guide.start.y - 16
+                    }}>
+                      {guide.value}px
+                    </div>
+                  </div>
+                ) : (
+                  <div key={`spacing-${index}`} className="absolute pointer-events-none" style={{ zIndex: 1000 }}>
+                    <div className="border-l border-dashed border-blue-400" style={{ 
+                      position: 'absolute',
+                      left: guide.start.x,
+                      top: guide.start.y,
+                      height: guide.end.y - guide.start.y
+                    }}></div>
+                    <div className="bg-blue-400 text-white text-xs px-1 rounded" style={{
+                      position: 'absolute',
+                      left: guide.start.x + 4,
+                      top: (guide.start.y + guide.end.y) / 2 - 8
+                    }}>
+                      {guide.value}px
+                    </div>
+                  </div>
+                )
+              ))}
+              
               <AnimatePresence>
                 {elements.map((element) => {
                   const { styles, hoverStyles } = getElementStyles(element);
                   const animationProps = getAnimationProps(element);
                   
-                  // Check if element should be visible in current viewport
                   const isVisible = element.properties.responsive?.[viewportSize]?.isVisible !== false;
                   
                   if (!isVisible) return null;
@@ -250,7 +445,18 @@ const BuilderCanvas = () => {
                       whileHover={hoverStyles}
                       drag
                       dragMomentum={false}
+                      dragElastic={0}
+                      onDragStart={() => {
+                        selectElement(element.id);
+                      }}
                       onDragEnd={(event, info) => {
+                        handleElementDrag(element.id, {
+                          x: element.position.x + info.offset.x,
+                          y: element.position.y + info.offset.y
+                        });
+                        handleDragEnd();
+                      }}
+                      onDrag={(event, info) => {
                         handleElementDrag(element.id, {
                           x: element.position.x + info.offset.x,
                           y: element.position.y + info.offset.y
@@ -266,6 +472,21 @@ const BuilderCanvas = () => {
                           Link
                         </div>
                       )}
+                      
+                      {selectedElement === element.id && (
+                        <div className="absolute -bottom-5 -left-1 text-xs bg-gray-900 text-white px-1 py-0.5 rounded opacity-75">
+                          {element.position.x}, {element.position.y}
+                        </div>
+                      )}
+                      
+                      {selectedElement === element.id && (
+                        <>
+                          <div className="absolute top-0 left-0 w-2 h-2 bg-blue-500 rounded-full -translate-x-1 -translate-y-1" />
+                          <div className="absolute top-0 right-0 w-2 h-2 bg-blue-500 rounded-full translate-x-1 -translate-y-1" />
+                          <div className="absolute bottom-0 left-0 w-2 h-2 bg-blue-500 rounded-full -translate-x-1 translate-y-1" />
+                          <div className="absolute bottom-0 right-0 w-2 h-2 bg-blue-500 rounded-full translate-x-1 translate-y-1" />
+                        </>
+                      )}
                     </motion.div>
                   );
                 })}
@@ -273,7 +494,6 @@ const BuilderCanvas = () => {
               
               {showGuides && selectedElement && elements.find(el => el.id === selectedElement) && (
                 <>
-                  {/* Horizontal guide */}
                   <div 
                     className="absolute left-0 right-0 border-t border-blue-500 pointer-events-none"
                     style={{ 
@@ -281,7 +501,6 @@ const BuilderCanvas = () => {
                       zIndex: 1000
                     }}
                   />
-                  {/* Vertical guide */}
                   <div 
                     className="absolute top-0 bottom-0 border-l border-blue-500 pointer-events-none"
                     style={{ 
