@@ -64,7 +64,6 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [availableTags, setAvailableTags] = useState<string[]>([]);
   const { user } = useAuth();
   
-  // Load all sections on component mount
   useEffect(() => {
     const fetchSections = async () => {
       setIsLoading(true);
@@ -87,28 +86,24 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
           }));
           setSections(typedSections);
         
-          // Extract unique categories and industries
           const uniqueCategories = ['all', ...new Set(typedSections?.map(section => section.category) || [])];
           setCategories(uniqueCategories);
           
           const uniqueIndustries = ['all', ...new Set(typedSections?.filter(s => s.industry).map(section => section.industry as string) || [])];
           setIndustries(uniqueIndustries);
           
-          // Extract all unique tags
           const allTags = typedSections
             .filter(section => section.tags && section.tags.length > 0)
             .flatMap(section => section.tags as string[]);
           setAvailableTags([...new Set(allTags)]);
           
-          // Set popular sections based on popularity field
           setPopularSections(
             [...typedSections]
-              .filter(section => typeof section.popularity === 'number')
+              .filter(section => section.popularity !== undefined)
               .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
               .slice(0, 8)
           );
           
-          // Filter user's own sections
           if (user) {
             setUserSections(typedSections.filter(section => section.author_id === user.id));
           }
@@ -129,7 +124,6 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
     fetchSections();
   }, [user]);
   
-  // Filter sections based on search term, active category, industry, complexity and tags
   useEffect(() => {
     let filtered = [...sections];
     
@@ -163,7 +157,6 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setFilteredSections(filtered);
   }, [sections, searchTerm, activeCategory, activeIndustry, complexityFilter, tagFilters]);
   
-  // Function to add a new section template
   const addSectionTemplate = async (templateData: Omit<SectionTemplate, 'id' | 'created_at' | 'updated_at'>) => {
     try {
       const { error } = await supabase
@@ -177,7 +170,6 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
         description: 'Section template added successfully',
       });
       
-      // Refetch sections
       const { data, error: fetchError } = await supabase
         .from('sections')
         .select('*')
@@ -205,7 +197,6 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
   
-  // Function to save a section as a template
   const saveSectionAsTemplate = async (sectionData: any, metadata: Partial<SectionTemplate>) => {
     if (!user) {
       toast({
@@ -243,7 +234,6 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
         description: 'Section saved as template',
       });
       
-      // Refetch sections to include the new template
       const { data, error: fetchError } = await supabase
         .from('sections')
         .select('*')
@@ -260,7 +250,6 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
         }));
         setSections(typedSections);
         
-        // Update user sections
         setUserSections(typedSections.filter(section => section.author_id === user.id));
       }
     } catch (err) {
