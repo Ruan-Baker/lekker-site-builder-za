@@ -95,7 +95,6 @@ const Index = () => {
     setIsSubmitting(true);
     
     try {
-      // First create project
       const { data: projectData, error: projectError } = await supabase
         .from('projects')
         .insert({
@@ -110,7 +109,6 @@ const Index = () => {
         throw projectError;
       }
       
-      // Then create a default homepage
       const { error: pageError } = await supabase
         .from('pages')
         .insert({
@@ -121,12 +119,10 @@ const Index = () => {
         });
       
       if (pageError) {
-        // If page creation fails, delete the project
         await supabase.from('projects').delete().eq('id', projectData.id);
         throw pageError;
       }
       
-      // Add to our local state
       setProjects([projectData, ...projects]);
       
       toast({
@@ -134,12 +130,10 @@ const Index = () => {
         description: 'Project created successfully'
       });
       
-      // Reset form and close dialog
       setProjectName('');
       setProjectDescription('');
       setDialogOpen(false);
       
-      // Navigate to the builder for this project
       navigate(`/builder/${projectData.id}`);
     } catch (error) {
       console.error('Error creating project:', error);
@@ -333,25 +327,18 @@ const Index = () => {
             </Dialog>
           </div>
         </div>
-      ) : (
-        <div className="bg-blue-50 py-2 text-center">
-          <span className="mr-2">Sign in to manage your projects</span>
-          <Link to="/auth">
-            <Button size="sm" variant="default">Sign In</Button>
-          </Link>
-        </div>
-      )}
+      ) : null}
       <Hero />
-      <Features />
-      <GrowthPlatform />
       <FunnelBuilder />
+      <GrowthPlatform />
+      <Features />
       <Ecommerce />
       <Templates />
+      <CallToAction />
       <FunnelExpert />
       <Testimonials />
       <BusinessResults />
       <FounderMessage />
-      <CallToAction />
       <Footer />
     </div>
   );
