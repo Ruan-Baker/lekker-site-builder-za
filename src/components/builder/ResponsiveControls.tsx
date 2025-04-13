@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -10,7 +9,9 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card } from '@/components/ui/card';
 import ResponsiveGridControls from '@/components/builder/ResponsiveGridControls';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Laptop, Smartphone, Tablet, Eye, EyeOff, ArrowsPointingOutIcon, LayoutGrid } from 'lucide-react';
+import { 
+  Laptop, Smartphone, Tablet, Eye, EyeOff, LayoutGrid 
+} from 'lucide-react';
 
 interface ResponsiveControlsProps {
   elementId: string;
@@ -99,9 +100,8 @@ const ResponsiveControls: React.FC<ResponsiveControlsProps> = ({ elementId }) =>
             
             <div className="space-y-3">
               <div className="space-y-2">
-                <Label htmlFor="display">Display</Label>
+                <Label htmlFor="display-select">Display</Label>
                 <Select 
-                  id="display"
                   value={currentViewport.display || 'block'} 
                   onValueChange={(value) => updateResponsiveSetting('display', value)}
                 >
@@ -121,9 +121,8 @@ const ResponsiveControls: React.FC<ResponsiveControlsProps> = ({ elementId }) =>
               {currentViewport.display === 'flex' && (
                 <>
                   <div className="space-y-2">
-                    <Label htmlFor="flexDirection">Flex Direction</Label>
+                    <Label htmlFor="flexDirection-select">Flex Direction</Label>
                     <Select 
-                      id="flexDirection"
                       value={currentViewport.flexDirection || 'row'} 
                       onValueChange={(value) => updateResponsiveSetting('flexDirection', value)}
                     >
@@ -140,9 +139,8 @@ const ResponsiveControls: React.FC<ResponsiveControlsProps> = ({ elementId }) =>
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="justifyContent">Justify Content</Label>
+                    <Label htmlFor="justifyContent-select">Justify Content</Label>
                     <Select 
-                      id="justifyContent"
                       value={currentViewport.justifyContent || 'flex-start'} 
                       onValueChange={(value) => updateResponsiveSetting('justifyContent', value)}
                     >
@@ -161,9 +159,8 @@ const ResponsiveControls: React.FC<ResponsiveControlsProps> = ({ elementId }) =>
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="alignItems">Align Items</Label>
+                    <Label htmlFor="alignItems-select">Align Items</Label>
                     <Select 
-                      id="alignItems"
                       value={currentViewport.alignItems || 'stretch'} 
                       onValueChange={(value) => updateResponsiveSetting('alignItems', value)}
                     >
@@ -183,9 +180,8 @@ const ResponsiveControls: React.FC<ResponsiveControlsProps> = ({ elementId }) =>
               )}
               
               <div className="space-y-2">
-                <Label htmlFor="textAlign">Text Alignment</Label>
+                <Label htmlFor="textAlign-select">Text Alignment</Label>
                 <Select 
-                  id="textAlign"
                   value={currentViewport.textAlign || 'left'} 
                   onValueChange={(value) => updateResponsiveSetting('textAlign', value)}
                 >

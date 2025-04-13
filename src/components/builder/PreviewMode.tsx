@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -14,6 +13,17 @@ import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Slider } from '@/components/ui/slider';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+
+interface GridStyles {
+  display?: string;
+  gridTemplateColumns?: string;
+  gridTemplateRows?: string;
+  gap?: string;
+  gridAutoFlow?: string;
+  justifyItems?: string;
+  alignItems?: string;
+  placeContent?: string;
+}
 
 interface PreviewModeProps {
   open: boolean;
@@ -67,14 +77,11 @@ const PreviewMode: React.FC<PreviewModeProps> = ({ open, onClose, pageId }) => {
     return deviceRotated ? preset.width : preset.height;
   };
   
-  // Generate a temporary preview URL based on the current elements
   useEffect(() => {
     if (!open || !pageId) return;
     
-    // In a real implementation, this would create a temporary preview URL
     setPreviewUrl(`/preview/${pageId}?timestamp=${Date.now()}`);
     
-    // Use the first device preset by default
     setSelectedPreset(0);
     setDeviceRotated(false);
     setZoomLevel(100);
@@ -97,7 +104,6 @@ const PreviewMode: React.FC<PreviewModeProps> = ({ open, onClose, pageId }) => {
     setCustomWidth(width);
     setCustomHeight(height);
     
-    // Determine viewport size based on width
     if (width < 768) {
       setViewportSize('mobile');
     } else if (width < 1024) {
@@ -279,10 +285,8 @@ const PreviewMode: React.FC<PreviewModeProps> = ({ open, onClose, pageId }) => {
               transformOrigin: 'top center'
             }}
           >
-            {/* Device frame */}
             <div className="relative" style={{ minHeight: '100%', overflow: 'auto' }}>
               {elements.map((element) => {
-                // Apply responsive styles based on viewport
                 const responsive = element.properties.responsive || {
                   desktop: {}, tablet: {}, mobile: {}
                 };
@@ -292,8 +296,7 @@ const PreviewMode: React.FC<PreviewModeProps> = ({ open, onClose, pageId }) => {
                 
                 if (!isVisible) return null;
                 
-                // Get grid styles
-                const gridStyles = {};
+                const gridStyles: GridStyles = {};
                 if (currentViewport.grid?.enabled) {
                   const grid = currentViewport.grid;
                   gridStyles.display = 'grid';
@@ -333,7 +336,6 @@ const PreviewMode: React.FC<PreviewModeProps> = ({ open, onClose, pageId }) => {
                   ...gridStyles
                 };
                 
-                // Get animation settings
                 const animations = element.properties.interactions?.animations;
                 let animationProps = {};
                 
@@ -364,7 +366,6 @@ const PreviewMode: React.FC<PreviewModeProps> = ({ open, onClose, pageId }) => {
                         }
                       };
                       break;
-                    // Add more animation types as needed
                   }
                 }
                 

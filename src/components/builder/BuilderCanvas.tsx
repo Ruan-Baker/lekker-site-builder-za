@@ -19,6 +19,18 @@ const GRID_SIZE = 8;
 const ALIGNMENT_THRESHOLD = 10;
 const SPACING_GUIDES = [8, 16, 24, 32];
 
+// Define a type for grid styles to fix the TypeScript errors
+interface GridStyles {
+  display?: string;
+  gridTemplateColumns?: string;
+  gridTemplateRows?: string;
+  gap?: string;
+  gridAutoFlow?: string;
+  justifyItems?: string;
+  alignItems?: string;
+  placeContent?: string;
+}
+
 const BuilderCanvas = () => {
   const { elements, addElement, selectElement, selectedElement, updateElement, executeElementAction } = useBuilder();
   const { viewportSize, getResponsiveValue } = useDesign();
@@ -255,8 +267,8 @@ const BuilderCanvas = () => {
     const elementWidth = currentViewport.width || `${element.position.width}px`;
     const elementHeight = currentViewport.height || `${element.position.height}px`;
     
-    // Grid styles
-    const gridStyles = {};
+    // Grid styles with proper typing
+    const gridStyles: GridStyles = {};
     if (currentViewport.grid?.enabled) {
       const grid = currentViewport.grid;
       gridStyles.display = 'grid';

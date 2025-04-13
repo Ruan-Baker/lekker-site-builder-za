@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -8,7 +7,7 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useBuilder } from '@/contexts/BuilderContext';
 import { useDesign } from '@/contexts/DesignContext';
-import { ArrowsPointingOutIcon, Grid3X3, Grid2X2, GridIcon, LayoutGrid } from 'lucide-react';
+import { Grid3X3, Grid2X2, GridIcon, LayoutGrid } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 interface ResponsiveGridControlsProps {
