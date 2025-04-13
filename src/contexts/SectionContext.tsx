@@ -65,14 +65,20 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
           throw new Error(error.message);
         }
         
-        setSections(data || []);
+        if (data) {
+          const typedSections = data.map(section => ({
+            ...section,
+            complexity: section.complexity as 'simple' | 'medium' | 'complex' | null
+          }));
+          setSections(typedSections);
         
-        // Extract unique categories and industries
-        const uniqueCategories = ['all', ...new Set(data?.map(section => section.category) || [])];
-        setCategories(uniqueCategories);
-        
-        const uniqueIndustries = ['all', ...new Set(data?.filter(s => s.industry).map(section => section.industry) || [])];
-        setIndustries(uniqueIndustries);
+          // Extract unique categories and industries
+          const uniqueCategories = ['all', ...new Set(typedSections?.map(section => section.category) || [])];
+          setCategories(uniqueCategories);
+          
+          const uniqueIndustries = ['all', ...new Set(typedSections?.filter(s => s.industry).map(section => section.industry as string) || [])];
+          setIndustries(uniqueIndustries);
+        }
       } catch (err) {
         console.error('Error loading sections:', err);
         setError(err as Error);
@@ -139,7 +145,13 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
       
       if (fetchError) throw new Error(fetchError.message);
       
-      setSections(data || []);
+      if (data) {
+        const typedSections = data.map(section => ({
+          ...section,
+          complexity: section.complexity as 'simple' | 'medium' | 'complex' | null
+        }));
+        setSections(typedSections);
+      }
     } catch (err) {
       console.error('Error adding section template:', err);
       toast({

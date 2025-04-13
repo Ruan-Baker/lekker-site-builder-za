@@ -4,7 +4,7 @@ import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
-import { ColorPicker } from './ColorPicker';
+import ColorPicker from './ColorPicker';
 
 interface ShadowGeneratorProps {
   value: string;

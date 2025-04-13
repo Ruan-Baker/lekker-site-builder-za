@@ -19,12 +19,19 @@ const IconElement: React.FC<IconElementProps> = ({
   strokeWidth = 2,
   className = '',
 }) => {
-  const IconComponent = LucideIcons[name];
-  
-  if (!IconComponent) {
+  // Check if the name exists in LucideIcons
+  if (!LucideIcons[name] || typeof LucideIcons[name] !== 'function') {
     console.warn(`Icon "${name}" not found in Lucide icons`);
     return <div className="text-red-500">Icon not found</div>;
   }
+  
+  // Properly type and create the icon component
+  const IconComponent = LucideIcons[name] as React.FC<{
+    size?: number;
+    color?: string;
+    strokeWidth?: number;
+    'aria-hidden'?: boolean | 'true' | 'false';
+  }>;
   
   return (
     <div className={`icon-element inline-flex ${className}`}>
@@ -32,7 +39,7 @@ const IconElement: React.FC<IconElementProps> = ({
         size={size} 
         color={color} 
         strokeWidth={strokeWidth} 
-        aria-hidden="true" 
+        aria-hidden={true} 
       />
     </div>
   );

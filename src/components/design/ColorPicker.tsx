@@ -6,10 +6,12 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
 
-interface ColorPickerProps {
+export interface ColorPickerProps {
   color: string;
   onChange: (color: string) => void;
   label?: string;
+  allowAlpha?: boolean;
+  showInput?: boolean;
 }
 
 const PRESET_COLORS = [
@@ -22,7 +24,9 @@ const PRESET_COLORS = [
 const ColorPicker: React.FC<ColorPickerProps> = ({ 
   color, 
   onChange,
-  label 
+  label,
+  allowAlpha = false,
+  showInput = true
 }) => {
   const [currentColor, setCurrentColor] = useState(color);
   
@@ -90,12 +94,14 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
                   onChange={handleColorChange}
                   className="h-9 w-9 p-0 border-none"
                 />
-                <Input
-                  type="text"
-                  value={currentColor}
-                  onChange={handleColorChange}
-                  className="h-9 flex-1"
-                />
+                {showInput && (
+                  <Input
+                    type="text"
+                    value={currentColor}
+                    onChange={handleColorChange}
+                    className="h-9 flex-1"
+                  />
+                )}
                 <button
                   type="button"
                   onClick={handleChange}

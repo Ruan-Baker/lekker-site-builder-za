@@ -1,124 +1,155 @@
 
 import React from 'react';
+import { Check, ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { CheckboxCheckedIcon } from '@radix-ui/react-icons';
-
-interface FormField {
-  id: string;
-  type: 'text' | 'email' | 'password' | 'textarea' | 'checkbox';
-  label: string;
-  placeholder?: string;
-  required?: boolean;
-  defaultValue?: string;
-}
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 
 interface FormElementProps {
-  fields: FormField[];
-  submitLabel: string;
-  onSubmit?: (data: Record<string, any>) => void;
+  type: 'input' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'form';
+  label?: string;
+  placeholder?: string;
+  required?: boolean;
+  options?: { label: string; value: string }[];
   className?: string;
-  layout?: 'vertical' | 'horizontal';
-  spacing?: 'tight' | 'normal' | 'loose';
-  buttonVariant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'link';
+  formConfig?: {
+    submitText?: string;
+    fields?: {
+      name: string;
+      type: 'input' | 'textarea' | 'select' | 'checkbox' | 'radio';
+      label?: string;
+      placeholder?: string;
+      required?: boolean;
+      options?: { label: string; value: string }[];
+    }[];
+  };
 }
 
 const FormElement: React.FC<FormElementProps> = ({
-  fields,
-  submitLabel = 'Submit',
-  onSubmit,
+  type,
+  label,
+  placeholder,
+  required = false,
+  options = [],
   className = '',
-  layout = 'vertical',
-  spacing = 'normal',
-  buttonVariant = 'default',
+  formConfig,
 }) => {
-  const [formData, setFormData] = React.useState<Record<string, any>>({});
+  if (type === 'form' && formConfig) {
+    return (
+      <form 
+        className={`space-y-4 ${className}`}
+        onSubmit={(e) => {
+          e.preventDefault();
+          console.log('Form submitted');
+        }}
+      >
+        {formConfig.fields?.map((field, index) => (
+          <FormElement
+            key={index}
+            type={field.type}
+            label={field.label}
+            placeholder={field.placeholder}
+            required={field.required}
+            options={field.options}
+          />
+        ))}
+        
+        <Button type="submit" className="w-full">
+          {formConfig.submitText || 'Submit'}
+        </Button>
+      </form>
+    );
+  }
   
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (onSubmit) {
-      onSubmit(formData);
-    }
-  };
+  if (type === 'input') {
+    return (
+      <div className={`space-y-2 ${className}`}>
+        {label && <Label>{label}{required && <span className="text-red-500">*</span>}</Label>}
+        <Input 
+          placeholder={placeholder || ''} 
+          required={required}
+        />
+      </div>
+    );
+  }
   
-  const handleChange = (id: string, value: string | boolean) => {
-    setFormData(prev => ({ ...prev, [id]: value }));
-  };
+  if (type === 'textarea') {
+    return (
+      <div className={`space-y-2 ${className}`}>
+        {label && <Label>{label}{required && <span className="text-red-500">*</span>}</Label>}
+        <Textarea 
+          placeholder={placeholder || ''} 
+          required={required}
+        />
+      </div>
+    );
+  }
   
-  const spacingClasses = {
-    tight: 'space-y-2',
-    normal: 'space-y-4',
-    loose: 'space-y-6'
-  };
+  if (type === 'select') {
+    return (
+      <div className={`space-y-2 ${className}`}>
+        {label && <Label>{label}{required && <span className="text-red-500">*</span>}</Label>}
+        <Select>
+          <SelectTrigger>
+            <SelectValue placeholder={placeholder || 'Select an option'} />
+          </SelectTrigger>
+          <SelectContent>
+            {options.map((option, index) => (
+              <SelectItem key={index} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    );
+  }
   
-  return (
-    <form 
-      onSubmit={handleSubmit} 
-      className={`form-element ${spacingClasses[spacing]} ${className}`}
-    >
-      {fields.map((field) => (
-        <div 
-          key={field.id}
-          className={layout === 'horizontal' ? 'sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start' : ''}
-        >
-          <Label 
-            htmlFor={field.id}
-            className={layout === 'horizontal' ? 'sm:pt-2' : 'mb-1 block'}
-          >
-            {field.label}
-            {field.required && <span className="text-red-500 ml-1">*</span>}
+  if (type === 'checkbox') {
+    return (
+      <div className={`flex items-center space-x-2 ${className}`}>
+        <Checkbox id={`checkbox-${label}`} />
+        {label && (
+          <Label htmlFor={`checkbox-${label}`}>
+            {label}{required && <span className="text-red-500">*</span>}
           </Label>
-          
-          <div className={layout === 'horizontal' ? 'sm:col-span-2 mt-1 sm:mt-0' : ''}>
-            {field.type === 'textarea' ? (
-              <Textarea
-                id={field.id}
-                placeholder={field.placeholder}
-                required={field.required}
-                defaultValue={field.defaultValue}
-                onChange={(e) => handleChange(field.id, e.target.value)}
-                className="w-full"
+        )}
+      </div>
+    );
+  }
+  
+  if (type === 'radio') {
+    return (
+      <div className={`space-y-2 ${className}`}>
+        {label && <Label>{label}{required && <span className="text-red-500">*</span>}</Label>}
+        <div className="space-y-1">
+          {options.map((option, index) => (
+            <div key={index} className="flex items-center space-x-2">
+              <input 
+                type="radio" 
+                id={`radio-${option.value}`} 
+                name={label} 
+                value={option.value}
+                className="h-4 w-4 text-primary"
               />
-            ) : field.type === 'checkbox' ? (
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id={field.id}
-                  required={field.required}
-                  defaultChecked={field.defaultValue === 'true'}
-                  onChange={(e) => handleChange(field.id, e.target.checked)}
-                  className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
-                />
-                <label htmlFor={field.id} className="ml-2 block text-sm text-gray-700">
-                  {field.placeholder || 'Yes, I agree'}
-                </label>
-              </div>
-            ) : (
-              <Input
-                id={field.id}
-                type={field.type}
-                placeholder={field.placeholder}
-                required={field.required}
-                defaultValue={field.defaultValue}
-                onChange={(e) => handleChange(field.id, e.target.value)}
-                className="w-full"
-              />
-            )}
-          </div>
-        </div>
-      ))}
-      
-      <div className={layout === 'horizontal' ? 'sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start' : ''}>
-        <div className={layout === 'horizontal' ? 'sm:col-span-2 sm:col-start-2' : ''}>
-          <Button type="submit" variant={buttonVariant as any} className="w-full sm:w-auto">
-            {submitLabel}
-          </Button>
+              <Label htmlFor={`radio-${option.value}`}>{option.label}</Label>
+            </div>
+          ))}
         </div>
       </div>
-    </form>
-  );
+    );
+  }
+  
+  return null;
 };
 
 export default FormElement;
