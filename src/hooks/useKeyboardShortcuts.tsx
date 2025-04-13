@@ -6,7 +6,25 @@ import { useClipboard } from '@/hooks/useClipboard';
 import { toast } from '@/hooks/use-toast';
 
 export const useKeyboardShortcuts = () => {
-  const { undo, redo, canUndo, canRedo } = useHistory();
+  // We'll check if we're in a HistoryProvider context
+  let historyContext;
+  let canUndo = false;
+  let canRedo = false;
+  let undo = () => {};
+  let redo = () => {};
+  
+  // Try to use the history context, but don't crash if it's not available
+  try {
+    historyContext = useHistory();
+    canUndo = historyContext.canUndo;
+    canRedo = historyContext.canRedo;
+    undo = historyContext.undo;
+    redo = historyContext.redo;
+  } catch (e) {
+    // History context not available, we'll use the defaults
+    console.warn('History context not available for keyboard shortcuts');
+  }
+
   const { selectedElement, deleteElement, selectElement, elements, duplicateElement } = useBuilder();
   const { copySelected, paste, hasClipboardData } = useClipboard();
 
@@ -124,11 +142,15 @@ export const useKeyboardShortcuts = () => {
               break;
           }
           
-          // This needs an updateElement function that can handle position changes
-          const { updateElement } = useBuilder();
-          updateElement(selectedElement, {
-            position: { ...element.position, x: newX, y: newY }
-          });
+          // Only try to updateElement if it exists in the builder context
+          if (typeof duplicateElement === 'function') {
+            const { updateElement } = useBuilder();
+            if (typeof updateElement === 'function') {
+              updateElement(selectedElement, {
+                position: { ...element.position, x: newX, y: newY }
+              });
+            }
+          }
         }
       }
     };
@@ -138,7 +160,7 @@ export const useKeyboardShortcuts = () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [
-    undo, redo, canUndo, canRedo, 
+    canUndo, canRedo, undo, redo, 
     selectedElement, deleteElement, selectElement, 
     elements, duplicateElement, copySelected, paste, 
     hasClipboardData
