@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -12,7 +13,7 @@ const Hero = () => {
       <div className="max-w-6xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 md:mb-12">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 sm:mb-6 text-gray-900">
-            Create Your FREE Website with <span className="text-blue-600">Lekker Funnels</span>™
+            South Africa's #1 FREE <span className="text-blue-600">Website Builder</span>
           </h1>
           <p className="text-lg sm:text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
             Build professional websites and sales funnels in minutes - 100% FREE! 
@@ -44,7 +45,7 @@ const Hero = () => {
           <div className="bg-white p-0">
             <img 
               src="/lovable-uploads/3502f0e2-87c7-447f-ba87-86aa904adb3a.png" 
-              alt="Lekker Sites Builder Interface" 
+              alt="Lekker Sites Builder Interface - South Africa's Best Website Builder" 
               className="w-full object-cover"
               loading="eager"
             />

@@ -1,7 +1,6 @@
 
 import React from 'react';
-import { Button } from "@/components/ui/button";
-import { HandHeart, MessageSquare } from 'lucide-react';
+import { HandHeart } from 'lucide-react';
 
 const FounderMessage = () => {
   return (
@@ -23,20 +22,13 @@ const FounderMessage = () => {
               <div className="text-center">
                 <div className="h-40 w-40 mx-auto rounded-full overflow-hidden mb-6 border-4 border-white shadow-md">
                   <img 
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
+                    src="/lovable-uploads/d92b4962-3ad3-4065-87fb-77986fb3417a.png" 
                     alt="Ruan Baker" 
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-1">Ruan Baker</h3>
                 <p className="text-blue-600 mb-4">Founder, Lekker Sites</p>
-                
-                <div className="flex justify-center">
-                  <Button variant="outline" size="sm" className="flex items-center gap-2 border-gray-300 text-base">
-                    <MessageSquare className="h-4 w-4" />
-                    Contact Me
-                  </Button>
-                </div>
               </div>
             </div>
             
@@ -56,15 +48,12 @@ const FounderMessage = () => {
                 <p>
                   That's why I've made Lekker Sites completely free, forever. No hidden costs, no "freemium" tricks, and no surprise charges when converting from dollars to rands. Everything you see on our platform is genuinely free, and it always will be.
                 </p>
-                <p>
-                  In these challenging economic times, I believe we need to support each other. Build your website, create your funnels, and grow your business online - without spending a cent.
-                </p>
                 
                 <div className="pt-6">
                   <p className="font-medium">Warm regards,</p>
                   <div className="mt-3">
                     <img 
-                      src="/lovable-uploads/c579b62f-abb9-466a-b813-1daa0c762771.png" 
+                      src="/lovable-uploads/8e5abb5e-c4f6-4a6d-a3ea-0e0336cf6013.png" 
                       alt="Ruan Baker Signature" 
                       className="h-16 w-auto"
                     />
