@@ -64,8 +64,9 @@ export default {
 				},
 				// Perspective-inspired color system
 				perspective: {
-					purple: '#6C5CE7',
-					'purple-dark': '#4834d4',
+					purple: '#9b87f5',
+					'purple-dark': '#7E69AB',
+					'purple-light': '#D6BCFA',
 					blue: '#4895EF',
 					'blue-light': '#72EFDD',
 					pink: '#FF48C4',
@@ -201,6 +202,7 @@ export default {
 				'gradient-blue-green': 'linear-gradient(90deg, #4895EF, #72EFDD)',
 				'gradient-purple-pink': 'linear-gradient(90deg, #6C5CE7, #FF48C4)',
 				'gradient-rainbow': 'linear-gradient(90deg, #6C5CE7, #4895EF, #72EFDD, #FF48C4)',
+        'perspective-gradient': 'linear-gradient(90deg, #9b87f5, #7E69AB)',
 			}
 		}
 	},
