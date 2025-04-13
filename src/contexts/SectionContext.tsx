@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -82,7 +83,8 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
             ...section,
             complexity: section.complexity as 'simple' | 'medium' | 'complex' | null,
             popularity: section.popularity || 0,
-            author_id: section.author_id || null
+            author_id: section.author_id || null,
+            tags: section.tags || []
           }));
           setSections(typedSections);
         
@@ -182,7 +184,8 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
           ...section,
           complexity: section.complexity as 'simple' | 'medium' | 'complex' | null,
           popularity: section.popularity || 0,
-          author_id: section.author_id || null
+          author_id: section.author_id || null,
+          tags: section.tags || []
         }));
         setSections(typedSections);
       }
@@ -200,9 +203,9 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const saveSectionAsTemplate = async (sectionData: any, metadata: Partial<SectionTemplate>) => {
     if (!user) {
       toast({
-        title: 'Error',
-        description: 'You must be logged in to save sections',
-        variant: 'destructive',
+        title: "Authentication Required",
+        description: "You must be logged in to save sections",
+        variant: "destructive",
       });
       return;
     }
@@ -212,7 +215,7 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
         name: metadata.name || 'Untitled Section',
         category: metadata.category || 'custom',
         description: metadata.description || null,
-        thumbnail_url: metadata.thumbnail_url || null,
+        thumbnail_url: null, // We're removing the thumbnail requirement
         template_data: sectionData,
         industry: metadata.industry || null,
         complexity: metadata.complexity || 'medium',
@@ -246,7 +249,8 @@ export const SectionProvider: React.FC<{ children: React.ReactNode }> = ({ child
           ...section,
           complexity: section.complexity as 'simple' | 'medium' | 'complex' | null,
           popularity: section.popularity || 0,
-          author_id: section.author_id || null
+          author_id: section.author_id || null,
+          tags: section.tags || []
         }));
         setSections(typedSections);
         

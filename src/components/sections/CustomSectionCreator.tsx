@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useSections } from '@/contexts/SectionContext';
 import { useBuilder } from '@/contexts/BuilderContext';
@@ -93,6 +94,7 @@ const CustomSectionCreator: React.FC<CustomSectionCreatorProps> = ({
       const templateData = {
         type: targetElement.type,
         properties: targetElement.properties,
+        // Only include children if they exist
         ...(targetElement.children && { children: targetElement.children }),
         complexity: complexity
       };
