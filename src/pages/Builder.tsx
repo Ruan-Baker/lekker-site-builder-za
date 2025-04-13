@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -16,6 +17,9 @@ import PreviewMode from '@/components/builder/PreviewMode';
 import { supabase } from '@/integrations/supabase/client';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import KeyboardShortcutsHelp from '@/components/builder/KeyboardShortcutsHelp';
+import GridSectionBuilder from '@/components/sections/GridSectionBuilder';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { LayoutGrid } from 'lucide-react';
 
 const Builder = () => {
   const { projectId } = useParams<{ projectId: string }>();
@@ -23,6 +27,7 @@ const Builder = () => {
   const navigate = useNavigate();
   const [pageId, setPageId] = useState<string | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [gridBuilderOpen, setGridBuilderOpen] = useState(false);
   
   // Use keyboard shortcuts
   useKeyboardShortcuts();
@@ -94,12 +99,42 @@ const Builder = () => {
                   </div>
                   
                   {pageId && (
-                    <PreviewMode 
-                      open={previewOpen} 
-                      onClose={() => setPreviewOpen(false)} 
-                      pageId={pageId}
-                    />
+                    <>
+                      <PreviewMode 
+                        open={previewOpen} 
+                        onClose={() => setPreviewOpen(false)} 
+                        pageId={pageId}
+                      />
+                      
+                      <Dialog open={gridBuilderOpen} onOpenChange={setGridBuilderOpen}>
+                        <DialogContent className="max-w-5xl">
+                          <DialogHeader>
+                            <DialogTitle className="flex items-center gap-2">
+                              <LayoutGrid className="h-5 w-5" />
+                              Grid Section Builder
+                            </DialogTitle>
+                          </DialogHeader>
+                          <GridSectionBuilder 
+                            onSave={() => setGridBuilderOpen(false)} 
+                          />
+                        </DialogContent>
+                      </Dialog>
+                    </>
                   )}
+                  
+                  <div className="fixed bottom-4 right-4 z-10">
+                    <Dialog open={gridBuilderOpen} onOpenChange={setGridBuilderOpen}>
+                      <DialogTrigger asChild>
+                        <Button 
+                          size="sm" 
+                          className="rounded-full flex items-center gap-2 shadow-md"
+                        >
+                          <LayoutGrid className="h-4 w-4" /> 
+                          Grid Builder
+                        </Button>
+                      </DialogTrigger>
+                    </Dialog>
+                  </div>
                 </div>
               </DndProvider>
             </SectionProvider>

@@ -16,7 +16,11 @@ import {
   LucideIcon,
   Palette,
   Boxes,
-  User
+  User,
+  Grid,
+  PanelTop,
+  Hammer,
+  Wand2
 } from 'lucide-react';
 import ElementItem from './ElementItem';
 import { useAuth } from '@/contexts/AuthContext';
@@ -26,6 +30,9 @@ import { useBuilder } from '@/contexts/BuilderContext';
 import SectionTemplates from '../sections/SectionTemplates';
 import DesignPanel from './DesignPanel';
 import { useNavigate } from 'react-router-dom';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import GridSectionBuilder from '../sections/GridSectionBuilder';
+import AdvancedElementCustomization from './AdvancedElementCustomization';
 
 // Define the section type
 interface Section {
@@ -43,8 +50,9 @@ interface SidebarElement {
 
 const BuilderSidebar = () => {
   const { user, profile, signOut } = useAuth();
-  const { elements } = useBuilder();
+  const { elements, selectedElement } = useBuilder();
   const navigate = useNavigate();
+  const [gridBuilderOpen, setGridBuilderOpen] = useState(false);
   
   const sections: Section[] = [
     { id: 'headers', name: 'Headers', count: 5 },
@@ -65,6 +73,8 @@ const BuilderSidebar = () => {
     { id: 'video', name: 'Video', icon: Video },
     { id: 'list', name: 'List', icon: ListOrdered },
     { id: 'form', name: 'Form', icon: FormInput },
+    { id: 'grid', name: 'Grid', icon: Grid },
+    { id: 'divider', name: 'Divider', icon: PanelTop },
   ];
 
   return (
@@ -97,7 +107,7 @@ const BuilderSidebar = () => {
       </div>
       
       <Tabs defaultValue="sections" className="flex-1 flex flex-col">
-        <TabsList className="grid grid-cols-3 mx-2 mt-2 bg-gray-100">
+        <TabsList className="grid grid-cols-4 mx-2 mt-2 bg-gray-100">
           <TabsTrigger value="sections" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white flex items-center gap-1.5">
             <Boxes size={14} />
             Sections
@@ -110,10 +120,41 @@ const BuilderSidebar = () => {
             <Palette size={14} />
             Design
           </TabsTrigger>
+          <TabsTrigger value="advanced" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white flex items-center gap-1.5">
+            <Wand2 size={14} />
+            Advanced
+          </TabsTrigger>
         </TabsList>
         
         <div className="flex-1 overflow-hidden">
           <TabsContent value="sections" className="mt-0 h-full">
+            <div className="p-2 flex justify-between items-center">
+              <h2 className="text-sm font-medium">Section Templates</h2>
+              <Button 
+                size="sm" 
+                variant="outline" 
+                onClick={() => setGridBuilderOpen(true)}
+                className="text-xs h-8"
+              >
+                <LayoutGrid className="h-3.5 w-3.5 mr-1" />
+                Grid Builder
+              </Button>
+            </div>
+            
+            <Dialog open={gridBuilderOpen} onOpenChange={setGridBuilderOpen}>
+              <DialogContent className="max-w-5xl">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <LayoutGrid className="h-5 w-5" />
+                    Grid Section Builder
+                  </DialogTitle>
+                </DialogHeader>
+                <GridSectionBuilder 
+                  onSave={() => setGridBuilderOpen(false)} 
+                />
+              </DialogContent>
+            </Dialog>
+            
             <SectionTemplates />
           </TabsContent>
           
@@ -127,6 +168,18 @@ const BuilderSidebar = () => {
           
           <TabsContent value="design" className="mt-0 h-full">
             <DesignPanel />
+          </TabsContent>
+          
+          <TabsContent value="advanced" className="mt-0 h-full overflow-auto">
+            {selectedElement ? (
+              <AdvancedElementCustomization elementId={selectedElement} />
+            ) : (
+              <div className="p-4 text-center text-gray-500 flex flex-col items-center justify-center h-full">
+                <Hammer className="h-12 w-12 mb-2 text-gray-300" />
+                <p className="text-sm mb-1">No element selected</p>
+                <p className="text-xs">Select an element to access advanced customization options</p>
+              </div>
+            )}
           </TabsContent>
         </div>
       </Tabs>

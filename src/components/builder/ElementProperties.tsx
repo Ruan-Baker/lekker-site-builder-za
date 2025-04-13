@@ -5,12 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useBuilder } from '@/contexts/BuilderContext';
-import { Trash, Copy, ClipboardCopy } from 'lucide-react';
+import { Trash, Copy, ClipboardCopy, PenTool } from 'lucide-react';
 import { useClipboard } from '@/hooks/useClipboard';
 import ColorPicker from '@/components/design/ColorPicker';
 import ResponsiveControls from '@/components/builder/ResponsiveControls';
 import InteractiveControls from '@/components/builder/InteractiveControls';
 import ElementControls from '@/components/builder/ElementControls';
+import AdvancedDesignTools from '@/components/design/AdvancedDesignTools';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 const ElementProperties: React.FC<{ elementId: string }> = ({ elementId }) => {
@@ -142,124 +143,7 @@ const ElementProperties: React.FC<{ elementId: string }> = ({ elementId }) => {
         
         <TabsContent value="style" className="space-y-4 py-4">
           <ScrollArea className="h-[500px]">
-            <div className="pr-4 space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="bg-color">Background Color</Label>
-                <ColorPicker
-                  color={element.properties.backgroundColor || '#ffffff'}
-                  onChange={(color) => {
-                    updateElement(elementId, {
-                      properties: {
-                        ...element.properties,
-                        backgroundColor: color
-                      }
-                    });
-                  }}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="text-color">Text Color</Label>
-                <ColorPicker
-                  color={element.properties.textColor || '#000000'}
-                  onChange={(color) => {
-                    updateElement(elementId, {
-                      properties: {
-                        ...element.properties,
-                        textColor: color
-                      }
-                    });
-                  }}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="border">Border</Label>
-                <div className="grid grid-cols-2 gap-2">
-                  <Input
-                    id="border-width"
-                    type="number"
-                    placeholder="Width (px)"
-                    value={element.properties.borderWidth || ''}
-                    onChange={(e) => {
-                      updateElement(elementId, {
-                        properties: {
-                          ...element.properties,
-                          borderWidth: e.target.value
-                        }
-                      });
-                    }}
-                  />
-                  <ColorPicker
-                    color={element.properties.borderColor || '#000000'}
-                    onChange={(color) => {
-                      updateElement(elementId, {
-                        properties: {
-                          ...element.properties,
-                          borderColor: color
-                        }
-                      });
-                    }}
-                  />
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="border-radius">Border Radius</Label>
-                <Input
-                  id="border-radius"
-                  type="number"
-                  placeholder="Border Radius (px)"
-                  value={element.properties.borderRadius || ''}
-                  onChange={(e) => {
-                    updateElement(elementId, {
-                      properties: {
-                        ...element.properties,
-                        borderRadius: e.target.value
-                      }
-                    });
-                  }}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="box-shadow">Box Shadow</Label>
-                <Input
-                  id="box-shadow"
-                  placeholder="e.g. 0 4px 8px rgba(0,0,0,0.1)"
-                  value={element.properties.boxShadow || ''}
-                  onChange={(e) => {
-                    updateElement(elementId, {
-                      properties: {
-                        ...element.properties,
-                        boxShadow: e.target.value
-                      }
-                    });
-                  }}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="opacity">Opacity</Label>
-                <Input
-                  id="opacity"
-                  type="number"
-                  placeholder="0-100"
-                  min="0"
-                  max="100"
-                  value={element.properties.opacity !== undefined ? element.properties.opacity * 100 : ''}
-                  onChange={(e) => {
-                    const value = parseInt(e.target.value);
-                    updateElement(elementId, {
-                      properties: {
-                        ...element.properties,
-                        opacity: !isNaN(value) ? value / 100 : 1
-                      }
-                    });
-                  }}
-                />
-              </div>
-            </div>
+            <AdvancedDesignTools elementId={elementId} />
           </ScrollArea>
         </TabsContent>
         
